@@ -1,0 +1,83 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .dashboard-card {
+    @apply bg-white rounded-xl shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+  }
+  
+  .status-badge {
+    @apply px-3 py-1 rounded-full text-xs font-semibold uppercase;
+  }
+  
+  .status-paid { @apply bg-green-100 text-green-800; }
+  .status-pending { @apply bg-yellow-100 text-yellow-800; }
+  .status-overdue { @apply bg-red-100 text-red-800; }
+  .status-active { @apply bg-green-100 text-green-800; }
+  .status-inactive { @apply bg-red-100 text-red-800; }
+  .status-resolved { @apply bg-green-100 text-green-800; }
+  .status-in-progress { @apply bg-blue-100 text-blue-800; }
+  .status-open { @apply bg-yellow-100 text-yellow-800; }
+  .status-approved { @apply bg-green-100 text-green-800; }
+  .status-rejected { @apply bg-red-100 text-red-800; }
+  .status-confirmed { @apply bg-green-100 text-green-800; }
+  .status-cancelled { @apply bg-red-100 text-red-800; }
+  
+  .sidebar-item {
+    @apply flex items-center px-5 py-3 text-white/80 cursor-pointer transition-all rounded-lg mx-3 hover:bg-white/10 hover:text-white;
+  }
+  
+  .sidebar-item.active {
+    @apply bg-white/20 text-white;
+  }
+  
+  .user-type-selector {
+    @apply bg-white rounded-xl p-6 cursor-pointer transition-all border-2 border-transparent hover:-translate-y-1 hover:shadow-xl;
+  }
+  
+  .user-type-selector.selected {
+    @apply border-blue-500 bg-blue-50;
+  }
+  
+  .hostel-card {
+    @apply bg-white rounded-xl overflow-hidden shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl;
+  }
+  
+  .stat-card {
+    @apply bg-white p-6 rounded-xl shadow-sm text-center;
+  }
+  
+  .stat-number {
+    @apply text-4xl font-bold text-blue-600;
+  }
+  
+  .stat-label {
+    @apply text-gray-600 text-sm mt-2;
+  }
+  
+  .progress-bar {
+    @apply w-full h-2 bg-gray-200 rounded-full overflow-hidden;
+  }
+  
+  .progress-fill {
+    @apply h-full bg-green-500 transition-all duration-300;
+  }
+  
+  .filter-chip {
+    @apply inline-block px-3 py-1 bg-gray-100 rounded-full text-sm mx-1 cursor-pointer transition-colors hover:bg-gray-200;
+  }
+  
+  .filter-chip.active {
+    @apply bg-blue-500 text-white;
+  }
+  
+  .rating-stars {
+    @apply text-yellow-400 cursor-pointer;
+  }
+  
+  .rating-stars.inactive {
+    @apply text-gray-300;
+  }
+}
