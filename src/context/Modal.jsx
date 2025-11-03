@@ -1,6 +1,6 @@
 // src/components/modals/Modal.jsx
 import React from 'react';
-import { useModal } from '../../context/ModalContext';
+import { useModal } from './ModalContext';
 import HostelForm from '../forms/HostelForm';
 import RoomForm from '../forms/RoomForm';
 import BedForm from '../forms/BedForm';
@@ -10,12 +10,13 @@ import PaymentForm from '../forms/PaymentForm';
 import ComplaintForm from '../forms/ComplaintForm';
 import MenuForm from '../forms/MenuForm';
 import AnnouncementForm from '../forms/AnnouncementForm';
-import AttendanceForm from '../forms/AttendanceForm';
+import AttendanceForm from '../forms/AttendenceForm';
 import MaintenanceForm from '../forms/MaintenanceForm';
-import SupervisorForm from '../forms/SupervisorForm';
+import SupervisorForm from '../forms/SuperVisiorForm';
 
 const Modal = () => {
   const { modalOpen, modalType, editingItem, closeModal } = useModal();
+  console.log(modalType)
 
   if (!modalOpen) return null;
 

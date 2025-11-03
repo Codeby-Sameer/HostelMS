@@ -9,10 +9,13 @@ import VisitorDashboard from './routes/VisitorRoutes';
 import StudentDashboard from './routes/StudentRoutes';
 import RoleBasedRoute from './routes/RoleBasedRoutes';
 import ProtectedRoute from './components/ProtectedRoute';
+import { ModalProvider } from './context/ModalContext';
+
 
 
 function App() {
   return (
+    
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Routes>
@@ -35,12 +38,15 @@ function App() {
           <Route
             path="/hostel-admin/*"
             element={
+              <ModalProvider>
+
               <ProtectedRoute>
                 <RoleBasedRoute allowedRoles={['hostel-admin']}>
                   
                   <HostelAdminDashboard />
                 </RoleBasedRoute>
               </ProtectedRoute>
+              </ModalProvider>
             }
           />
           

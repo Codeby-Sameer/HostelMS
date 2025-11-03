@@ -1,7 +1,9 @@
 // components/Dashboard.js
 import React from 'react';
+import { useModal } from '../../../context/ModalContext';
 
 const Dashboard = () => {
+ const{openModal}= useModal()
   const hostels=[ ]
   const totalHostels = 1;
   const totalOccupancy = 1> 0 
@@ -35,7 +37,7 @@ const Dashboard = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-blue-900">Multi-Hostel Dashboard</h2>
         <button 
-          onClick={() => onOpenModal('hostel')}
+          onClick={() => openModal('hostel')}
           className="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium hover:opacity-90 transition"
         >
           + Add New Hostel

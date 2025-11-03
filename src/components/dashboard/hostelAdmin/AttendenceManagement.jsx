@@ -2,6 +2,7 @@
 import React from 'react';
 
 const AttendanceManagement = ({ openModal, allData }) => {
+  
   allData=[]
   const attendance = allData.filter(item => item.type === 'attendance');
   const presentToday = attendance.filter(a => a.status === 'present' && new Date(a.attendanceDate).toDateString() === new Date().toDateString()).length;

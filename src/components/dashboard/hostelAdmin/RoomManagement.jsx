@@ -77,8 +77,11 @@
 
 // src/components/dashboard/views/.jsx
 import React from 'react';
+import { useModal } from '../../../context/ModalContext';
 
-const RoomManagement = ({ selectedHostel, openModal, allData }) => {
+const RoomManagement = ({ selectedHostel, allData }) => {
+const{openModal}=  useModal()
+
   allData=[]
   const rooms = allData.filter(item => item.type === 'rooms' && selectedHostel && item.hostelId === selectedHostel.id);
 

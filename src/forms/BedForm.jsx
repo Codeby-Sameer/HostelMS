@@ -1,7 +1,7 @@
 // src/components/forms/BedForm.jsx
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { formTemplates, validationSchemas } from '../../utils/formTemplates';
+import { formTemplates, validationSchemas } from '../utils/FormTempletes';
 
 const BedForm = ({ editingItem, onClose }) => {
   const initialValues = editingItem || {
