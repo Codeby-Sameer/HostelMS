@@ -77,7 +77,7 @@ const AdminManagement = () => {
           <h2 className="text-2xl lg:text-3xl font-bold text-blue-800">Administrator Management</h2>
           <p className="text-gray-600 mt-1 text-sm lg:text-base">Manage platform administrators and their permissions</p>
         </div>
-        <button className="px-4 lg:px-6 py-2 lg:py-3 text-white rounded-lg font-medium hover:opacity-90 transition bg-blue-800 text-sm lg:text-base w-fit">
+        <button className="px-4 lg:px-6 py-2 lg:py-3 text-white rounded-lg font-medium hover:opacity-90 transition bg-blue-800 text-sm lg:text-base w-fit" onClick={()=>{openModal()}}>
           + Add Administrator
         </button>
       </div>

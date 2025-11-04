@@ -18,6 +18,7 @@ function App() {
     
     <Router>
       <div className="min-h-screen bg-gray-50">
+        <ModalProvider>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
@@ -29,10 +30,10 @@ function App() {
             element={
               <ProtectedRoute>
                 <RoleBasedRoute allowedRoles={['super-admin']}>
-                  <ModalProvider>
+            
 
                   <SuperAdminDashboard />
-                  </ModalProvider>
+                
                 </RoleBasedRoute>
               </ProtectedRoute>
             }
@@ -41,7 +42,7 @@ function App() {
           <Route
             path="/hostel-admin/*"
             element={
-              <ModalProvider>
+            
 
               <ProtectedRoute>
                 <RoleBasedRoute allowedRoles={['hostel-admin']}>
@@ -49,7 +50,7 @@ function App() {
                   <HostelAdminDashboard />
                 </RoleBasedRoute>
               </ProtectedRoute>
-              </ModalProvider>
+            
             }
           />
           
@@ -84,6 +85,7 @@ function App() {
           {/* Fallback route */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        </ModalProvider>
       </div>
     </Router>
   );
