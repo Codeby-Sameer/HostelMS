@@ -9,6 +9,7 @@ import SystemHealth from '../components/dashboard/superAdmin/SystemHealth';
 import AdminManagement from '../components/dashboard/superAdmin/AdminManagement';
 import Reports from '../components/dashboard/superAdmin/Reports';
 import Subscriptions from '../components/dashboard/superAdmin/Subscription';
+import Modal from '../context/Modal';
 
 const SuperAdminRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const SuperAdminRoutes = () => {
         <Route path="reports" element={<Reports />} />
         <Route path="*" element={<SuperAdminDashboard />} />
       </Routes>
+      <Modal/>
     </DashboardLayout>
   );
 };

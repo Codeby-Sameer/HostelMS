@@ -29,7 +29,10 @@ function App() {
             element={
               <ProtectedRoute>
                 <RoleBasedRoute allowedRoles={['super-admin']}>
+                  <ModalProvider>
+
                   <SuperAdminDashboard />
+                  </ModalProvider>
                 </RoleBasedRoute>
               </ProtectedRoute>
             }

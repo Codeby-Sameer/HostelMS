@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { useModal } from '../../../context/ModalContext'
 
 const HostelManagement = () => {
+  const { openModal } = useModal()
   const [filters, setFilters] = useState({
     status: '',
     tier: '',
@@ -101,7 +103,8 @@ const HostelManagement = () => {
           <p className="text-gray-600 mt-1 text-sm lg:text-base">Manage all hostels in the platform</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
-          <button className="px-4 lg:px-6 py-2 lg:py-3 text-white rounded-lg font-medium hover:opacity-90 transition bg-blue-800 text-sm lg:text-base">
+          <button className="px-4 lg:px-6 py-2 lg:py-3 text-white rounded-lg font-medium hover:opacity-90 transition bg-blue-800 text-sm lg:text-base"
+          onClick={()=>{openModal('hostel')}}>
             + Add Hostel
           </button>
           <button className="px-4 lg:px-6 py-2 lg:py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition text-sm lg:text-base">
