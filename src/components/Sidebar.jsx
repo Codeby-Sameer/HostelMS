@@ -2,24 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 
-const Sidebar = ({ onLogout, userType, basePath = '/dashboard' }) => {
+const Sidebar = ({ onLogout, userType, basePath = '/dashboard', isSidebarOpen, onToggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
   const currentUserType = currentUser?.type || 'student';
 
-  // Check screen size on mount and resize
   useEffect(() => {
     const checkScreenSize = () => {
-      const mobile = window.innerWidth < 768;
+      const mobile = window.innerWidth < 1024;
       setIsMobile(mobile);
-      if (mobile) {
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
-      }
     };
 
     checkScreenSize();
@@ -28,7 +21,6 @@ const Sidebar = ({ onLogout, userType, basePath = '/dashboard' }) => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  // Get navigation items based on user type
   const getNavItems = () => {
     const navConfig = {
       'super-admin': [
@@ -85,121 +77,121 @@ const Sidebar = ({ onLogout, userType, basePath = '/dashboard' }) => {
   const handleNavigation = (path) => {
     navigate(path);
     if (isMobile) {
-      setIsSidebarOpen(false);
+      onToggleSidebar(false);
     }
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const handleCloseSidebar = () => {
+    onToggleSidebar(false);
   };
 
-  // Close sidebar when clicking on overlay (mobile)
   const handleOverlayClick = () => {
     if (isMobile) {
-      setIsSidebarOpen(false);
+      onToggleSidebar(false);
     }
   };
 
   return (
     <>
-      {/* Mobile menu button */}
-      {isMobile && (
-        <button
-          onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-50 p-2 bg-blue-600 text-white rounded-lg shadow-lg md:hidden"
-        >
-          {isSidebarOpen ? '✕' : '☰'}
-        </button>
-      )}
-
       {/* Overlay for mobile */}
       {isMobile && isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity duration-300"
           onClick={handleOverlayClick}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar with Fixed Height Layout */}
       <div 
         className={`
-          fixed md:relative 
-          top-0 left-0 
-          h-full 
-          w-64 
-          flex-shrink-0 
-bg-white
-          flex flex-col 
-          z-40
+          h-screen w-80 
+          bg-gradient-to-b from-blue-800 to-blue-900
+          flex flex-col
+          z-50
           transition-transform duration-300 ease-in-out
-          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-          ${isMobile ? 'shadow-2xl' : ''}
+          shadow-2xl
+          ${isMobile ? 'fixed top-0 left-0 transform' : 'relative'} 
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
-        {/* Close button for mobile */}
-        <div className="flex justify-between items-center p-6 border-b border-blue-500 md:hidden">
-          <div className="flex items-center">
-            <div className="text-2xl mr-3">🏠</div>
-            <div>
-              <h2 className="text-blue font-bold text-lg">HostelHub</h2>
-              <p className="text-blue-900 text-sm">
-                {currentUserType === 'super-admin' && 'Super Administrator'}
-                {currentUserType === 'hostel-admin' && 'Hostel Administrator'}
-                {currentUserType === 'student' && 'Student/Tenant'}
-                {currentUserType === 'visitor' && 'Visitor'}
-              </p>
+        {/* Header Section - Fixed Height */}
+        <div className="flex-shrink-0 p-6 border-b border-blue-600">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="text-2xl mr-3">
+                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
+                  <img 
+                    src='/logo.jpg' 
+                    alt="HostelHub" 
+                    className="w-8 h-8 object-contain"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  <span className="text-blue-800 font-bold text-lg hidden">🏠</span>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-white font-bold text-xl whitespace-nowrap">HostelHub</h2>
+                <p className="text-blue-200 text-sm whitespace-nowrap">
+                  {currentUserType === 'super-admin' && 'Super Administrator'}
+                  {currentUserType === 'hostel-admin' && 'Hostel Administrator'}
+                  {currentUserType === 'student' && 'Student/Tenant'}
+                  {currentUserType === 'visitor' && 'Visitor'}
+                </p>
+              </div>
             </div>
-          </div>
-          <button
-            onClick={toggleSidebar}
-            className="text-white hover:text-gray-200 text-xl"
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* Desktop header (without close button) */}
-        <div className="hidden md:block p-6">
-          <div className="flex items-center mb-8">
-            <div className="text-2xl mr-3">🏠</div>
-            <div>
-              <h2 className="text-white font-bold text-lg">HostelHub</h2>
-              <p className="text-blue-200 text-sm">
-                {currentUserType === 'super-admin' && 'Super Administrator'}
-                {currentUserType === 'hostel-admin' && 'Hostel Administrator'}
-                {currentUserType === 'student' && 'Student/Tenant'}
-                {currentUserType === 'visitor' && 'Visitor'}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation items */}
-        <nav className="flex-1 space-y-1 p-4 pt-0 md:pt-4 overflow-y-auto">
-          {navItems.map(item => (
-            <Link
-              key={item.id}
-              className={`w-full text-left flex items-center px-4 py-3 rounded-lg transition ${
-                location.pathname === item.path 
-                  ? 'bg-white text-blue-600 font-semibold' 
-                  : 'text-blue hover:bg-blue-500 hover:text-white'
-              }`}
-             to={`${item.path}`}
+            
+            <button
+              onClick={handleCloseSidebar}
+              className="flex items-center justify-center w-8 h-8 text-blue-200 hover:text-white hover:bg-blue-700 rounded-lg transition-colors"
+              aria-label="Close sidebar"
             >
-              <span className="icon mr-3 text-lg">{item.icon}</span>
-              <span className="whitespace-nowrap text-sm">{item.label}</span>
-            </Link>
-          ))}
+              <span className="text-2xl">✕</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Navigation items - Scrollable Area */}
+        <nav className="flex-1 overflow-y-auto">
+          <div className="space-y-2 p-4">
+            {navItems.map(item => (
+              <Link
+                key={item.id}
+                to={item.path}
+                onClick={() => handleNavigation(item.path)}
+                className={`
+                  flex items-center px-4 py-3 rounded-xl transition-all duration-200
+                  ${location.pathname === item.path 
+                    ? 'bg-white shadow-lg text-blue-600 font-semibold' 
+                    : 'text-blue-100 hover:bg-blue-700 hover:text-white hover:shadow-md'
+                  }
+                `}
+              >
+                <span className="icon text-xl mr-3">
+                  {item.icon}
+                </span>
+                <span className="whitespace-nowrap text-sm">
+                  {item.label}
+                </span>
+                
+                {location.pathname === item.path && (
+                  <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full"></div>
+                )}
+              </Link>
+            ))}
+          </div>
         </nav>
 
-        {/* Logout button */}
-        <div className="p-4 border-t border-blue-500">
+        {/* Logout button - Fixed Height */}
+        <div className="flex-shrink-0 p-4 border-t border-blue-600">
           <button
             onClick={onLogout}
-            className="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition font-semibold flex items-center justify-center"
+            className="w-full flex items-center justify-center py-3 rounded-xl transition-all duration-200 bg-red-500 text-white hover:bg-red-600 font-semibold shadow-lg hover:shadow-xl"
           >
             <span className="mr-2">🚪</span>
-            Sign Out
+            <span>Sign Out</span>
           </button>
         </div>
       </div>
