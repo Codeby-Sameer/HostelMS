@@ -10,6 +10,13 @@ import StudentDashboard from './routes/StudentRoutes';
 import RoleBasedRoute from './routes/RoleBasedRoutes';
 import ProtectedRoute from './components/ProtectedRoute';
 import { ModalProvider } from './context/ModalContext';
+import Layout from './pages/Layout';
+import Features from './pages/Features';
+import Pricing from './pages/Pricing';
+import HomePage from './pages/Homepage';
+import About from './pages/About';
+import WhiteLabel from './pages/Whitelabel';
+import Contact from './pages/Contact';
 
 
 
@@ -21,8 +28,15 @@ function App() {
         <ModalProvider>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+             <Route path="/login" element={<LoginPage />} />
+             <Route path="/features" element={<Features />} />
+             <Route path="/pricing" element={<Pricing />} />
+             <Route path="/about" element={<About />} />
+             <Route path="/white-label" element={<WhiteLabel />} />
+             <Route path="/contact" element={<Contact />} />
+          </Route>
           
           {/* Role-based Dashboard Routes */}
           <Route
