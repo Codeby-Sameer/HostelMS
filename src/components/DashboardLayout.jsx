@@ -29,19 +29,24 @@ const DashboardLayout = ({ children, userType }) => {
     setIsSidebarOpen(open);
   };
 
-  // Handle window resize
+  // Handle window resize - FIXED VERSION
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 1024;
       setIsMobile(mobile);
-      // On desktop: open by default; on mobile: closed by default
-      setIsSidebarOpen(mobile ? false : true);
+      
+      // Only auto-close sidebar on mobile if it's currently open and we're switching to mobile
+      // Don't automatically change state when resizing if user has manually toggled
+      if (mobile && isSidebarOpen && window.innerWidth < 1024) {
+        // Keep current state unless we need to adjust for mobile
+        // This prevents the sidebar from closing automatically when resizing to mobile
+      }
     };
 
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [isSidebarOpen]); // Added dependency to prevent unwanted state changes
 
   // Get base path based on user type
   const getBasePath = () => {
@@ -58,7 +63,7 @@ const DashboardLayout = ({ children, userType }) => {
     <div className="h-screen bg-gray-50 flex overflow-hidden">
       {/* Sidebar */}
       <div className={`${isMobile ? 'fixed inset-y-0 left-0 z-50' : 'relative'} ${
-        !isSidebarOpen && !isMobile ? 'w-0' : 'w-80'
+        isSidebarOpen ? 'w-80' : 'w-0'
       } transition-all duration-300`}>
         <Sidebar
           onLogout={handleLogout}
@@ -79,20 +84,20 @@ const DashboardLayout = ({ children, userType }) => {
               {(!isSidebarOpen || isMobile) && (
                 <button
                   onClick={toggleSidebar}
-                  className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="flex items-center justify-center w-10 px-2 h-10 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl"
                   aria-label="Open sidebar"
                 >
                   <span className="text-lg">☰</span>
                 </button>
               )}
 
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
                 {/* Logo */}
-                <div className="hidden sm:flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg">
+                <div className="hidden sm:flex items-center justify-center w-14 h-14  ">
                   <img
-                    src="/logo.png"
+                    src="/img/Media (2).jpg"
                     alt="HostelHub Logo"
-                    className="w-7 h-7 object-contain"
+                    className="w-14 h-14 object-contain"
                     onError={(e) => {
                       e.target.style.display = 'none';
                       e.target.nextSibling.style.display = 'block';
