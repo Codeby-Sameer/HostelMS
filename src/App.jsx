@@ -17,6 +17,8 @@ import HomePage from './pages/Homepage';
 import About from './pages/About';
 import WhiteLabel from './pages/Whitelabel';
 import Contact from './pages/Contact';
+import Rooms from './pages/Rooms';
+import Signup from'./pages/Signup';
 
 
 
@@ -32,12 +34,17 @@ function App() {
             <Route index element={<HomePage />} />
              <Route path="/login" element={<LoginPage />} />
              <Route path="/features" element={<Features />} />
-             <Route path="/pricing" element={<Pricing />} />
+             {/* <Route path="/pricing" element={<Pricing />} /> */}
              <Route path="/about" element={<About />} />
-             <Route path="/white-label" element={<WhiteLabel />} />
+             {/* <Route path="/white-label" element={<WhiteLabel />} /> */}
              <Route path="/contact" element={<Contact />} />
+             <Route path='/rooms' element={<Rooms/>} />
+             <Route path='/signup' element={<Signup/>} /> 
           </Route>
           
+{/* only for landing routes end here */}
+
+
           {/* Role-based Dashboard Routes */}
           <Route
             path="/super-admin/*"

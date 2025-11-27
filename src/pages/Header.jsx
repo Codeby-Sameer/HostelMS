@@ -1,124 +1,224 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { 
-  Menu, 
-  X, 
-  Building, 
-  GraduationCap,
-  ChevronDown
-} from 'lucide-react';
+import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+  const closeBtnRef = useRef(null);
 
-  const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Features', href: '/features' },
-    { name: 'Pricing', href: '/pricing' },
-    { name: 'White Label', href: '/white-label' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
-  ];
+  const toggleMenu = () => setIsOpen((s) => !s);
+  const closeMenu = () => setIsOpen(false);
 
-  const isActive = (path) => {
-    return location.pathname === path;
-  };
+  useEffect(() => {
+    const onScroll = () => setIsSticky(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = isOpen ? "hidden" : prev || "";
+    return () => (document.body.style.overflow = prev);
+  }, [isOpen]);
+
+  // Close on Escape & focus the Back button when menu opens
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && closeMenu();
+    if (isOpen) {
+      window.addEventListener("keydown", onKey);
+      setTimeout(() => closeBtnRef.current?.focus(), 0);
+    }
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen]);
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-      <nav className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
+    <>
+      {/* Navbar */}
+      <nav className={`fixed top-0 left-0 right-0 py-3 bg-white z-50 transition-shadow duration-300 ${
+        isSticky ? 'shadow-lg' : ''
+      }`}>
+        <div className="w-full max-w-7xl mx-auto px-4 lg:px-15 grid grid-cols-3 items-center gap-2">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className=" p-2 rounded-lg w-28">
-              <img src="/img/Media (2).jpg" alt="" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">HMS</span>
+          <Link to="/" className="flex items-center" aria-label="DCM Home">
+            <img 
+              src="img/image.png" 
+              alt="DCM Logo" 
+              className="h-14 w-auto max-w-full object-contain ml-1.5"
+            />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                  isActive(item.href)
-                    ? 'text-blue-600 bg-blue-50'
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
+          {/* Desktop Menu - Centered */}
+          <div className="hidden lg:flex justify-center">
+            <ul className="flex gap-5 lg:gap-6 list-none m-0 p-0">
+              <li>
+                <Link 
+                  to="/" 
+                  className="text-gray-900 font-semibold text-sm tracking-wide no-underline px-1 py-1 relative hover:text-blue-600 transition-colors duration-200 after:content-[''] after:absolute after:left-0 after:-bottom-1.5 after:h-0.5 after:w-0 after:bg-blue-600 after:transition-all after:duration-200 hover:after:w-full"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/Features" 
+                  className="text-gray-900 font-semibold text-sm tracking-wide no-underline px-1 py-1 relative hover:text-blue-600 transition-colors duration-200 after:content-[''] after:absolute after:left-0 after:-bottom-1.5 after:h-0.5 after:w-0 after:bg-blue-600 after:transition-all after:duration-200 hover:after:w-full"
+                >
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/about" 
+                  className="text-gray-900 font-semibold text-sm tracking-wide no-underline px-1 py-1 relative hover:text-blue-600 transition-colors duration-200 after:content-[''] after:absolute after:left-0 after:-bottom-1.5 after:h-0.5 after:w-0 after:bg-blue-600 after:transition-all after:duration-200 hover:after:w-full"
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/contact" 
+                  className="text-gray-900 font-semibold text-sm tracking-wide no-underline px-1 py-1 relative hover:text-blue-600 transition-colors duration-200 after:content-[''] after:absolute after:left-0 after:-bottom-1.5 after:h-0.5 after:w-0 after:bg-blue-600 after:transition-all after:duration-200 hover:after:w-full"
+                >
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link
-              to="/login"
-              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center justify-end space-x-2">
+            <Link 
+              to="/login" 
+              className="px-3 py-2 rounded-lg font-bold text-sm border-2 border-gray-300 bg-white text-gray-900 hover:bg-gradient-to-r hover:from-blue-800 hover:to-blue-900 hover:border-transparent hover:text-white transition-all duration-200 active:translate-y-px"
             >
-              Login
+              Log in
             </Link>
-            <Link
-              to="/login?action=signup"
-              className="px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+            <Link 
+              to="/signup" 
+              className="px-3 py-2 rounded-lg font-bold text-sm border-2 border-gray-300 bg-white text-gray-900 hover:bg-gradient-to-r hover:from-blue-800 hover:to-blue-900 hover:border-transparent hover:text-white transition-all duration-200 active:translate-y-px"
             >
-              Get Started
+              Sign Up
+            </Link>
+            <Link 
+              to="/contact" 
+              className="px-3 py-2 rounded-lg font-bold text-sm border-2 border-blue-600 bg-blue-600 text-white hover:bg-gray-900 hover:border-gray-900 transition-all duration-200 active:translate-y-px"
+            >
+              Download App
             </Link>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile Hamburger */}
           <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 transition-colors"
+            className={`lg:hidden flex flex-col justify-center items-center w-9 h-9 border-0 bg-transparent cursor-pointer gap-1.5 justify-self-end transition-all duration-300 ${
+              isOpen ? 'open' : ''
+            }`}
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <span className={`block w-6 h-0.5 bg-gray-900 rounded transition-all duration-300 ${
+              isOpen ? 'transform translate-y-1.5 rotate-45' : ''
+            }`} />
+            <span className={`block w-6 h-0.5 bg-gray-900 rounded transition-all duration-300 ${
+              isOpen ? 'opacity-0' : ''
+            }`} />
+            <span className={`block w-6 h-0.5 bg-gray-900 rounded transition-all duration-300 ${
+              isOpen ? 'transform -translate-y-1.5 -rotate-45' : ''
+            }`} />
           </button>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4">
-            <div className="flex flex-col space-y-2">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                    isActive(item.href)
-                      ? 'text-blue-600 bg-blue-50'
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-              <div className="border-t border-gray-200 pt-4 mt-2 space-y-2">
-                <Link
-                  to="/login"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/login?action=signup"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-                >
-                  Get Started
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
       </nav>
-    </header>
+
+      {/* Spacer to offset fixed navbar height */}
+      <div className="h-16" aria-hidden="true" />
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <>
+          {/* Mobile Header */}
+          <div className="fixed top-0 left-0 right-0 h-16 bg-white shadow-lg grid grid-cols-3 items-center gap-2 px-3 z-[1300]">
+            <button
+              ref={closeBtnRef}
+              className="px-3 py-2 rounded-lg border border-gray-200 bg-white text-gray-900 font-bold text-sm cursor-pointer hover:border-gray-900 transition-colors"
+              onClick={closeMenu}
+              aria-label="Close menu"
+            >
+              ← Back
+            </button>
+            <div className="text-center font-extrabold tracking-wide text-sm">Menu</div>
+            <button
+              className="px-3 py-2 rounded-lg border border-gray-200 bg-white text-gray-900 font-bold text-sm cursor-pointer hover:border-gray-900 transition-colors justify-self-end"
+              onClick={closeMenu}
+              aria-label="Close menu"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Mobile Menu Content */}
+          <div
+            id="mobile-menu"
+            className="fixed inset-0 bg-white z-[1200] flex flex-col items-center gap-4 pt-20 px-4 pb-6 overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+          >
+            <Link 
+              to="/" 
+              className="w-full max-w-md text-center text-2xl font-bold text-gray-900 no-underline py-3 border-b border-dashed border-gray-200 hover:text-blue-600 transition-colors"
+              onClick={closeMenu}
+            >
+              Home
+            </Link>
+            <Link 
+              to="/Features" 
+              className="w-full max-w-md text-center text-2xl font-bold text-gray-900 no-underline py-3 border-b border-dashed border-gray-200 hover:text-blue-600 transition-colors"
+              onClick={closeMenu}
+            >
+              Features
+            </Link>
+            <Link 
+              to="/about" 
+              className="w-full max-w-md text-center text-2xl font-bold text-gray-900 no-underline py-3 border-b border-dashed border-gray-200 hover:text-blue-600 transition-colors"
+              onClick={closeMenu}
+            >
+              About Us
+            </Link>
+            <Link 
+              to="/contact" 
+              className="w-full max-w-md text-center text-2xl font-bold text-gray-900 no-underline py-3 border-b border-dashed border-gray-200 hover:text-blue-600 transition-colors"
+              onClick={closeMenu}
+            >
+              Contact Us
+            </Link>
+
+            <Link 
+              to="/login" 
+              className="w-full max-w-md px-4 py-3 rounded-lg font-bold text-base border-2 border-gray-300 bg-white text-gray-900 text-center no-underline hover:bg-gradient-to-r hover:from-blue-800 hover:to-blue-900 hover:border-transparent hover:text-white transition-all duration-200"
+              onClick={closeMenu}
+            >
+              Log in
+            </Link>
+            <Link 
+              to="/register" 
+              className="w-full max-w-md px-4 py-3 rounded-lg font-bold text-base border-2 border-gray-300 bg-white text-gray-900 text-center no-underline hover:bg-gradient-to-r hover:from-blue-800 hover:to-blue-900 hover:border-transparent hover:text-white transition-all duration-200"
+              onClick={closeMenu}
+            >
+              Sign Up
+            </Link>
+            <Link 
+              to="/contact" 
+              className="w-full max-w-md px-4 py-3 rounded-lg font-bold text-base border-2 border-blue-600 bg-blue-600 text-white text-center no-underline hover:bg-gray-900 hover:border-gray-900 transition-all duration-200"
+              onClick={closeMenu}
+            >
+              Download App
+            </Link>
+          </div>
+        </>
+      )}
+    </>
   );
 };
 
-export default Header;
+export default Navbar;

@@ -1,290 +1,322 @@
-import React from 'react';
+// src/pages/Features.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+
+// Basic Navbar component
+const Navbar = () => {
+  // return (
+  //   <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+  //     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  //       <div className="flex justify-between items-center h-16">
+  //         <div className="flex items-center">
+  //           <Link to="/" className="text-xl font-bold text-blue-600">
+  //             DCM Solutions
+  //           </Link>
+  //         </div>
+  //         <div className="hidden md:block">
+  //           <div className="ml-10 flex items-baseline space-x-4">
+  //             <Link to="/" className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</Link>
+  //             <Link to="/about" className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</Link>
+  //             <Link to="/features" className="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</Link>
+  //             <Link to="/contact" className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</Link>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </nav>
+  // );
+};
+
+// Basic Footer component
+const Footer = () => {
+  // return (
+  //   <footer className="bg-gray-800 text-white py-8">
+  //     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  //       <div className="text-center">
+  //         <p className="text-gray-400">© 2024 DCM Solutions. All rights reserved.</p>
+  //       </div>
+  //     </div>
+  //   </footer>
+  // );
+};
+
+const featuresData = [
+  {
+    title: "Day-wise Stay Booking",
+    description: "Pay only for the days you stay — flexible, zero lock-in, with instant confirmations and digital receipts.",
+    icon: "📅",
+    color: "#FF6B6B"
+  },
+  {
+    title: "Tenant Onboarding",
+    description: "Paperless onboarding with digital verification & quick room allotment.",
+    icon: "👤",
+    color: "#4ECDC4"
+  },
+  {
+    title: "Billing & Fee Management",
+    description: "Automatic invoices, due reminders & secure online payments.",
+    icon: "⚡",
+    color: "#FFD166"
+  },
+  {
+    title: "Reservation & Booking",
+    description: "Manage bookings and cancellations centrally with live availability.",
+    icon: "📊",
+    color: "#06D6A0"
+  },
+  {
+    title: "Tenant Check-In / Check-Out",
+    description: "Track arrivals & departures seamlessly with automated logs.",
+    icon: "🏃",
+    color: "#118AB2"
+  },
+  {
+    title: "Maintenance Requests",
+    description: "Residents can raise complaints & track problem resolution.",
+    icon: "🔧",
+    color: "#073B4C"
+  },
+  {
+    title: "Mess & Dining Management",
+    description: "View daily menus, meal counts & reduce food wastage.",
+    icon: "🍽️",
+    color: "#EF476F"
+  },
+  {
+    title: "Notices & Communication",
+    description: "Send announcements to all residents instantly via app.",
+    icon: "📢",
+    color: "#7209B7"
+  },
+  {
+    title: "Reports & Analytics",
+    description: "Monitor hostel performance with real-time dashboards.",
+    icon: "📈",
+    color: "#F8961E"
+  },
+  {
+    title: "Leave Manager",
+    description: "Students request leave and admins approve digitally.",
+    icon: "✅",
+    color: "#277DA1"
+  },
+  {
+    title: "24/7 Support",
+    description: "Round-the-clock help with priority escalation handling.",
+    icon: "♾️",
+    color: "#43AA8B"
+  },
+  {
+    title: "Room Allocation",
+    description: "Smart room assignment based on preferences and availability.",
+    icon: "🏠",
+    color: "#9C27B0"
+  }
+];
 
 const Features = () => {
   return (
-    <div className="page-content">
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Comprehensive PG Management Features</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Everything you need to run a successful PG business, from tenant onboarding to revenue optimization</p>
-          </div>
+    <div className="min-h-screen bg-white font-sans">
+      <Navbar />
 
-          {/* Feature Categories */}
-          <div className="space-y-20">
-            
-            {/* For PG Owners */}
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">👑 For PG & Hostel Owners</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Multi-Property Management</h3>
-                  <p className="text-gray-600 mb-4">Manage multiple PG properties from a single dashboard with centralized control and insights.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Unified property dashboard</li>
-                    <li>• Cross-property analytics</li>
-                    <li>• Centralized tenant database</li>
-                    <li>• Bulk operations support</li>
-                  </ul>
-                </div>
+      {/* Hero Section */}
+      <section className="relative py-16 md:py-20 px-4 md:px-8 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 overflow-hidden">
+        {/* Background Animation */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-32 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+          <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        </div>
+       
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            <h1 className="text-4xl md:text-6xl font-black mb-6">
+              <span className="bg-gradient-to-br from-gray-200 to-gray-300 bg-clip-text text-transparent">
+                Features
+              </span>
+            </h1>
+           
+            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Comprehensive features designed to streamline your hostel management
+            </p>
 
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Automated Rent Collection</h3>
-                  <p className="text-gray-600 mb-4">Streamline payment processes with automated reminders and multiple payment gateways.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Automated payment reminders</li>
-                    <li>• Multiple payment methods</li>
-                    <li>• Late fee calculations</li>
-                    <li>• Digital receipts</li>
-                  </ul>
-                </div>
-
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Advanced Analytics</h3>
-                  <p className="text-gray-600 mb-4">Get deep insights into your business performance with comprehensive reporting.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Revenue & expense tracking</li>
-                    <li>• Occupancy rate analysis</li>
-                    <li>• Tenant behavior insights</li>
-                    <li>• Predictive analytics</li>
-                  </ul>
-                </div>
-
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5 5v-5zM9 7H4l5-5v5zm6 10V7a1 1 0 00-1-1H5a1 1 0 00-1 1v10a1 1 0 001 1h9a1 1 0 001-1z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Smart Notifications</h3>
-                  <p className="text-gray-600 mb-4">Stay informed with intelligent alerts for all critical business events.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Payment due alerts</li>
-                    <li>• Maintenance requests</li>
-                    <li>• Vacancy notifications</li>
-                    <li>• Emergency alerts</li>
-                  </ul>
-                </div>
-
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Staff Management</h3>
-                  <p className="text-gray-600 mb-4">Manage your team with role-based access and performance tracking.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Role-based permissions</li>
-                    <li>• Staff attendance tracking</li>
-                    <li>• Performance metrics</li>
-                    <li>• Task assignment</li>
-                  </ul>
-                </div>
-
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Security & Compliance</h3>
-                  <p className="text-gray-600 mb-4">Enterprise-grade security with compliance management features.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Data encryption</li>
-                    <li>• Backup & recovery</li>
-                    <li>• Audit trails</li>
-                    <li>• Compliance reporting</li>
-                  </ul>
-                </div>
+            {/* Stats Section */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto mt-12">
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-cyan-300">12+</div>
+                <div className="text-sm text-gray-300 mt-1">Features</div>
               </div>
-            </div>
-
-            {/* For Tenants */}
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">🎓 For Students & Tenants</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
-                <div className="feature-card text-center">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-8 0H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-2m-8 0V7a2 2 0 012-2h4a2 2 0 012 2v0" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Easy Booking</h3>
-                  <p className="text-gray-600 text-sm">Book rooms instantly with flexible duration options and instant confirmations</p>
-                </div>
-
-                <div className="feature-card text-center">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Easy Payments</h3>
-                  <p className="text-gray-600 text-sm">Pay rent online with multiple payment options and get instant receipts</p>
-                </div>
-
-                <div className="feature-card text-center">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Direct Communication</h3>
-                  <p className="text-gray-600 text-sm">Chat directly with management for queries and support</p>
-                </div>
-
-                <div className="feature-card text-center">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Complaint Management</h3>
-                  <p className="text-gray-600 text-sm">Submit and track maintenance requests and complaints easily</p>
-                </div>
-
-                <div className="feature-card text-center">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Expense Tracking</h3>
-                  <p className="text-gray-600 text-sm">Track all expenses and view detailed payment history and statements</p>
-                </div>
-
-                <div className="feature-card text-center">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5 5v-5zM9 7H4l5-5v5zm6 10V7a1 1 0 00-1-1H5a1 1 0 00-1 1v10a1 1 0 001 1h9a1 1 0 001-1z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Smart Notifications</h3>
-                  <p className="text-gray-600 text-sm">Get timely updates about payments, notices, and important announcements</p>
-                </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-cyan-300">24/7</div>
+                <div className="text-sm text-gray-300 mt-1">Support</div>
               </div>
-            </div>
-
-            {/* Booking System Features */}
-            <div className="mt-20">
-              <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">📅 Advanced Booking System Features</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-8 0H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-2m-8 0V7a2 2 0 012-2h4a2 2 0 012 2v0" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Real-time Availability Calendar</h3>
-                  <p className="text-gray-600 mb-4">Live room availability with instant updates and dynamic pricing based on demand and season.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Live availability updates</li>
-                    <li>• Dynamic pricing engine</li>
-                    <li>• Seasonal rate adjustments</li>
-                    <li>• Bulk booking discounts</li>
-                  </ul>
-                </div>
-
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Flexible Duration Options</h3>
-                  <p className="text-gray-600 mb-4">Book for daily, weekly, monthly stays with automatic pricing calculations and discount applications.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Daily bookings (₹800-1500/day)</li>
-                    <li>• Weekly packages (15% discount)</li>
-                    <li>• Monthly stays (25% discount)</li>
-                    <li>• Long-term contracts (35% discount)</li>
-                  </ul>
-                </div>
-
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Instant Booking Confirmation</h3>
-                  <p className="text-gray-600 mb-4">Get immediate booking confirmations with QR codes, digital keys, and detailed check-in instructions.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Instant confirmation SMS/Email</li>
-                    <li>• QR code for easy check-in</li>
-                    <li>• Digital room keys</li>
-                    <li>• Check-in instructions</li>
-                  </ul>
-                </div>
-
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Smart Search & Filters</h3>
-                  <p className="text-gray-600 mb-4">Advanced search functionality with location, price, amenities, and availability filters.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Location-based search</li>
-                    <li>• Price range filters</li>
-                    <li>• Amenity preferences</li>
-                    <li>• Room type selection</li>
-                  </ul>
-                </div>
-
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Secure Payment Gateway</h3>
-                  <p className="text-gray-600 mb-4">Multiple payment options with secure processing and instant payment confirmations.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• UPI, Cards, Net Banking</li>
-                    <li>• EMI options available</li>
-                    <li>• Secure payment processing</li>
-                    <li>• Instant payment receipts</li>
-                  </ul>
-                </div>
-
-                <div className="feature-card">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Guest Experience Management</h3>
-                  <p className="text-gray-600 mb-4">Complete guest lifecycle management from booking to checkout with personalized services.</p>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    <li>• Pre-arrival communication</li>
-                    <li>• Welcome packages</li>
-                    <li>• 24/7 guest support</li>
-                    <li>• Feedback collection</li>
-                  </ul>
-                </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-cyan-300">100%</div>
+                <div className="text-sm text-gray-300 mt-1">Digital</div>
               </div>
-            </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-cyan-300">50+</div>
+                <div className="text-sm text-gray-300 mt-1">Hostels</div>
+              </div>
             </div>
           </div>
+        </div>
+
+        <style>{`
+          @keyframes blob {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+          }
+          .animate-blob {
+            animation: blob 7s infinite;
+          }
+          .animation-delay-2000 {
+            animation-delay: 2s;
+          }
+        `}</style>
       </section>
+
+      {/* Introduction Section */}
+      <section className="py-16 px-4 md:px-8 bg-white">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-6">
+            Powerful Features for Modern Hostel Management
+          </h2>
+          <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">
+            Our comprehensive suite of features is designed to simplify every aspect of hostel management. 
+            From booking to billing, maintenance to messaging - we've got you covered with smart, automated solutions 
+            that save time and enhance the experience for both administrators and residents.
+          </p>
+        </div>
+      </section>
+
+      {/* Features Grid Section */}
+      <section className="py-16 px-4 md:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">All Features</h2>
+            <div className="w-20 h-1 bg-blue-600 rounded-full mx-auto"></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {featuresData.map((feature, index) => (
+              <div 
+                key={index}
+                className="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-2 border-transparent hover:border-blue-100 relative overflow-hidden group"
+              >
+                {/* Hover Overlay */}
+                <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 ${
+                  index % 12 === 0 ? 'bg-gradient-to-br from-pink-100 to-pink-50' :
+                  index % 12 === 1 ? 'bg-gradient-to-br from-cyan-100 to-cyan-50' :
+                  index % 12 === 2 ? 'bg-gradient-to-br from-yellow-100 to-yellow-50' :
+                  index % 12 === 3 ? 'bg-gradient-to-br from-green-100 to-green-50' :
+                  index % 12 === 4 ? 'bg-gradient-to-br from-blue-100 to-blue-50' :
+                  index % 12 === 5 ? 'bg-gradient-to-br from-gray-100 to-gray-50' :
+                  index % 12 === 6 ? 'bg-gradient-to-br from-pink-100 to-pink-50' :
+                  index % 12 === 7 ? 'bg-gradient-to-br from-purple-100 to-purple-50' :
+                  index % 12 === 8 ? 'bg-gradient-to-br from-orange-100 to-orange-50' :
+                  index % 12 === 9 ? 'bg-gradient-to-br from-blue-100 to-blue-50' :
+                  index % 12 === 10 ? 'bg-gradient-to-br from-cyan-100 to-cyan-50' :
+                  'bg-gradient-to-br from-purple-100 to-purple-50'
+                }`}></div>
+
+                {/* Feature Icon */}
+                <div 
+                  className="relative z-10 w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border-2 border-gray-100 text-3xl"
+                  style={{ color: feature.color }}
+                >
+                  {feature.icon}
+                </div>
+
+                {/* Feature Content */}
+                <div className="relative z-10">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:-translate-y-1 transition-transform duration-300">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed group-hover:-translate-y-1 transition-transform duration-300">
+                    {feature.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      {/* <section className="py-16 px-4 md:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-6">
+                Why Choose Our Features?
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-4">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-green-600 text-lg">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Time Saving</h4>
+                    <p className="text-gray-600">Automate routine tasks and focus on what matters most</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-blue-600 text-lg">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Cost Effective</h4>
+                    <p className="text-gray-600">Reduce operational costs with digital solutions</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-purple-600 text-lg">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">User Friendly</h4>
+                    <p className="text-gray-600">Intuitive interface for both admins and residents</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-orange-600 text-lg">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Scalable</h4>
+                    <p className="text-gray-600">Grow your hostel business without limitations</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to Get Started?</h3>
+              <p className="text-gray-600 mb-6">
+                Experience the power of our features with a free demo. See how our platform can transform your hostel management.
+              </p>
+              <div className="space-y-4">
+                <Link 
+                  to="/contact" 
+                  className="inline-block w-full bg-blue-600 text-white text-center py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  Request Demo
+                </Link>
+                <Link 
+                  to="/pricing" 
+                  className="inline-block w-full border-2 border-blue-600 text-blue-600 text-center py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 hover:text-white transition-colors"
+                >
+                  View Pricing
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>© 2024 DCM Solutions. All rights reserved. */}
+
+      <Footer />
     </div>
   );
 };

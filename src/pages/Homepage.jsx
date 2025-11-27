@@ -1,578 +1,969 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  ArrowRight, 
-  Building, 
-  CreditCard, 
-  BarChart3, 
-  MessageCircle, 
-  Users, 
-  CheckCircle, 
-  XCircle,
-  Star,
-  MapPin,
-  Wifi,
-  Utensils,
-  Car,
-  Dumbbell,
-  Sparkles,
-  TrendingUp,
-  Clock,
-  Shield,
-  Zap,
-  Calendar
-} from 'lucide-react';
+import React, { useMemo, useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-const HomePage = () => {
+// Navbar Component
+function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const [activeFeature, setActiveFeature] = useState(0);
 
-  const handleShowDemo = () => {
-    navigate('/demo');
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
 
-  const handleExploreFeatures = () => {
-    navigate('/features');
-  };
+  // return (
+  //   <nav className="bg-white/95 backdrop-blur-sm border-b border-slate-200/80 sticky top-0 z-50 px-4 lg:px-6">
+  //     <div className="max-w-7xl mx-auto flex justify-between items-center h-16 lg:h-20">
+  //       {/* Logo */}
+  //       <Link 
+  //         to="/" 
+  //         className="flex items-center gap-2 text-2xl font-black text-blue-600 no-underline"
+  //       >
+  //         <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
+  //           H
+  //         </div>
+  //         HostelMS
+  //       </Link>
 
-  const handleViewPricing = () => {
-    navigate('/pricing');
-  };
+  //       {/* Desktop Menu */}
+  //       <div className="hidden lg:flex items-center gap-8">
+  //         <Link to="/features" className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200">
+  //           Features
+  //         </Link>
+  //         <Link to="/pricing" className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200">
+  //           Pricing
+  //         </Link>
+  //         <Link to="/about" className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200">
+  //           About
+  //         </Link>
+  //         <Link to="/contact" className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200">
+  //           Contact
+  //         </Link>
+  //       </div>
 
-  const handleBookRoom = (propertyId) => {
-    // Handle booking logic
-    console.log('Booking property:', propertyId);
-  };
+  //       {/* Auth Buttons */}
+  //       <div className="hidden lg:flex items-center gap-4">
+  //         <button 
+  //           onClick={() => navigate("/login")}
+  //           className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200 px-4 py-2"
+  //         >
+  //           Login
+  //         </button>
+  //         <button 
+  //           onClick={() => navigate("/signup")}
+  //           className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold px-6 py-2 rounded-lg hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+  //         >
+  //           Get Started
+  //         </button>
+  //       </div>
 
-  const handleViewAllProperties = () => {
-    navigate('/marketplace');
-  };
+  //       {/* Mobile Menu Button */}
+  //       <button 
+  //         className="lg:hidden text-slate-700 p-2"
+  //         onClick={toggleMenu}
+  //       >
+  //         {isOpen ? "✕" : "☰"}
+  //       </button>
+  //     </div>
 
-  // Features data
-  const features = [
+  //     {/* Mobile Menu */}
+  //     {isOpen && (
+  //       <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-200 shadow-lg">
+  //         <div className="flex flex-col p-4 space-y-4">
+  //           <Link to="/features" className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200 py-2" onClick={() => setIsOpen(false)}>
+  //             Features
+  //           </Link>
+  //           <Link to="/pricing" className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200 py-2" onClick={() => setIsOpen(false)}>
+  //             Pricing
+  //           </Link>
+  //           <Link to="/about" className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200 py-2" onClick={() => setIsOpen(false)}>
+  //             About
+  //           </Link>
+  //           <Link to="/contact" className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200 py-2" onClick={() => setIsOpen(false)}>
+  //             Contact
+  //           </Link>
+  //           <div className="flex flex-col gap-3 pt-4 border-t border-slate-200">
+  //             <button 
+  //               onClick={() => { navigate("/login"); setIsOpen(false); }}
+  //               className="text-slate-700 font-semibold hover:text-blue-600 transition-colors duration-200 py-2 text-left"
+  //             >
+  //               Login
+  //             </button>
+  //             <button 
+  //               onClick={() => { navigate("/signup"); setIsOpen(false); }}
+  //               className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-all duration-200"
+  //             >
+  //               Get Started
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     )}
+  //   </nav>
+  // );
+}
+
+// Footer Component
+function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  // return (
+  //   <footer className="bg-slate-900 text-white">
+  //     {/* Main Footer */}
+  //     <div className="max-w-7xl mx-auto px-4 lg:px-6 py-16">
+  //       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+  //         {/* Company Info */}
+  //         <div className="lg:col-span-1">
+  //           <Link to="/" className="flex items-center gap-2 text-2xl font-black text-white mb-6 no-underline">
+  //             <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
+  //               H
+  //             </div>
+  //             HostelMS
+  //           </Link>
+  //           <p className="text-slate-300 mb-6 leading-relaxed">
+  //             Transform your hostel management with our comprehensive digital solution. Streamline operations, enhance resident experience, and grow your business.
+  //           </p>
+  //           <div className="flex gap-4">
+  //             <a href="#" className="text-slate-400 hover:text-white transition-colors duration-200 text-xl">
+  //               f
+  //             </a>
+  //             <a href="#" className="text-slate-400 hover:text-white transition-colors duration-200 text-xl">
+  //               t
+  //             </a>
+  //             <a href="#" className="text-slate-400 hover:text-white transition-colors duration-200 text-xl">
+  //               in
+  //             </a>
+  //             <a href="#" className="text-slate-400 hover:text-white transition-colors duration-200 text-xl">
+  //               ig
+  //             </a>
+  //           </div>
+  //         </div>
+
+  //         {/* Product Links */}
+  //         <div>
+  //           <h3 className="text-lg font-bold mb-6">Product</h3>
+  //           <ul className="space-y-3">
+  //             <li><Link to="/features" className="text-slate-300 hover:text-white transition-colors duration-200">Features</Link></li>
+  //             <li><Link to="/pricing" className="text-slate-300 hover:text-white transition-colors duration-200">Pricing</Link></li>
+  //             <li><Link to="/demo" className="text-slate-300 hover:text-white transition-colors duration-200">Live Demo</Link></li>
+  //             <li><Link to="/documentation" className="text-slate-300 hover:text-white transition-colors duration-200">Documentation</Link></li>
+  //           </ul>
+  //         </div>
+
+  //         {/* Support Links */}
+  //         <div>
+  //           <h3 className="text-lg font-bold mb-6">Support</h3>
+  //           <ul className="space-y-3">
+  //             <li><Link to="/help" className="text-slate-300 hover:text-white transition-colors duration-200">Help Center</Link></li>
+  //             <li><Link to="/contact" className="text-slate-300 hover:text-white transition-colors duration-200">Contact Us</Link></li>
+  //             <li><Link to="/privacy" className="text-slate-300 hover:text-white transition-colors duration-200">Privacy Policy</Link></li>
+  //             <li><Link to="/terms" className="text-slate-300 hover:text-white transition-colors duration-200">Terms of Service</Link></li>
+  //           </ul>
+  //         </div>
+
+  //         {/* Newsletter */}
+  //         <div>
+  //           <h3 className="text-lg font-bold mb-6">Stay Updated</h3>
+  //           <p className="text-slate-300 mb-4">Subscribe to our newsletter for the latest updates and features.</p>
+  //           <div className="flex flex-col sm:flex-row gap-2">
+  //             <input 
+  //               type="email" 
+  //               placeholder="Enter your email"
+  //               className="flex-1 px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
+  //             />
+  //             <button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-200 flex items-center gap-2 justify-center">
+  //               Subscribe →
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+
+  //     {/* Bottom Bar */}
+  //     <div className="border-t border-slate-800">
+  //       <div className="max-w-7xl mx-auto px-4 lg:px-6 py-6">
+  //         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+  //           <p className="text-slate-400 text-sm">© {currentYear} HostelMS. All rights reserved.</p>
+  //           <div className="flex gap-6 text-sm text-slate-400">
+  //             <Link to="/privacy" className="hover:text-white transition-colors duration-200">Privacy</Link>
+  //             <Link to="/terms" className="hover:text-white transition-colors duration-200">Terms</Link>
+  //             <Link to="/cookies" className="hover:text-white transition-colors duration-200">Cookies</Link>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </footer>
+  // );
+}
+
+// Announcement Modal Component
+function AnnouncementModal({ isOpen, onClose }) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-3xl max-w-md w-full mx-auto shadow-2xl border border-slate-200 animate-scale-in">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-3xl p-6 text-center">
+          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-4">
+            🎉
+          </div>
+          <h3 className="text-2xl font-black text-white mb-2">Special Announcement!</h3>
+          <p className="text-blue-100">Exciting new features are here</p>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          <div className="space-y-4 mb-6">
+            <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-xl border border-blue-100">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white text-lg">
+                🚀
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900">New Mobile App</h4>
+                <p className="text-slate-600 text-sm">Available on iOS & Android</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-xl border border-green-100">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl flex items-center justify-center text-white text-lg">
+                💰
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900">Special Discount</h4>
+                <p className="text-slate-600 text-sm">20% off for first 100 customers</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-xl border border-purple-100">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center text-white text-lg">
+                ⚡
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900">Live Demo</h4>
+                <p className="text-slate-600 text-sm">Book your personalized tour</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3">
+            <button 
+              onClick={onClose}
+              className="flex-1 border-2 border-slate-300 text-slate-700 px-4 py-3 rounded-xl font-bold hover:border-slate-400 transition-all duration-300"
+            >
+              Maybe Later
+            </button>
+            <button 
+              onClick={() => {
+                onClose();
+                // Navigate to signup or any other action
+                window.location.href = "/signup";
+              }}
+              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              Get Started
+            </button>
+          </div>
+        </div>
+
+        {/* Close Button */}
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Main Homepage Component
+function Homepage() {
+  const navigate = useNavigate();
+
+  /* ========================
+      STATE + REFS
+  ========================= */
+  const [hideCta, setHideCta] = useState(false);
+  const [revealBubbles, setRevealBubbles] = useState(false);
+  const [showAnnouncement, setShowAnnouncement] = useState(false);
+  const footerSentinelRef = useRef(null);
+  const phoneSectionRef = useRef(null);
+  const tiltRef = useRef(null);
+  const benefitsSliderRef = useRef(null);
+
+  // ---- Slides for the HERO slider ----
+  const pgSlides = [
     {
-      icon: <Building className="w-8 h-8" />,
-      title: "Smart Room Management",
-      description: "Automated room allocation, occupancy tracking, and maintenance scheduling",
-      metric: "95% Occupancy",
-      color: "blue"
+      key: "kyc",
+      title: "Welcome to DCM Hostel Management",
+      desc: "Learn more about our digital hostel management system designed to simplify your operations.",
+      bullets: [
+        "Digital KYC & police verification handoff",
+        "Bed/room auto-allocation rules",
+        "Instant PDF agreements & receipts",
+      ],
+      badge: "KYC",
+      img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=70",
     },
     {
-      icon: <CreditCard className="w-8 h-8" />,
-      title: "Automated Payments",
-      description: "Seamless rent collection with multiple payment options and instant receipts",
-      metric: "99% Collection Rate",
-      color: "green"
+      key: "payments",
+      title: "The easiest way to manage your hostel",
+      desc: "UPI/NetBanking payments with auto-reconcile. Tenants view invoices, download PDFs, and track dues in real time.",
+      bullets: [
+        "UPI, cards & NetBanking",
+        "Auto-reminders & late fees",
+        "One-click receipt downloads",
+      ],
+      badge: "Payments",
+      img: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=70",
     },
     {
-      icon: <BarChart3 className="w-8 h-8" />,
-      title: "Business Analytics",
-      description: "Deep insights into revenue trends and operational efficiency metrics",
-      metric: "40% Revenue Boost",
-      color: "purple"
+      key: "requests",
+      title: "The easiest way to manage your PG & Hostel",
+      desc: "From maintenance to mess menu, keep tenants informed. Track SLAs, assign staff, and close loops with ratings.",
+      bullets: [
+        "Ticketing with photos & chat",
+        "Mess menu & announcements",
+        "SLA dashboard & staff assignment",
+      ],
+      badge: "Requests",
+      img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=70",
     },
-    {
-      icon: <MessageCircle className="w-8 h-8" />,
-      title: "Instant Communication",
-      description: "Real-time chat, notifications, and complaint management system",
-      metric: "24/7 Support",
-      color: "orange"
-    }
   ];
 
-  // Testimonials data
-  const testimonials = [
-    {
-      initials: "RK",
-      name: "Rajesh Kumar",
-      role: "PG Owner, Bangalore",
-      rating: 5,
-      content: "DCM has revolutionized how I manage my 3 PG properties. Revenue increased by 40% in just 6 months!",
-      revenue: "₹2.4L",
-      metric: "Additional monthly revenue"
-    },
-    {
-      initials: "PS",
-      name: "Priya Sharma",
-      role: "Hostel Administrator, Delhi",
-      rating: 5,
-      content: "The automated payment system and tenant communication features have saved us countless hours every month.",
-      revenue: "40%",
-      metric: "Faster rent collection"
-    },
-    {
-      initials: "AG",
-      name: "Amit Gupta",
-      role: "Student, Mumbai",
-      rating: 5,
-      content: "As a tenant, I love how easy it is to pay rent, submit complaints, and communicate with management.",
-      revenue: "300%",
-      metric: "Business growth in 1 year"
-    }
+  const [active, setActive] = useState(0);
+  const [prev, setPrev] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [paused, setPaused] = useState(false);
+
+  // Benefits slideshow state
+  const [benefitsActive, setBenefitsActive] = useState(0);
+  const [benefitsDirection, setBenefitsDirection] = useState(1);
+  const [benefitsPaused, setBenefitsPaused] = useState(false);
+
+  const goTo = (idx) => {
+    setPrev(active);
+    const n = pgSlides.length;
+    const dir =
+      (idx === (active + 1) % n) || (active === n - 1 && idx === 0) ? 1 :
+      (idx === (active + n - 1) % n) || (active === 0 && idx === n - 1) ? -1 :
+      idx > active ? 1 : -1;
+    setDirection(dir);
+    setActive(idx);
+  };
+
+  const next = () => goTo((active + 1) % pgSlides.length);
+  const prevSlide = () => goTo((active + pgSlides.length - 1) % pgSlides.length);
+
+  // HERO auto-slide
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(next, 2500);
+    return () => clearInterval(id);
+  }, [paused, active]);
+
+  // Show announcement modal after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAnnouncement(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  /* ========================
+      STATIC DATA
+  ========================= */
+  const reviews = [
+    { name: "Sai Kumar Reddy", role: "Student", review: "This app simplified my hostel stay. Easy bookings and instant payment receipts save a lot of time.", rating: 5, date: "2025-01-12", avatar: "https://i.pravatar.cc/100?img=11" },
+    { name: "Lakshmi Prasanna", role: "Warden", review: "Tenant management is much easier now. I can allot rooms and track occupancy in just a few clicks.", rating: 4, date: "2025-02-03", avatar: "https://i.pravatar.cc/100?img=32" },
+    { name: "Raghavendra Babu", role: "Admin", review: "The dashboards are very detailed. Reports and reconciliation are accurate and help in audits.", rating: 5, date: "2025-03-22", avatar: "https://i.pravatar.cc/100?img=45" },
+    { name: "Keerthana Devi", role: "Student", review: "I love the real-time mess menu updates and reminders. Hostel life is more organized now.", rating: 4, date: "2025-04-08", avatar: "https://i.pravatar.cc/100?img=56" },
+    { name: "Venkatesh Reddy", role: "Warden", review: "Complaint tracking is transparent, and I can resolve issues quickly. Tenants are happier.", rating: 5, date: "2025-04-27", avatar: "https://i.pravatar.cc/100?img=65" },
+    { name: "Anusha Konidela", role: "Admin", review: "With digital KYC and police verification built-in, the compliance process is smoother.", rating: 4, date: "2025-05-14", avatar: "https://i.pravatar.cc/100?img=70" },
   ];
 
-  // Marketplace properties
-  const properties = [
+  const whyChoose = [
     {
-      id: 1,
-      name: "Premium PG Koramangala",
-      location: "Koramangala, Bangalore",
-      rating: 4.8,
-      reviews: 124,
-      price: 1200,
-      originalPrice: 1500,
-      available: 3,
-      amenities: ["Meals", "WiFi", "Laundry"],
-      badge: "INSTANT BOOKING",
-      badgeColor: "green",
-      gradient: "from-blue-400 to-blue-600"
+      title: "Enterprise Grade Security",
+      desc: "We're committed to keeping your customers' data secure with strict standards. End-to-end encryption for all sensitive information.",
+      icon: "🛡️",
     },
     {
-      id: 2,
-      name: "Student Haven HSR",
-      location: "HSR Layout, Bangalore",
-      rating: 4.6,
-      reviews: 89,
-      price: 900,
-      originalPrice: null,
-      available: 5,
-      amenities: ["Meals", "Gym", "Gaming"],
-      badge: "TRENDING",
-      badgeColor: "orange",
-      gradient: "from-green-400 to-green-600"
+      title: "24/7 Support",
+      desc: "Help for bookings, payments, and emergencies. Quick FAQs for common issues. Priority escalation for safety matters. Friendly human support when you need it.",
+      icon: "📞",
     },
     {
-      id: 3,
-      name: "Luxury Stays Whitefield",
-      location: "Whitefield, Bangalore",
-      rating: 4.9,
-      reviews: 156,
-      price: 1800,
-      originalPrice: null,
-      available: 2,
-      amenities: ["Pool", "AC", "Parking"],
-      badge: "FILLING FAST",
-      badgeColor: "red",
-      gradient: "from-purple-400 to-purple-600"
-    }
+      title: "Quick Onboarding",
+      desc: "Seamlessly onboard your team with minimal disruption. Effortless transition with personalized assistance. Get started quickly without any delays.",
+      icon: "👥",
+    },
+  ];
+
+  const productBlocks = [
+    {
+      title: "Tenant Application",
+      desc: "Empower residents with complete self-service: book rooms, pay online, raise complaints, and track services — all from their phone. Less dependency on wardens, more transparency and speed.",
+      bullets: [
+        "Easy booking & room allocation",
+        "Pay rent online (UPI / NetBanking)",
+        "Instant PDF receipts",
+        "Raise complaints & track status",
+      ],
+      img: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=70",
+      cta: { label: "Try Tenant App", to: "/contact" },
+    },
+    {
+      title: "Admin Application",
+      desc: "Get end-to-end visibility into hostel operations from one dashboard. Configure settings, monitor activities, manage staff and communicate with stakeholders in real-time.",
+      bullets: [
+        "Support for Deans, Directors, Wardens & Caretakers",
+        "Real-time operational monitoring",
+        "Approvals, alerts & notifications",
+      ],
+      img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=70",
+      cta: { label: "Get a Live Demo", to: "/contact" },
+    },
+    {
+      title: "Reports in Admin",
+      desc: "Bring clarity with built-in reports. Track occupancy, payments, complaints and more with visual dashboards and exportable summaries.",
+      bullets: [
+        "Occupancy & movement insights",
+        "Approve workflow requests",
+        "Broadcast announcements",
+        "Security & audit logs",
+      ],
+      img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=70",
+      cta: { label: "See How It Works", to: "/contact" },
+    },
+  ];
+
+  /* ========================
+      EFFECTS
+  ========================= */
+  useEffect(() => {
+    const items = Array.from(document.querySelectorAll(".aos"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+    items.forEach((el, i) => {
+      el.style.transitionDelay = el.dataset.stagger || `${Math.min(i * 60, 400)}ms`;
+      io.observe(el);
+    });
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const node = phoneSectionRef.current;
+    if (!node) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealBubbles(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.45 }
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = footerSentinelRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => setHideCta(e.isIntersecting),
+      { threshold: 0.01 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  /* ========================
+      HELPERS
+  ========================= */
+  const ReviewStars = ({ rating }) => {
+    const full = Math.max(0, Math.min(5, Math.round(rating)));
+    return (
+      <span className="flex gap-1" aria-label={`Rated ${full} out of 5`}>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <span key={i} className="text-yellow-400" aria-hidden>
+            {i < full ? "★" : "☆"}
+          </span>
+        ))}
+      </span>
+    );
+  };
+
+  /* ========================
+      RENDER
+  ========================= */
+  return (
+    <>
+      <Navbar />
+
+      {/* Announcement Modal */}
+      <AnnouncementModal 
+        isOpen={showAnnouncement} 
+        onClose={() => setShowAnnouncement(false)} 
+      />
+
+      {/* HERO */}
+      <section className="min-h-[84vh] relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-50 bg-[radial-gradient(#2563eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black,transparent)] pointer-events-none"></div>
+        
+        <div className="max-w-6xl w-[92vw] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-12 items-center relative z-10">
+          {/* Text Content */}
+          <div className="aos text-center lg:text-left">
+            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-black text-slate-900 leading-tight mb-4">
+              {pgSlides[active].title}
+            </h1>
+            <p className="text-lg lg:text-xl text-slate-600 mb-6 leading-relaxed">
+              {pgSlides[active].desc}
+            </p>
+
+            <ul className="space-y-3 mb-8">
+              {pgSlides[active].bullets.map((b, i) => (
+                <li key={i} className="flex items-start gap-3 text-slate-600">
+                  <span className="w-5 h-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold mt-0.5 flex-shrink-0">
+                    ✓
+                  </span>
+                  {b}
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <button 
+                onClick={() => navigate("/signup")}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-1"
+              >
+                Get Started Free
+              </button>
+              <button 
+                onClick={() => navigate("/demo")}
+                className="border-2 border-slate-300 text-slate-700 px-8 py-4 rounded-xl font-bold text-lg hover:border-blue-500 hover:text-blue-600 transition-all duration-300"
+              >
+                Live Demo
+              </button>
+            </div>
+          </div>
+
+          {/* Slider */}
+          <div
+            className="aos relative w-full max-w-2xl mx-auto h-80 lg:h-96 rounded-2xl overflow-hidden border border-slate-200/80 bg-white shadow-2xl shadow-slate-900/10"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onTouchStart={() => setPaused(true)}
+            onTouchEnd={() => setPaused(false)}
+          >
+            {pgSlides.map((s, idx) => {
+              const isActive = idx === active;
+              const wasActive = idx === prev;
+              const enteringFrom = direction === 1 ? "animate-slide-in-right" : "animate-slide-in-left";
+              const exitingTo = direction === 1 ? "animate-slide-out-left" : "animate-slide-out-right";
+
+              return (
+                <div
+                  key={s.key}
+                  className={`absolute inset-0 transition-all duration-700 ${
+                    isActive 
+                      ? `opacity-100 ${enteringFrom}`
+                      : wasActive 
+                        ? `opacity-0 ${exitingTo}`
+                        : 'opacity-0'
+                  }`}
+                  aria-hidden={!isActive}
+                >
+                  <div className="relative w-full h-full">
+                    <img
+                      src={s.img}
+                      alt={s.title}
+                      className="w-full h-full object-cover scale-105 transition-transform duration-700"
+                      loading={idx === 0 ? "eager" : "lazy"}
+                    />
+                    <span className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-2 rounded-full text-xs font-bold shadow-lg shadow-blue-500/30">
+                      {s.badge}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Navigation Arrows */}
+            <div className="absolute inset-0 flex justify-between items-center px-2 pointer-events-none">
+              <button 
+                className="pointer-events-auto bg-white/90 backdrop-blur-sm w-10 h-10 rounded-full flex items-center justify-center text-slate-700 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                onClick={prevSlide}
+                aria-label="Previous slide"
+              >
+                ←
+              </button>
+              <button 
+                className="pointer-events-auto bg-white/90 backdrop-blur-sm w-10 h-10 rounded-full flex items-center justify-center text-slate-700 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                onClick={next}
+                aria-label="Next slide"
+              >
+                →
+              </button>
+            </div>
+
+            {/* Dots Indicator */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+              {pgSlides.map((_, i) => (
+                <button
+                  key={i}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    i === active ? 'w-6 bg-blue-600' : 'bg-blue-200'
+                  }`}
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT SECTION */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto w-[92vw] grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="aos">
+            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black text-slate-900 mb-6">
+              Comprehensive Hostel Management Solution
+            </h2>
+            <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+              Our platform transforms how hostels operate by digitizing every aspect of management. 
+              From room allocation to payment processing and maintenance tracking, we provide a seamless experience for both administrators and residents.
+            </p>
+            <ul className="space-y-3 text-slate-600">
+              <li className="flex items-center gap-3"><span className="w-2 h-2 bg-blue-600 rounded-full"></span>Smart dashboard with real-time analytics</li>
+              <li className="flex items-center gap-3"><span className="w-2 h-2 bg-blue-600 rounded-full"></span>Automated room allotment and tenant onboarding</li>
+              <li className="flex items-center gap-3"><span className="w-2 h-2 bg-blue-600 rounded-full"></span>Secure online payments with instant receipts</li>
+              <li className="flex items-center gap-3"><span className="w-2 h-2 bg-blue-600 rounded-full"></span>Maintenance and complaint tracking system</li>
+              <li className="flex items-center gap-3"><span className="w-2 h-2 bg-blue-600 rounded-full"></span>Broadcast announcements and notices</li>
+              <li className="flex items-center gap-3"><span className="w-2 h-2 bg-blue-600 rounded-full"></span>Digital KYC and document management</li>
+            </ul>
+          </div>
+          <div className="aos">
+            <img
+              src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1000&q=70"
+              alt="Modern Hostel Interior"
+              className="w-full rounded-2xl shadow-2xl shadow-slate-900/10 border border-slate-200"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* WHY CHOOSE US */}
+      <section className="py-20 bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="max-w-6xl mx-auto w-[92vw] text-center">
+          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black text-slate-900 mb-4">Why choose us?</h2>
+          <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto">We built it for reliability, speed, and ease—right out of the box.</p>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {whyChoose.map((item, index) => (
+              <div key={index} className="aos bg-white rounded-2xl p-8 border border-slate-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg shadow-blue-500/25 mx-auto mb-6">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-black text-slate-900 mb-4">{item.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FLEXIBLE STAY OPTIONS */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto w-[92vw] grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="aos order-2 lg:order-1">
+            <img 
+              src="https://5.imimg.com/data5/SELLER/Default/2023/3/293250320/MO/IK/UG/9676319/hostel-managemen-info-500x500.jpg" 
+              alt="Flexible Stay Options" 
+              className="w-full rounded-2xl shadow-2xl shadow-slate-900/10 border border-slate-200"
+              loading="lazy" 
+            />
+          </div>
+          <div className="aos order-1 lg:order-2">
+            <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-6">Flexible Stay Options</h2>
+            <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+              Our day-wise booking system allows students to pay only for the days they actually stay. 
+              Perfect for exam periods, interviews, or short-term accommodations.
+            </p>
+            
+            <div className="flex flex-wrap gap-3 mb-6">
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg shadow-blue-500/25">
+                Pay per day stayed
+              </span>
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg shadow-blue-500/25">
+                1-30 day flexibility
+              </span>
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg shadow-blue-500/25">
+                Instant confirmation
+              </span>
+            </div>
+
+            <ul className="space-y-3 text-slate-600 mb-8">
+              <li className="flex items-center gap-3"><span className="w-2 h-2 bg-blue-600 rounded-full"></span>Real-time availability and instant booking confirmation</li>
+              <li className="flex items-center gap-3"><span className="w-2 h-2 bg-blue-600 rounded-full"></span>No monthly lock-in — extend or shorten stay anytime</li>
+              <li className="flex items-center gap-3"><span className="w-2 h-2 bg-blue-600 rounded-full"></span>Digital receipts and 24/7 customer support</li>
+            </ul>
+
+            <Link 
+              to="/rooms" 
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-1"
+            >
+              📅 Explore Flexible Stays
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <HowItWorks />
+
+      {/* PRODUCT SECTIONS */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto w-[92vw] text-center">
+          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black text-slate-900 mb-4">Complete Management Ecosystem</h2>
+          <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto">Three powerful applications working seamlessly together</p>
+
+          {productBlocks.map((block, index) => (
+            <div key={index} className={`grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20 ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+              <div className={`aos ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
+                <img src={block.img} alt={block.title} className="w-full max-w-md mx-auto rounded-2xl shadow-2xl shadow-slate-900/10" loading="lazy"/>
+              </div>
+              <div className={`aos ${index % 2 === 1 ? 'lg:order-1 lg:text-right' : ''}`}>
+                <h3 className="text-2xl lg:text-3xl font-black text-slate-900 mb-4">{block.title}</h3>
+                <p className="text-lg text-slate-600 mb-6 leading-relaxed">{block.desc}</p>
+                <ul className="space-y-3 mb-8">
+                  {block.bullets.map((bullet, i) => (
+                    <li key={i} className="flex items-start gap-3 text-slate-700">
+                      <span className="w-6 h-6 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5 flex-shrink-0">✓</span>
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+                <Link to={block.cta.to} className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-1">
+                  {block.cta.label} ↓
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* PRICING */}
+      <SubscriptionQueue />
+
+      {/* REVIEWS */}
+      <section className="py-20 bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="max-w-6xl mx-auto w-[92vw]">
+          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black text-slate-900 text-center mb-12">Trusted by Hostels Nationwide</h2>
+
+          <div className="relative overflow-hidden">
+            <div className="flex animate-marquee gap-6">
+              {[...reviews, ...reviews].map((review, index) => (
+                <div key={index} className="flex-shrink-0 w-80 bg-white rounded-2xl p-6 border border-slate-200 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="flex items-center gap-4 mb-4">
+                    <img src={review.avatar} alt={review.name} className="w-12 h-12 rounded-full border-2 border-white shadow-lg"/>
+                    <div>
+                      <h4 className="font-bold text-slate-900">{review.name}</h4>
+                      <p className="text-slate-600 text-sm">{review.role}</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-600 italic mb-4 leading-relaxed">"{review.review}"</p>
+                  <div className="flex items-center gap-3">
+                    <ReviewStars rating={review.rating} />
+                    <span className="text-slate-600 font-semibold text-sm">{review.rating.toFixed(1)}/5</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <button onClick={() => navigate("/testimonials")} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-1">
+              Read All Testimonials
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <HostelFAQ />
+
+      <div ref={footerSentinelRef} />
+      <Footer />
+    </>
+  );
+}
+
+// Sub-components
+function HowItWorks() {
+  const steps = [
+    { num: 1, title: "Complete Registration", desc: "Create your account and set up your hostel profile in minutes" },
+    { num: 2, title: "Manage Bookings", desc: "Accept bookings, manage check-ins, and track occupancy in real-time" },
+    { num: 3, title: "Grow Your Business", desc: "Use analytics to optimize operations and enhance resident experience" },
   ];
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-          <div className="text-center">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
-              <Sparkles className="w-4 h-4 mr-2" />
-              <span className="text-sm font-medium">Trusted by 500+ PG Owners</span>
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              Transform Your
-              <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                PG Business
-              </span>
-            </h1>
-            
-            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Complete SaaS solution for PG owners with automated operations, real-time analytics, and seamless booking experience
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <button 
-                onClick={handleShowDemo}
-                className="group px-8 py-4 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-2xl flex items-center"
-              >
-                Start Free Trial
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button 
-                onClick={handleExploreFeatures}
-                className="group px-8 py-4 bg-transparent border-2 border-white text-white rounded-2xl font-bold text-lg hover:bg-white/10 transition-all duration-300 transform hover:scale-105 flex items-center"
-              >
-                Explore Features
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
+    <section className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 text-white relative overflow-hidden">
+      <div className="absolute w-72 h-72 bg-blue-500/20 rounded-full blur-3xl top-10 left-5 animate-pulse"></div>
+      <div className="absolute w-80 h-80 bg-amber-500/20 rounded-full blur-3xl top-15 right-8 animate-pulse delay-1000"></div>
+      <div className="absolute w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl bottom-10 left-40 animate-pulse delay-2000"></div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto">
-              {[
-                { number: "500+", label: "PG Properties" },
-                { number: "10K+", label: "Happy Tenants" },
-                { number: "₹50Cr+", label: "Revenue Managed" },
-                { number: "99.9%", label: "Uptime" }
-              ].map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold mb-2">{stat.number}</div>
-                  <div className="text-blue-200 text-sm">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        
-        {/* Wave Divider */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-12">
-            <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" className="fill-white"></path>
-          </svg>
-        </div>
-      </section>
+      <div className="max-w-6xl mx-auto w-[92vw] text-center relative z-10">
+        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black mb-4">How It Works</h2>
+        <p className="text-xl text-slate-300 mb-12 max-w-2xl mx-auto">Get your hostel management system up and running in three simple steps</p>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Everything You Need to Manage Your PG Business
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From tenant management to revenue analytics, our platform handles every aspect of your PG operations
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div 
-                key={index}
-                className="group p-8 bg-white rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-2xl hover:scale-105 cursor-pointer"
-                onMouseEnter={() => setActiveFeature(index)}
-              >
-                <div className={`w-16 h-16 bg-${feature.color}-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <div className={`text-${feature.color}-600`}>
-                    {feature.icon}
-                  </div>
+        <div className="relative">
+          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-slate-700/50 transform -translate-y-1/2 z-0"></div>
+          
+          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 relative z-10">
+            {steps.map((step) => (
+              <div key={step.num} className="text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-blue-500/25 mx-auto mb-6 border-4 border-slate-800">
+                  {step.num}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 mb-4 leading-relaxed">
-                  {feature.description}
-                </p>
-                <div className={`text-${feature.color}-600 font-bold text-lg`}>
-                  {feature.metric}
-                </div>
+                <h3 className="text-xl font-black mb-3">{step.title}</h3>
+                <p className="text-slate-300 leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
-
-      {/* Problem & Solution Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Problems */}
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-red-400">
-                Are You Still Managing Your PG Business Manually? 📝
-              </h2>
-              <div className="space-y-6">
-                {[
-                  {
-                    title: "Lost Revenue Due to Manual Errors",
-                    description: "Missing rent payments, incorrect calculations, and poor record keeping cost you thousands every month"
-                  },
-                  {
-                    title: "Frustrated Tenants Leave Faster",
-                    description: "Poor communication, delayed complaint resolution, and payment hassles drive away good tenants"
-                  },
-                  {
-                    title: "No Business Insights",
-                    description: "Without proper data, you can't optimize pricing, reduce costs, or plan expansion effectively"
-                  }
-                ].map((problem, index) => (
-                  <div key={index} className="flex items-start">
-                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                      <XCircle className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-2">{problem.title}</h3>
-                      <p className="text-gray-300">{problem.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Solutions */}
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-green-400">
-                DCM Solves All These Problems! ✅
-              </h2>
-              <div className="space-y-6">
-                {[
-                  {
-                    title: "Increase Revenue by 40%",
-                    description: "Automated rent collection, dynamic pricing, and zero payment delays boost your income"
-                  },
-                  {
-                    title: "Happy Tenants Stay Longer",
-                    description: "Instant communication, quick complaint resolution, and seamless payments create satisfaction"
-                  },
-                  {
-                    title: "Data-Driven Growth",
-                    description: "Real-time analytics help you make smart decisions and scale your business faster"
-                  }
-                ].map((solution, index) => (
-                  <div key={index} className="flex items-start">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                      <CheckCircle className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-2">{solution.title}</h3>
-                      <p className="text-gray-300">{solution.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Success Stories */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Trusted by PG Owners Across India
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See what our customers say about transforming their business
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="flex items-center mb-6">
-                  <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                    {testimonial.initials}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.role}</p>
-                  </div>
-                </div>
-                
-                <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
-                  <div className="text-2xl font-bold text-gray-900 mb-1">{testimonial.revenue}</div>
-                  <p className="text-sm text-gray-600">{testimonial.metric}</p>
-                </div>
-                
-                <p className="text-gray-700 mb-4 leading-relaxed">"{testimonial.content}"</p>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex text-yellow-400">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-current" />
-                    ))}
-                  </div>
-                  <TrendingUp className="w-6 h-6 text-green-500" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Marketplace Section */}
-      <section className="py-20 bg-gradient-to-br from-purple-600 to-blue-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
-              <Zap className="w-4 h-4 mr-2" />
-              <span className="text-sm font-medium">New Feature</span>
-            </div>
-            
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              🏨 DCM Marketplace - Book PG Rooms Like OYO!
-            </h2>
-            <p className="text-xl text-purple-100 max-w-4xl mx-auto mb-8">
-              All DCM subscribers automatically get their properties listed on our marketplace. 
-              Tenants can book rooms instantly with zero commission!
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {[
-                { number: "50K+", label: "Monthly Searches" },
-                { number: "85%", label: "Booking Success Rate" },
-                { number: "0%", label: "Commission (Unlike OYO)" }
-              ].map((stat, index) => (
-                <div key={index} className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
-                  <div className="text-2xl font-bold text-yellow-300 mb-2">{stat.number}</div>
-                  <div className="text-purple-100 text-sm">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Live Booking Demo */}
-          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-6xl mx-auto">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
-              <div className="flex items-center justify-center">
-                <div className="w-3 h-3 bg-red-500 rounded-full mr-2 animate-pulse"></div>
-                <h3 className="text-2xl font-bold text-white">LIVE: Book Your Room Now!</h3>
-              </div>
-              <p className="text-center text-blue-100 mt-2">
-                Real properties from DCM subscribers available for booking
-              </p>
-            </div>
-
-            {/* Search Bar */}
-            <div className="p-6 bg-gray-50 border-b">
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-1">
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      type="text" 
-                      placeholder="Search by city, area, or PG name..." 
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <select className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white">
-                    <option>📅 Duration</option>
-                    <option>Daily (₹800-1500)</option>
-                    <option>Weekly (15% off)</option>
-                    <option>Monthly (25% off)</option>
-                  </select>
-                  <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors flex items-center">
-                    Search Rooms
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Available Properties */}
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {properties.map((property) => (
-                  <div key={property.id} className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
-                    <div className={`h-48 bg-gradient-to-br ${property.gradient} flex items-center justify-center relative`}>
-                      <div className="text-center text-white">
-                        <Building className="w-12 h-12 mx-auto mb-2" />
-                        <div className="font-bold text-lg">{property.name}</div>
-                      </div>
-                      
-                      {/* Badges */}
-                      <div className={`absolute top-3 right-3 bg-${property.badgeColor}-500 text-white px-3 py-1 rounded-full text-xs font-bold`}>
-                        {property.badge}
-                      </div>
-                      <div className="absolute top-3 left-3 bg-yellow-500 text-black px-2 py-1 rounded-full text-xs font-bold flex items-center">
-                        <Star className="w-3 h-3 fill-current mr-1" />
-                        {property.rating} ({property.reviews})
-                      </div>
-                    </div>
-                    
-                    <div className="p-4">
-                      <h3 className="font-bold text-gray-900 mb-2">{property.name}</h3>
-                      <p className="text-sm text-gray-600 mb-3 flex items-center">
-                        <MapPin className="w-4 h-4 mr-1" />
-                        {property.location}
-                      </p>
-                      
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="text-sm">
-                          <span className={`font-bold ${property.available <= 2 ? 'text-orange-600' : 'text-green-600'}`}>
-                            {property.available <= 2 ? '⚠️ Only' : '✅'} {property.available} rooms available
-                          </span>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-lg font-bold text-gray-900">₹{property.price}/day</div>
-                          {property.originalPrice && (
-                            <div className="text-xs text-gray-500 line-through">₹{property.originalPrice}</div>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-1 mb-4">
-                        {property.amenities.map((amenity, index) => (
-                          <span key={index} className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-                            {amenity}
-                          </span>
-                        ))}
-                      </div>
-                      
-                      <button 
-                        onClick={() => handleBookRoom(property.id)}
-                        className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-medium transition-colors flex items-center justify-center"
-                      >
-                        <Calendar className="w-4 h-4 mr-2" />
-                        Book Now - Pay ₹{property.price * 0.3} Advance
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* View More Button */}
-              <div className="text-center mt-8">
-                <button 
-                  onClick={handleViewAllProperties}
-                  className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 flex items-center mx-auto"
-                >
-                  <Building className="w-5 h-5 mr-2" />
-                  View All 500+ Properties Across India
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to 10X Your PG Business? 🚀
-          </h2>
-          <p className="text-xl mb-8 text-blue-100">
-            Join 500+ successful PG owners who transformed their business with DCM
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <button 
-              onClick={handleShowDemo}
-              className="group px-8 py-4 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-2xl flex items-center justify-center"
-            >
-              <Zap className="w-5 h-5 mr-2" />
-              Start Free 30-Day Trial
-            </button>
-            <button 
-              onClick={handleViewPricing}
-              className="group px-8 py-4 bg-transparent border-2 border-white text-white rounded-2xl font-bold text-lg hover:bg-white/10 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
-            >
-              <CreditCard className="w-5 h-5 mr-2" />
-              View Pricing Plans
-            </button>
-          </div>
-          
-          <div className="flex flex-wrap justify-center gap-6 text-blue-100 text-sm">
-            <div className="flex items-center">
-              <Shield className="w-4 h-4 mr-2" />
-              No Setup Fee
-            </div>
-            <div className="flex items-center">
-              <Clock className="w-4 h-4 mr-2" />
-              Cancel Anytime
-            </div>
-            <div className="flex items-center">
-              <Users className="w-4 h-4 mr-2" />
-              24/7 Support
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
-};
+}
 
-export default HomePage;
+function SubscriptionQueue() {
+  const navigate = useNavigate();
+  const [head, setHead] = useState(1);
+  const [billing, setBilling] = useState("monthly");
+
+  const plans = useMemo(() => [
+    { id: 1, name: "Starter Plan", monthly: 999, yearly: 999 * 12 * 0.8, features: ["Up to 50 Beds", "Basic Features", "Mobile App Access", "Email Support", "Standard Reports"], cta: "Buy Now" },
+    { id: 2, name: "Professional Plan", monthly: 2499, yearly: 2499 * 12 * 0.8, features: ["Up to 200 Beds", "All Basic Features", "Advanced Analytics", "Priority Support", "Custom Branding", "Multiple Locations"], popular: true, cta: "Buy Now" },
+    { id: 3, name: "Enterprise Plan", monthly: "Custom", yearly: "Custom", features: ["Unlimited Beds", "All Features Included", "Dedicated Account Manager", "Custom Integrations", "White-label Options", "API Access"], cta: "Contact Sales" },
+  ], []);
+
+  return (
+    <section className="py-20 bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl mx-4 lg:mx-auto max-w-7xl">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black text-slate-900 mb-4">Simple Pricing</h2>
+        <p className="text-xl text-slate-600 max-w-2xl mx-auto">Choose a plan that fits your hostel today—you can upgrade anytime.</p>
+
+        <div className="inline-flex bg-white border-2 border-slate-300 rounded-full p-1 mt-6 shadow-lg">
+          <button className={`px-6 py-3 rounded-full font-bold transition-all duration-300 ${billing === "monthly" ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg' : 'text-slate-700'}`} onClick={() => setBilling("monthly")}>
+            Monthly
+          </button>
+          <button className={`px-6 py-3 rounded-full font-bold transition-all duration-300 ${billing === "yearly" ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg' : 'text-slate-700'}`} onClick={() => setBilling("yearly")}>
+            Yearly (Save 20%)
+          </button>
+        </div>
+      </div>
+
+      <div className="relative h-[34rem] max-w-6xl mx-auto">
+        {plans.map((plan, index) => {
+          const offset = (index - head + plans.length) % plans.length;
+          const isActive = offset === 0;
+          const isRight = offset === 1;
+          const isLeft = offset === 2;
+
+          const transform = isActive ? "translateX(-50%) scale(105%)" : isRight ? "translateX(calc(-50% + 280px)) scale(95%)" : "translateX(calc(-50% - 280px)) scale(95%)";
+          const opacity = isActive ? 1 : 0.7;
+          const zIndex = isActive ? 30 : isRight ? 20 : 10;
+
+          const price = typeof plan.monthly === "string" ? plan.monthly : billing === "monthly" ? `₹${plan.monthly.toLocaleString()}/mo` : `₹${Math.round(plan.yearly).toLocaleString()}/yr`;
+
+          return (
+            <div key={plan.id} className={`absolute top-0 left-1/2 w-80 bg-white rounded-3xl border-2 transition-all duration-500 cursor-pointer ${isActive ? 'border-blue-500 shadow-2xl' : 'border-slate-200 shadow-lg'}`} style={{ transform, opacity, zIndex }} onClick={() => setHead(index)}>
+              {plan.popular && (
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                  Most Popular
+                </div>
+              )}
+              
+              <div className="p-8">
+                <h3 className="text-2xl font-black text-slate-900 text-center mb-2">{plan.name}</h3>
+                {plan.popular && <p className="text-slate-600 text-center text-sm mb-4">Best for growing hostels</p>}
+                <div className="text-4xl font-black text-blue-600 text-center mb-6">{price}</div>
+
+                <ul className="space-y-3 mb-8">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-3 text-slate-700">
+                      <span className="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">✓</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                {plan.cta === "Contact Sales" ? (
+                  <Link to="/contact" className="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    Contact Sales
+                  </Link>
+                ) : (
+                  <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1" onClick={(e) => { e.stopPropagation(); navigate("/checkout", { state: { plan: plan.name, billing } }); }}>
+                    Buy Now
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function HostelFAQ() {
+  const [openId, setOpenId] = useState(null);
+
+  const faqs = useMemo(() => [
+    { id: "dashboard-overview", q: "What can I see on the Admin Dashboard?", a: "Key metrics at a glance: total tenants, available rooms, pending/paid amounts, today's check-ins/outs, recent complaints, notification status, and quick actions (add staff, post notices)." },
+    { id: "payments-total-due", q: "How do I see how much a tenant has paid in total and pending?", a: "Open Tenant → Payments → Ledger. It shows billed, paid, discounts, refunds, and the live due amount. You can filter by month or full academic year." },
+    { id: "notifications-send", q: "How do I send notices to tenants?", a: "Go to Notifications → Compose. Select recipients (all tenants, block/room, or specific users), write the message, attach an optional image, and send. It appears in the app and via push if enabled." },
+    { id: "complaints-view", q: "Where do I see complaints raised by tenants?", a: "Open Complaints → All. Filter by status (Open, In-Progress, Resolved), category (Plumbing, Power, Cleanliness, etc.), and assign to staff with due dates." },
+    { id: "tenant-app-capabilities", q: "What can tenants do in the mobile app?", a: "Payments, dues & receipts, food menu, notices, complaints with photos, documents download, and basic profile updates." },
+    { id: "general-data-backup", q: "Is data backed up and secure?", a: "Yes. Data is encrypted in transit and backed up daily. Use Settings → Export if you want your own CSV/PDF backups." },
+  ], []);
+
+  return (
+    <section className="py-20 bg-slate-50 rounded-3xl mx-4 lg:mx-auto max-w-6xl">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black text-slate-900 mb-4">Frequently Asked Questions</h2>
+        <p className="text-xl text-slate-600">Quick answers to common questions about hostel management</p>
+      </div>
+
+      <div className="max-w-3xl mx-auto space-y-4">
+        {faqs.map((faq) => (
+          <div key={faq.id} className="bg-white rounded-2xl border border-slate-200 shadow-lg hover:shadow-xl transition-all duration-300">
+            <button className="w-full text-left p-6 flex justify-between items-center gap-4" onClick={() => setOpenId(openId === faq.id ? null : faq.id)}>
+              <span className="font-bold text-slate-900 text-lg">{faq.q}</span>
+              <span className={`text-blue-600 transition-transform duration-300 ${openId === faq.id ? 'rotate-180' : ''}`}>▾</span>
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 ${openId === faq.id ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <div className="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-100">{faq.a}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default Homepage;
