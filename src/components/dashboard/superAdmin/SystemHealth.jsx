@@ -81,7 +81,7 @@ const SystemHealth = () => {
   }
 
   return (
-    <div className="p-4 lg:p-8">
+    <div className="">
       {/* Header */}
       <div className="mb-6 lg:mb-8">
         <h2 className="text-2xl lg:text-3xl font-bold text-blue-800">System Health & Monitoring</h2>

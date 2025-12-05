@@ -93,7 +93,7 @@ const Subscriptions = () => {
   }
 
   return (
-    <div className="p-4 lg:p-8">
+    <div className="">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-6 gap-4">
         <div>

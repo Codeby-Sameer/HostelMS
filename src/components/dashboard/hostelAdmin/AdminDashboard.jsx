@@ -33,7 +33,7 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="dashboard-view p-8">
+    <div className="">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-blue-900">Multi-Hostel Dashboard</h2>
         <button 

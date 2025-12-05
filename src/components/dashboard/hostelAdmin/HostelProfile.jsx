@@ -147,12 +147,13 @@
 
 
 // src/components/dashboard/views/ProfileView.jsx
-import React from 'react';
+
 
 const ProfileView = ({ selectedHostel }) => {
+
   if (!selectedHostel) {
     return (
-      <div className="view-content p-4 md:p-6 lg:p-8">
+      <div className="">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl md:text-3xl font-bold text-blue-900">Hostel Profile Management</h2>
         </div>
@@ -171,22 +172,22 @@ const ProfileView = ({ selectedHostel }) => {
           <button 
             onClick={() => console.log('Toggle visibility')}
             className={`px-4 py-2 md:px-6 md:py-3 text-white rounded-lg font-medium hover:opacity-90 transition text-sm md:text-base ${
-              selectedHostel.visibility === 'Public' 
+              selectedHostel?.visibility === 'Public' 
                 ? 'bg-red-600 hover:bg-red-700' 
                 : 'bg-green-600 hover:bg-green-700'
             }`}
           >
-            {selectedHostel.visibility === 'Public' ? '🔒 Make Private' : '🌐 Make Public'}
+            {selectedHostel?.visibility === 'Public' ? '🔒 Make Private' : '🌐 Make Public'}
           </button>
           <button 
             onClick={() => console.log('Toggle featured')}
             className={`px-4 py-2 md:px-6 md:py-3 text-white rounded-lg font-medium hover:opacity-90 transition text-sm md:text-base ${
-              selectedHostel.featured 
+              selectedHostel?.featured 
                 ? 'bg-gray-600 hover:bg-gray-700' 
                 : 'bg-purple-600 hover:bg-purple-700'
             }`}
           >
-            {selectedHostel.featured ? '⭐ Remove Feature' : '⭐ Feature Listing'}
+            {selectedHostel?.featured ? '⭐ Remove Feature' : '⭐ Feature Listing'}
           </button>
         </div>
       </div>
@@ -199,7 +200,7 @@ const ProfileView = ({ selectedHostel }) => {
               <label className="block text-sm font-medium text-gray-700 mb-2">Hostel Name</label>
               <input 
                 type="text" 
-                defaultValue={selectedHostel.hostelName}
+                defaultValue={selectedHostel?.hostelName}
                 className="w-full px-3 py-2 md:px-4 md:py-2 border border-gray-300 rounded-lg text-sm md:text-base"
               />
             </div>

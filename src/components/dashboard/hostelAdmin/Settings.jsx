@@ -3,7 +3,7 @@ import React from 'react';
 
 const SettingsView = () => {
   return (
-    <div className="view-content p-4 md:p-6 lg:p-8">
+    <div className="">
       <h2 className="text-2xl md:text-3xl font-bold mb-6 text-blue-900">Settings & Preferences</h2>
       <div className="space-y-4 md:space-y-6">
         <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
