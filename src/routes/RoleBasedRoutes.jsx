@@ -1,24 +1,22 @@
-// src/components/RoleBasedRoute.jsx
-import React from 'react';
+// components/RoleBasedRoute.jsx
 import { Navigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
-const RoleBasedRoute = ({ children, allowedRoles }) => {
-  const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+const RoleBasedRoute = ({ children, allowedRoles = [] }) => {
+  const { isAuthenticated, role, loading, canAccess } = useAuth();
+  console.log(isAuthenticated,loading,'iam rolebases')
+
   
-  if (!currentUser) {
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  
+  if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
   
-  if (!allowedRoles.includes(currentUser.type)) {
-    // Redirect to role-specific dashboard or show access denied
-    const redirectPaths = {
-      'super-admin': '/super-admin',
-      'hostel-admin': '/hostel-admin',
-      'student': '/student',
-      'visitor': '/visitor'
-    };
-    
-    return <Navigate to={redirectPaths[currentUser.type] || '/login'} />;
+  if (!canAccess(allowedRoles)) {
+    return <Navigate to="/unauthorized" />;
   }
   
   return children;

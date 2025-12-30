@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useUiStore } from '../store/uiStore';
 import {
   FaTachometerAlt,
@@ -30,12 +30,12 @@ import {
   FaArrowAltCircleLeft,
   FaChevronRight
 } from 'react-icons/fa';
+import { logout } from '../features/authSlice';
 
-const Sidebar = ({ onLogout, userType, basePath = '/dashboard' }) => {
+const Sidebar = ({  role, basePath = '/dashboard' }) => {
   const location = useLocation();
-  // Prefer a memoized selector in production
-  const currentUser = useSelector((s) => s.auth?.currentUser);
-  const currentUserType = currentUser?.type || userType || 'student';
+const dispatch=  useDispatch()
+
 
   // subscribe minimally to zustand slices
   const isSidebarOpen = useUiStore((s) => s.isSidebarOpen);
@@ -45,7 +45,7 @@ const Sidebar = ({ onLogout, userType, basePath = '/dashboard' }) => {
   // nav config with react-icons
   const navItems = useMemo(() => {
     const navConfig = {
-      'super-admin': [
+      'superadmin': [
         { id: 'dashboard', path: `${basePath}`, icon: <FaTachometerAlt />, label: 'Dashboard' },
         { id: 'hostels', path: `${basePath}/hostels`, icon: <FaBuilding />, label: 'All Hostels' },
         { id: 'users', path: `${basePath}/users`, icon: <FaUsers />, label: 'User Management' },
@@ -91,8 +91,8 @@ const Sidebar = ({ onLogout, userType, basePath = '/dashboard' }) => {
       ]
     };
 
-    return navConfig[currentUserType] || [];
-  }, [currentUserType, basePath]);
+    return navConfig[role] || [];
+  }, [role, basePath]);
 
   const handleNavigation = useCallback(() => {
     if (isMobile) setSidebar(false);
@@ -125,10 +125,10 @@ const Sidebar = ({ onLogout, userType, basePath = '/dashboard' }) => {
               <div>
                 <h2 className=" font-bold text-xl whitespace-nowrap">HostelHub</h2>
                 <p className="text-slate-800 text-sm whitespace-nowrap">
-                  {currentUserType === 'super-admin' && 'Super Administrator'}
-                  {currentUserType === 'hostel-admin' && 'Hostel Administrator'}
-                  {currentUserType === 'student' && 'Student/Tenant'}
-                  {currentUserType === 'visitor' && 'Visitor'}
+                  {role === 'superadmin' && 'Super Administrator'}
+                  {role === 'hostel-admin' && 'Hostel Administrator'}
+                  {role === 'student' && 'Student/Tenant'}
+                  {role === 'visitor' && 'Visitor'}
                 </p>
               </div>
             </div>
@@ -170,7 +170,7 @@ const Sidebar = ({ onLogout, userType, basePath = '/dashboard' }) => {
 
         <div className="flex-shrink-0 p-4 border-t border-blue-600">
           <button
-            onClick={onLogout}
+            onClick={()=>dispatch(logout())}
             className="w-full flex items-center justify-center py-3 rounded-xl transition-all duration-200 bg-red-500 text-white hover:bg-red-600 font-semibold shadow-lg hover:shadow-xl"
           >
             <FaSignOutAlt className="mr-2" />

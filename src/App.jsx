@@ -60,10 +60,13 @@ import Favorites from './components/dashboard/visitor/Favorites';
 import SearchHostels from './components/dashboard/visitor/SearchHostels';
 import Modal from './context/Modal';
 
+import NavigateToRoleDashboard from './routes/NavigateToRoleDashboard';
+import AuthGate from './routes/AuthGate';
+
 // You can lazy-load big pages like this (optional):
 // const BigAnalytics = React.lazy(() => import('./components/dashboard/hostelAdmin/Analytics'));
 
-function App() {
+function App() {  
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
@@ -83,15 +86,18 @@ function App() {
               </Route>
 
               {/* Super Admin parent - replace children with your actual components */}
-              <Route
-                path="/super-admin/*"
-                element={
-                  <ProtectedRoute>
-                    <RoleBasedRoute allowedRoles={['super-admin']}>
-                      <DashboardLayout userType="super-admin" />
-                    </RoleBasedRoute>
-                  </ProtectedRoute>
-                }
+                <Route
+                  path="/super-admin/*"
+                  element={
+                    <AuthGate>
+
+                    <ProtectedRoute>
+                      <RoleBasedRoute allowedRoles={['superadmin']}>
+                        <DashboardLayout />
+                      </RoleBasedRoute>
+                    </ProtectedRoute>
+                    </AuthGate>
+                  }
               >
                 {/* Example nested children for super-admin */}
                 <Route index element={<SuperAdminDashboard />} />
@@ -109,11 +115,14 @@ function App() {
               <Route
                 path="/hostel-admin/*"
                 element={
+                  <AuthGate>
+
                   <ProtectedRoute>
                     <RoleBasedRoute allowedRoles={['hostel-admin']}>
                       <DashboardLayout userType="hostel-admin" />
                     </RoleBasedRoute>
                   </ProtectedRoute>
+                  </AuthGate>
                 }
               >
                 <Route index element={<Dashboard />} />
@@ -138,11 +147,14 @@ function App() {
               <Route
                 path="/student/*"
                 element={
+                  <AuthGate>
+
                   <ProtectedRoute>
                     <RoleBasedRoute allowedRoles={['student']}>
                       <DashboardLayout userType="student" />
                     </RoleBasedRoute>
                   </ProtectedRoute>
+                  </AuthGate>
                 }
               >
                 <Route index element={<StudentHome />} />
@@ -190,32 +202,6 @@ function App() {
   );
 }
 
-/**
- * NavigateToRoleDashboard
- * - Prefer using a Redux selector here (selectCurrentUser) — fallback to localStorage for backwards compatibility.
- * - Adjust state path to match your auth slice.
- */
-const NavigateToRoleDashboard = () => {
-  // Prefer a selector: e.g. const currentUser = useSelector(selectCurrentUser);
-  let currentUser = null;
-  try {
-    currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-  } catch (e) {
-    currentUser = null;
-  }
 
-  if (!currentUser) {
-    return <Navigate to="/login" />;
-  }
-
-  const redirectPaths = {
-    'super-admin': '/super-admin',
-    'hostel-admin': '/hostel-admin',
-    'student': '/student',
-    'visitor': '/visitor'
-  };
-
-  return <Navigate to={redirectPaths[currentUser.type] || '/login'} />;
-};
 
 export default App;
