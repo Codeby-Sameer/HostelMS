@@ -1,165 +1,64 @@
 // src/pages/Features.jsx
-import React from "react";
-import { Link } from "react-router-dom";
-
-// Basic Navbar component
-const Navbar = () => {
-  // return (
-  //   <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
-  //     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-  //       <div className="flex justify-between items-center h-16">
-  //         <div className="flex items-center">
-  //           <Link to="/" className="text-xl font-bold text-blue-600">
-  //             DCM Solutions
-  //           </Link>
-  //         </div>
-  //         <div className="hidden md:block">
-  //           <div className="ml-10 flex items-baseline space-x-4">
-  //             <Link to="/" className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</Link>
-  //             <Link to="/about" className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</Link>
-  //             <Link to="/features" className="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</Link>
-  //             <Link to="/contact" className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</Link>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </nav>
-  // );
-};
-
-// Basic Footer component
-const Footer = () => {
-  // return (
-  //   <footer className="bg-gray-800 text-white py-8">
-  //     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-  //       <div className="text-center">
-  //         <p className="text-gray-400">© 2024 DCM Solutions. All rights reserved.</p>
-  //       </div>
-  //     </div>
-  //   </footer>
-  // );
-};
-
-const featuresData = [
-  {
-    title: "Day-wise Stay Booking",
-    description: "Pay only for the days you stay — flexible, zero lock-in, with instant confirmations and digital receipts.",
-    icon: "📅",
-    color: "#FF6B6B"
-  },
-  {
-    title: "Tenant Onboarding",
-    description: "Paperless onboarding with digital verification & quick room allotment.",
-    icon: "👤",
-    color: "#4ECDC4"
-  },
-  {
-    title: "Billing & Fee Management",
-    description: "Automatic invoices, due reminders & secure online payments.",
-    icon: "⚡",
-    color: "#FFD166"
-  },
-  {
-    title: "Reservation & Booking",
-    description: "Manage bookings and cancellations centrally with live availability.",
-    icon: "📊",
-    color: "#06D6A0"
-  },
-  {
-    title: "Tenant Check-In / Check-Out",
-    description: "Track arrivals & departures seamlessly with automated logs.",
-    icon: "🏃",
-    color: "#118AB2"
-  },
-  {
-    title: "Maintenance Requests",
-    description: "Residents can raise complaints & track problem resolution.",
-    icon: "🔧",
-    color: "#073B4C"
-  },
-  {
-    title: "Mess & Dining Management",
-    description: "View daily menus, meal counts & reduce food wastage.",
-    icon: "🍽️",
-    color: "#EF476F"
-  },
-  {
-    title: "Notices & Communication",
-    description: "Send announcements to all residents instantly via app.",
-    icon: "📢",
-    color: "#7209B7"
-  },
-  {
-    title: "Reports & Analytics",
-    description: "Monitor hostel performance with real-time dashboards.",
-    icon: "📈",
-    color: "#F8961E"
-  },
-  {
-    title: "Leave Manager",
-    description: "Students request leave and admins approve digitally.",
-    icon: "✅",
-    color: "#277DA1"
-  },
-  {
-    title: "24/7 Support",
-    description: "Round-the-clock help with priority escalation handling.",
-    icon: "♾️",
-    color: "#43AA8B"
-  },
-  {
-    title: "Room Allocation",
-    description: "Smart room assignment based on preferences and availability.",
-    icon: "🏠",
-    color: "#9C27B0"
-  }
-];
+import { motion } from "framer-motion";
+import { featuresData } from "./featuresData";
+import { Link, useNavigate } from "react-router-dom";
+import { FaArrowRight, FaCheck } from "react-icons/fa";
 
 const Features = () => {
-  return (
-    <div className="min-h-screen bg-white font-sans">
-      <Navbar />
+  const navigate = useNavigate();
 
+  return (
+    <>
       {/* Hero Section */}
-      <section className="relative py-16 md:py-20 px-4 md:px-8 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 overflow-hidden">
-        {/* Background Animation */}
+      <section className="relative py-14 md:py-16 px-4 md:px-8 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 overflow-hidden">
+        {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-32 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
           <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000"></div>
         </div>
-       
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <h1 className="text-4xl md:text-6xl font-black mb-6">
-              <span className="bg-gradient-to-br from-gray-200 to-gray-300 bg-clip-text text-transparent">
-                Features
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <span className="inline-block px-4 py-1.5 rounded-full text-sm font-semibold text-cyan-300 bg-cyan-900/30 mb-6">
+              COMPREHENSIVE SOLUTION
+            </span>
+            
+            <h1 className="text-2xl md:text-6xl font-black mb-6">
+              <span className="bg-gradient-to-br from-gray-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent">
+                Powerful Features
               </span>
             </h1>
-           
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Comprehensive features designed to streamline your hostel management
+
+            <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+              Everything you need to manage your hostel efficiently, from booking to billing and beyond
             </p>
 
-            {/* Stats Section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto mt-12">
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-cyan-300">12+</div>
-                <div className="text-sm text-gray-300 mt-1">Features</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-cyan-300">24/7</div>
-                <div className="text-sm text-gray-300 mt-1">Support</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-cyan-300">100%</div>
-                <div className="text-sm text-gray-300 mt-1">Digital</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-cyan-300">50+</div>
-                <div className="text-sm text-gray-300 mt-1">Hostels</div>
-              </div>
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto mt-16">
+              {[
+                { value: "12+", label: "Features" },
+                { value: "24/7", label: "Support" },
+                { value: "100%", label: "Digital" },
+                { value: "50+", label: "Hostels" }
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-cyan-300">{stat.value}</div>
+                  <div className="text-sm text-gray-300 mt-2">{stat.label}</div>
+                </motion.div>
+              ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
         <style>{`
@@ -167,7 +66,6 @@ const Features = () => {
             0%, 100% { transform: translate(0px, 0px) scale(1); }
             33% { transform: translate(30px, -50px) scale(1.1); }
             66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
           }
           .animate-blob {
             animation: blob 7s infinite;
@@ -175,78 +73,114 @@ const Features = () => {
           .animation-delay-2000 {
             animation-delay: 2s;
           }
+          .animation-delay-4000 {
+            animation-delay: 4s;
+          }
         `}</style>
       </section>
 
-      {/* Introduction Section */}
-      <section className="py-16 px-4 md:px-8 bg-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-6">
-            Powerful Features for Modern Hostel Management
-          </h2>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">
-            Our comprehensive suite of features is designed to simplify every aspect of hostel management. 
-            From booking to billing, maintenance to messaging - we've got you covered with smart, automated solutions 
-            that save time and enhance the experience for both administrators and residents.
-          </p>
-        </div>
-      </section>
-
-      {/* Features Grid Section */}
-      <section className="py-16 px-4 md:px-8 bg-gray-50">
+      {/* Features Grid */}
+      <section className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">All Features</h2>
-            <div className="w-20 h-1 bg-blue-600 rounded-full mx-auto"></div>
-          </div>
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
+              Complete Hostel Management Suite
+            </h2>
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+              Each feature is designed to solve specific challenges in hostel management, 
+              ensuring smooth operations and happy residents.
+            </p>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {featuresData.map((feature, index) => (
-              <div 
-                key={index}
-                className="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-2 border-transparent hover:border-blue-100 relative overflow-hidden group"
-              >
-                {/* Hover Overlay */}
-                <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 ${
-                  index % 12 === 0 ? 'bg-gradient-to-br from-pink-100 to-pink-50' :
-                  index % 12 === 1 ? 'bg-gradient-to-br from-cyan-100 to-cyan-50' :
-                  index % 12 === 2 ? 'bg-gradient-to-br from-yellow-100 to-yellow-50' :
-                  index % 12 === 3 ? 'bg-gradient-to-br from-green-100 to-green-50' :
-                  index % 12 === 4 ? 'bg-gradient-to-br from-blue-100 to-blue-50' :
-                  index % 12 === 5 ? 'bg-gradient-to-br from-gray-100 to-gray-50' :
-                  index % 12 === 6 ? 'bg-gradient-to-br from-pink-100 to-pink-50' :
-                  index % 12 === 7 ? 'bg-gradient-to-br from-purple-100 to-purple-50' :
-                  index % 12 === 8 ? 'bg-gradient-to-br from-orange-100 to-orange-50' :
-                  index % 12 === 9 ? 'bg-gradient-to-br from-blue-100 to-blue-50' :
-                  index % 12 === 10 ? 'bg-gradient-to-br from-cyan-100 to-cyan-50' :
-                  'bg-gradient-to-br from-purple-100 to-purple-50'
-                }`}></div>
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuresData.map((feature, index) => {
+              const Icon = feature.icon;
 
-                {/* Feature Icon */}
-                <div 
-                  className="relative z-10 w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border-2 border-gray-100 text-3xl"
-                  style={{ color: feature.color }}
+              return (
+                <motion.div
+                  key={feature.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  whileHover={{ y: -8 }}
+                  className="group relative h-full"
                 >
-                  {feature.icon}
-                </div>
+                  {/* Clickable Card */}
+                  <div
+                    onClick={() => navigate(`/features/${feature.id}`)}
+                    className="h-full bg-white rounded-2xl border border-slate-200 shadow-sm  transition-all duration-300 overflow-hidden cursor-pointer group"
+                  >
+                    
 
-                {/* Feature Content */}
-                <div className="relative z-10">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:-translate-y-1 transition-transform duration-300">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed group-hover:-translate-y-1 transition-transform duration-300">
-                    {feature.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+                    <div className="p-6">
+                      {/* Icon & Tag */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div
+                          className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg`}
+                        >
+                          <Icon size={22} className="text-white" />
+                        </div>
+                        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-50 text-blue-600">
+                          {feature.tag}
+                        </span>
+                      </div>
+
+                      {/* Title & Description */}
+                      <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                        {feature.title}
+                      </h3>
+                      <p className="text-slate-600 mb-5 line-clamp-3">
+                        {feature.description}
+                      </p>
+
+                      {/* Key Points */}
+                      <div className="space-y-2 mb-6">
+                        {feature.points.slice(0, 3).map((point, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <FaCheck className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm text-slate-700 line-clamp-2">
+                              {point}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* CTA Button */}
+                      <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                        <span className="text-sm text-slate-500">
+                          Click for details
+                        </span>
+                        <div className="w-8 h-8 rounded-full bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center transition-colors">
+                          <FaArrowRight className="text-blue-600 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Hover Effect Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-blue-500/0 group-hover:from-blue-500/5 group-hover:to-blue-500/5 transition-all duration-300 pointer-events-none rounded-3xl" />
+                  </div>
+
+                  {/* Glow Effect */}
+                  <div className={`absolute inset-0 bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-5 blur-xl -z-10 rounded-3xl transition-opacity duration-300`} />
+                </motion.div>
+              );
+            })}
           </div>
+
+
+
+     
         </div>
       </section>
-
-      {/* Benefits Section */}
-      {/* <section className="py-16 px-4 md:px-8 bg-white">
+       {/* Benefits Section */}
+      <section className=" pb-5  px-4 md:px-8 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -314,10 +248,8 @@ const Features = () => {
             </div>
           </div>
         </div>
-      </section>© 2024 DCM Solutions. All rights reserved. */}
-
-      <Footer />
-    </div>
+      </section>
+    </>
   );
 };
 

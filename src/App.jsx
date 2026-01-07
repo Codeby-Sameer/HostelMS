@@ -62,14 +62,21 @@ import Modal from './context/Modal';
 
 import NavigateToRoleDashboard from './routes/NavigateToRoleDashboard';
 import AuthGate from './routes/AuthGate';
+import ChatBot from './components/chatbot/ChatBot';
+import RoomBookingPage from './pages/Rooms';
+import RoomDetailsPage from './pages/RoomDetails';
+import FeatureDetails from './pages/FeaturesDetails';
+import ScrollToTop from './utils/ScrollToTop';
 
 // You can lazy-load big pages like this (optional):
 // const BigAnalytics = React.lazy(() => import('./components/dashboard/hostelAdmin/Analytics'));
 
-function App() {  
+function App() {
   return (
     <Router>
+      <ScrollToTop/>
       <div className="min-h-screen bg-gray-50">
+        <ChatBot />
         <ModalProvider>
           {/* Suspense around top-level routes only if you use lazy imports */}
           <Suspense fallback={<div />}>
@@ -79,25 +86,27 @@ function App() {
                 <Route index element={<HomePage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="features" element={<Features />} />
+
+                <Route path="/features/:id" element={<FeatureDetails />} />
                 <Route path="about" element={<About />} />
                 <Route path="contact" element={<Contact />} />
-                <Route path="rooms" element={<Rooms />} />
-                <Route path="signup" element={<Signup />} />
+                <Route path="rooms" element={<RoomBookingPage />} />
+                <Route path="/rooms/:roomId" element={<RoomDetailsPage />} />
               </Route>
 
               {/* Super Admin parent - replace children with your actual components */}
-                <Route
-                  path="/super-admin/*"
-                  element={
-                    <AuthGate>
+              <Route
+                path="/super-admin/*"
+                element={
+                  <AuthGate>
 
                     <ProtectedRoute>
                       <RoleBasedRoute allowedRoles={['superadmin']}>
                         <DashboardLayout />
                       </RoleBasedRoute>
                     </ProtectedRoute>
-                    </AuthGate>
-                  }
+                  </AuthGate>
+                }
               >
                 {/* Example nested children for super-admin */}
                 <Route index element={<SuperAdminDashboard />} />
@@ -117,11 +126,11 @@ function App() {
                 element={
                   <AuthGate>
 
-                  <ProtectedRoute>
-                    <RoleBasedRoute allowedRoles={['hostel-admin']}>
-                      <DashboardLayout userType="hostel-admin" />
-                    </RoleBasedRoute>
-                  </ProtectedRoute>
+                    <ProtectedRoute>
+                      <RoleBasedRoute allowedRoles={['hostel-admin']}>
+                        <DashboardLayout userType="hostel-admin" />
+                      </RoleBasedRoute>
+                    </ProtectedRoute>
                   </AuthGate>
                 }
               >
@@ -149,11 +158,11 @@ function App() {
                 element={
                   <AuthGate>
 
-                  <ProtectedRoute>
-                    <RoleBasedRoute allowedRoles={['student']}>
-                      <DashboardLayout userType="student" />
-                    </RoleBasedRoute>
-                  </ProtectedRoute>
+                    <ProtectedRoute>
+                      <RoleBasedRoute allowedRoles={['student']}>
+                        <DashboardLayout userType="student" />
+                      </RoleBasedRoute>
+                    </ProtectedRoute>
                   </AuthGate>
                 }
               >
@@ -194,7 +203,7 @@ function App() {
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
-            <Modal/>
+            <Modal />
           </Suspense>
         </ModalProvider>
       </div>

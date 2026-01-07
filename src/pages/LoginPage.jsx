@@ -129,7 +129,7 @@ const LoginPage = () => {
             values.userType === 'student' ? 'Student User' : 'Visitor User',
         email: values.credential
       }));
-
+ dispatch(login())
       navigate('/dashboard');
     } else {
       alert('Invalid credentials. Using demo credentials should work.');
