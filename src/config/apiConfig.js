@@ -1,5 +1,5 @@
 // config/apiConfig.js
-import { createBaseQueryWithReauth } from './baseQueryWithReAuth'
+import { createBaseQueryWithReauth } from './baseQueryWithReauth.js'
 
 export const createApiService = ({
   reducerPath,
