@@ -39,25 +39,7 @@ const Features = () => {
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto mt-16">
-              {[
-                { value: "12+", label: "Features" },
-                { value: "24/7", label: "Support" },
-                { value: "100%", label: "Digital" },
-                { value: "50+", label: "Hostels" }
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-cyan-300">{stat.value}</div>
-                  <div className="text-sm text-gray-300 mt-2">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
+            
           </motion.div>
         </div>
 

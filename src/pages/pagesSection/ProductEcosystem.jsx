@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 function ProductEcosystem() {
   const productBlocks = [
     {
-      title: "Student Mobile App",
+      title: "Tenant Mobile App",
       subtitle: "For Residents & Students",
-      desc: "Self-service portal for students to manage their hostel experience from anywhere. Complete independence with 24/7 access to essential services.",
+      desc: "Self-service portal for tenants to manage their hostel experience from anywhere. Complete independence with 24/7 access to essential services.",
       features: [
         "Room booking & allocation requests",
         "Secure online fee payments (UPI/Cards/NetBanking)",
@@ -270,7 +270,7 @@ function ProductEcosystem() {
                   >
                     <Link
                       to={block.cta.to}
-                      className="group inline-flex items-center gap-3 bg-white text-slate-900 px-5 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold shadow-lg shadow-slate-200 hover:shadow-xl hover:shadow-slate-300 border border-slate-200 hover:border-slate-300 transition-all duration-300 w-full sm:w-auto justify-center sm:justify-start"
+                      className="group inline-flex items-center gap-3 bg-blue-600 text-white hover:bg-blue-900 px-5 sm:px-6 py-3 sm:py-4 rounded-xl font-semibold shadow-lg shadow-slate-200 hover:shadow-xl hover:shadow-slate-300 border border-slate-200 hover:border-slate-300 transition-all duration-300 w-full sm:w-auto justify-center sm:justify-start"
                     >
                       <span className="text-sm sm:text-base">{block.cta.label}</span>
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />

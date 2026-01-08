@@ -82,9 +82,9 @@ function WhyChooseUs() {
                     </div>
                     
                     {/* Subtle Corner Badge */}
-                    <div className={`absolute -top-2 -right-2 w-8 h-8 ${item.accentColor} text-white rounded-full flex items-center justify-center font-bold text-sm shadow-sm`}>
+                    {/* <div className={`absolute -top-2 -right-2 w-8 h-8 ${item.accentColor} text-white rounded-full flex items-center justify-center font-bold text-sm shadow-sm`}>
                       {index + 1}
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Card Content */}
