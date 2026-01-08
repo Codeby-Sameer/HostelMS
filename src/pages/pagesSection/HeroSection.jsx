@@ -6,7 +6,7 @@ import {
   Pagination,
   EffectFade,
 } from "swiper/modules";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   FaCheckCircle,
   FaArrowRight,
@@ -125,19 +125,21 @@ const HeroSection = () => {
           </ul>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <Link to="/contact">
             <button
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/contact")}
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-lg bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg shadow-blue-500/30 hover:shadow-xl hover:-translate-y-1 transition"
             >
-              Get Started Free <FaArrowRight />
-            </button>
+              Get Started  <FaArrowRight />
+            </button></Link>
 
-            <button
-              onClick={() => navigate("/demo")}
-              className="px-8 py-4 rounded-xl font-bold text-lg border-2 border-slate-300 text-slate-700 hover:border-blue-500 hover:text-blue-600 transition"
-            >
-              Live Demo
-            </button>
+            <Link to="/contact">
+              <button
+                onClick={() => navigate("/contact")}
+                className="px-8 py-4 rounded-xl font-bold text-lg border-2 border-slate-300 text-slate-700 hover:border-blue-500 hover:text-blue-600 transition"
+              >
+                Live Demo
+            </button></Link>
           </div>
         </div>
 

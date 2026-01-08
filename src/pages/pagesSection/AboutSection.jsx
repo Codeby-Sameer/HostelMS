@@ -38,8 +38,8 @@ function AboutSection() {
     },
     {
       icon: Users,
-      title: "Student Experience",
-      description: "Mobile app for student management",
+      title: "Tenant Experience",
+      description: "Mobile app for tenant management",
       color: "from-purple-500 to-violet-500"
     }
   ];
@@ -64,7 +64,7 @@ function AboutSection() {
             Complete <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Hostel Management</span>
           </h2>
           <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-            Transform how you manage student accommodations with our comprehensive digital platform.
+            Transform how you manage tenant accommodations with our comprehensive digital platform.
           </p>
         </div>
 
@@ -102,7 +102,7 @@ function AboutSection() {
                 More Than Just Management Software
               </h3>
               <p className="text-base text-slate-600 mb-4">
-                Our platform bridges the gap between hostel administrators and students, creating a seamless digital ecosystem.
+                Our platform bridges the gap between hostel administrators and tenants, creating a seamless digital ecosystem.
               </p>
             </div>
 
@@ -135,7 +135,7 @@ function AboutSection() {
               {[
                 "End-to-end digital transformation",
                 "Real-time monitoring tools",
-                "Enhanced student experience",
+                "Enhanced tenant experience",
                 "Scalable for all institution sizes"
               ].map((benefit, index) => (
                 <div key={index} className="flex items-start gap-2">
@@ -147,7 +147,7 @@ function AboutSection() {
 
             {/* CTA */}
             <Link
-              to="/platform-overview"
+              to="/features"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 text-sm"
             >
               Explore Platform Features

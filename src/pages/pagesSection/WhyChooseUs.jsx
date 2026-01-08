@@ -51,7 +51,7 @@ function WhyChooseUs() {
             Built Specifically for <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Hostel Management</span>
           </h2>
           <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Designed with insights from 100+ educational institutions. Our platform eliminates manual work, reduces errors, and provides complete transparency for both administrators and students.
+            Designed with insights from 100+ educational institutions. Our platform eliminates manual work, reduces errors, and provides complete transparency for both administrators and tenants.
           </p>
         </div>
 
@@ -143,7 +143,7 @@ function WhyChooseUs() {
         {/* Call to Action */}
         <div className="mt-12 text-center">
           <Link 
-            to="/demo-request"
+            to="/contact"
             className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-1"
           >
             <Zap size={20} />

@@ -7,7 +7,7 @@ function ProductEcosystem() {
   const productBlocks = [
     {
       title: "Tenant Mobile App",
-      subtitle: "For Residents & Students",
+      subtitle: "For Residents & Tenants",
       desc: "Self-service portal for tenants to manage their hostel experience from anywhere. Complete independence with 24/7 access to essential services.",
       features: [
         "Room booking & allocation requests",
@@ -17,7 +17,7 @@ function ProductEcosystem() {
         "Mess menu & meal preferences",
         "Instant notifications & announcements"
       ],
-      // Better image for student app - showing mobile interface
+      // Better image for tenant app - showing mobile interface
       img: "https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?auto=format&fit=crop&w=1200&q=80",
       mobileMockup: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=400&q=80",
       icon: Smartphone,
@@ -52,7 +52,7 @@ function ProductEcosystem() {
       features: [
         "Real-time financial dashboards",
         "Occupancy trends & forecasting",
-        "Student feedback analysis",
+        "Tenant feedback analysis",
         "Resource utilization reports",
         "Audit trails & compliance logs",
         "Custom report generation"
@@ -154,7 +154,7 @@ function ProductEcosystem() {
                   index % 2 === 1 ? "lg:flex-row-reverse" : ""
                 }`}
               >
-                {/* Image Section with Mobile Mockup for Student App */}
+                {/* Image Section with Mobile Mockup for tenant App */}
                 <motion.div
                   variants={imageVariants}
                   whileHover="hover"
@@ -196,7 +196,7 @@ function ProductEcosystem() {
                       </div>
                     </motion.div>
 
-                    {/* Mobile Mockup for Student App (only on first card) */}
+                    {/* Mobile Mockup for tenant App (only on first card) */}
                     {index === 0 && (
                       <motion.div
                         initial={{ y: 20, opacity: 0 }}

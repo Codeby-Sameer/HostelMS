@@ -496,14 +496,12 @@ function PricingAndFAQ() {
           {/* CTA */}
           <div className="text-center mt-8 md:mt-12">
             <Link 
-              to="/demo" 
+              to="/contact" 
               className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-xl font-semibold shadow hover:shadow-md md:shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 md:hover:-translate-y-1 text-base md:text-base"
             >
-              Get Personalized ROI Analysis
+              Get a Free Demo
             </Link>
-            <p className="text-xs md:text-sm text-slate-500 mt-2 md:mt-3">
-              Based on data from 150+ hostels using our platform
-            </p>
+            
           </div>
         </div>
       </div>

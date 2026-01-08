@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CalendarMinus2Icon } from "lucide-react";
+import { FaCalendarAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
@@ -22,13 +22,13 @@ function FlexibleStay() {
   };
 
   const imageVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       x: -50,
-      rotateY: -15 
+      rotateY: -15
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
       rotateY: 0,
       transition: {
@@ -40,8 +40,8 @@ function FlexibleStay() {
 
   const textVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
@@ -115,7 +115,7 @@ function FlexibleStay() {
     <section ref={ref} className="py-16 lg:py-20 bg-white overflow-hidden">
       <div className="max-w-6xl mx-auto w-[92vw] grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {/* Image Column */}
-        <motion.div 
+        <motion.div
           className="aos order-2 lg:order-1 relative"
           variants={imageVariants}
           initial="hidden"
@@ -124,15 +124,15 @@ function FlexibleStay() {
           transition={{ duration: 0.3 }}
         >
           {/* Floating Element 1 */}
-          <motion.div 
+          <motion.div
             className="absolute -top-4 -right-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-4 py-2 rounded-lg shadow-lg z-10"
             animate={floatingAnimation}
           >
             <span className="text-sm font-bold">Flexible Stays</span>
           </motion.div>
-          
+
           {/* Floating Element 2 */}
-          <motion.div 
+          <motion.div
             className="absolute -bottom-4 -left-4 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-lg z-10"
             animate={{
               y: [0, -8, 0],
@@ -158,29 +158,29 @@ function FlexibleStay() {
         </motion.div>
 
         {/* Content Column */}
-        <motion.div 
+        <motion.div
           className="aos order-1 lg:order-2"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <motion.h2 
+          <motion.h2
             variants={textVariants}
             className="text-3xl lg:text-4xl font-black text-slate-900 mb-6"
           >
             Flexible Stay Options
           </motion.h2>
-          
-          <motion.p 
+
+          <motion.p
             variants={textVariants}
             className="text-base lg:text-lg text-slate-600 mb-6 leading-relaxed"
           >
-            Our day-wise booking system allows students to pay only for the days they actually stay.
+            Our day-wise booking system allows tenants to pay only for the days they actually stay.
             Perfect for exam periods, interviews, or short-term accommodations.
           </motion.p>
 
           {/* Tags */}
-          <motion.div 
+          <motion.div
             className="flex flex-wrap gap-3 mb-8"
             variants={containerVariants}
           >
@@ -193,8 +193,8 @@ function FlexibleStay() {
                 key={index}
                 custom={index}
                 variants={tagVariants}
-                whileHover={{ 
-                  scale: 1.05, 
+                whileHover={{
+                  scale: 1.05,
                   rotate: [0, -2, 2, 0],
                   transition: { duration: 0.3 }
                 }}
@@ -207,7 +207,7 @@ function FlexibleStay() {
           </motion.div>
 
           {/* List */}
-          <motion.ul 
+          <motion.ul
             className="space-y-3 text-slate-600 mb-8"
             variants={containerVariants}
           >
@@ -216,7 +216,7 @@ function FlexibleStay() {
               "No monthly lock-in — extend or shorten stay anytime",
               "Digital receipts and 24/7 customer support"
             ].map((item, index) => (
-              <motion.li 
+              <motion.li
                 key={index}
                 custom={index}
                 variants={listItemVariants}
@@ -224,7 +224,7 @@ function FlexibleStay() {
                 whileHover={{ x: 5 }}
                 transition={{ duration: 0.2 }}
               >
-                <motion.span 
+                <motion.span
                   className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"
                   animate={{
                     scale: [1, 1.2, 1],
@@ -244,36 +244,28 @@ function FlexibleStay() {
 
           {/* Button */}
           <motion.div
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 300, damping: 15 }}
           >
             <Link
               to="/rooms"
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300"
+              className="inline-flex items-center gap-3
+               bg-gradient-to-r from-blue-600 to-indigo-600
+               text-white px-8 py-4 rounded-xl
+               font-bold text-lg
+               shadow-lg shadow-blue-500/25
+               hover:shadow-xl hover:shadow-blue-500/30
+               transition-all duration-300"
             >
-              <motion.div
-                animate={{ rotate: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <CalendarMinus2Icon/>
-              </motion.div>
-              <motion.span
-                animate={{ 
-                  backgroundPosition: ["0%", "100%", "0%"] 
-                }}
-                transition={{ 
-                  duration: 3, 
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-                className="bg-clip-text bg-gradient-to-r from-white via-blue-100 to-white bg-[length:200%_auto]"
-                style={{ WebkitBackgroundClip: "text" }}
-              >
-                Explore Flexible Stays
-              </motion.span>
+              {/* React Icon */}
+              <FaCalendarAlt className="text-xl" />
+
+              {/* Text */}
+              <span>Explore Flexible Stays</span>
             </Link>
           </motion.div>
+
 
           {/* Decorative Element */}
           <motion.div
@@ -288,7 +280,7 @@ function FlexibleStay() {
               animate={{ scaleX: isInView ? 1 : 0 }}
               transition={{ delay: 1.2, duration: 0.8 }}
             />
-            {/* <span className="whitespace-nowrap">Trusted by 500+ students</span> */}
+            {/* <span className="whitespace-nowrap">Trusted by 500+ tenants</span> */}
             <motion.div
               className="w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent"
               initial={{ scaleX: 0 }}

@@ -116,7 +116,7 @@ const AboutApp = () => {
             <p className="text-gray-700 mb-5 leading-relaxed">
               Our Hostel Management System is a modern digital platform designed to
               simplify and automate daily hostel operations for administrators,
-              wardens, and students.
+              wardens, and tenants.
             </p>
 
             <p className="text-gray-700 mb-5 leading-relaxed">
@@ -193,13 +193,13 @@ const AboutApp = () => {
                 </h3>
 
                 <p className="text-white/90 leading-relaxed mb-4">
-                  We believe hostel management should be simple, transparent, and stress-free.
+                  We believe hostel management should be simple, transparent, and stress free.
                   Our platform is designed by understanding real hostel challenges, not just
                   technical requirements.
                 </p>
 
                 <p className="text-white/90 leading-relaxed">
-                  We work closely with hostel owners, wardens, and students to ensure every
+                  We work closely with hostel owners, wardens, and tenants to ensure every
                   feature genuinely improves daily operations and living experience.
                 </p>
               </div>
@@ -213,9 +213,9 @@ const AboutApp = () => {
                 <div className="space-y-4">
                   {[
                     { icon: <FaBullseye />, text: "Clear focus on real hostel problems" },
-                    { icon: <FaHandshake />, text: "Long-term partnerships with hostels" },
+                    { icon: <FaHandshake />, text: "Long term partnerships with hostels" },
                     { icon: <FaSyncAlt />, text: "Continuous improvement through feedback" },
-                    { icon: <FaHeart />, text: "Student comfort and safety first" }
+                    { icon: <FaHeart />, text: "Tenant comfort and safety first" }
                   ].map((value, idx) => (
                     <div key={idx} className="flex items-center gap-3 text-slate-700">
                       <div className="text-blue-600">{value.icon}</div>
@@ -245,19 +245,19 @@ const AboutApp = () => {
 
                 <div className="space-y-6">
                   <p className="text-lg text-slate-700 leading-relaxed">
-                    Our journey began with a simple observation — hostel management was
+                    Our journey began with a simple observation that hostel management was
                     overloaded with paperwork, manual tracking, and outdated systems that
                     slowed everyone down.
                   </p>
 
                   <p className="text-lg text-slate-700 leading-relaxed">
-                    Students struggled to access information, wardens spent hours on routine
-                    tasks, and administrators lacked real-time visibility into operations.
+                    Tenants struggled to access information, wardens spent hours on routine
+                    tasks, and administrators lacked real time visibility into operations.
                   </p>
 
                   <p className="text-lg text-slate-700 leading-relaxed">
                     We built this Hostel Management System to bring clarity, automation, and
-                    control — helping hostels operate efficiently while creating a better
+                    control to hostel operations, helping hostels operate efficiently while creating a better
                     experience for residents.
                   </p>
                 </div>
@@ -322,21 +322,21 @@ const AboutApp = () => {
               {
                 icon: FaMobileAlt,
                 title: "Mobile-First Experience",
-                description: "Students can book rooms, pay fees, and manage everything from their phones. Real-time updates and notifications keep everyone connected.",
+                description: "Tenants can book rooms, pay fees, and manage everything from their phones. Real time updates and notifications keep everyone connected.",
                 color: "from-blue-500 to-cyan-500",
                 features: ["Mobile bookings", "Push notifications", "Digital payments"]
               },
               {
                 icon: FaUsers,
                 title: "Smart User Management",
-                description: "Separate portals for students, wardens, and admin staff with role-based permissions. Each user gets exactly what they need.",
+                description: "Separate portals for tenants, wardens, and admin staff with role based permissions. Each user gets exactly what they need.",
                 color: "from-purple-500 to-pink-500",
-                features: ["Student portal", "Warden dashboard", "Admin controls"]
+                features: ["Tenant portal", "Warden dashboard", "Admin controls"]
               },
               {
                 icon: FaShieldAlt,
                 title: "Secure Platform",
-                description: "Bank-level security with encrypted data, secure payments, and complete audit trails. Your data is protected with enterprise-grade security.",
+                description: "Bank level security with encrypted data, secure payments, and complete audit trails. Your data is protected with enterprise grade security.",
                 color: "from-emerald-500 to-teal-500",
                 features: ["Data encryption", "Secure payments", "Audit logs"]
               }
@@ -396,7 +396,7 @@ const AboutApp = () => {
       </section>
 
       {/* ================= DAY BOOKING BANNER ================= */}
-      <section className="relative mx-4 max-w-6xl md:mx-auto mb-20 p-6 rounded-xl bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 text-white shadow-lg border-l-4 border-yellow-400">
+      <section className="relative mx-4 max-w-6xl md:mx-auto mb-20 p-6 rounded-xl bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 text-white shadow-lg border-l-4 border-yellow-400 mt-2">
         {/* Decorative corner */}
         <div className="absolute -top-2 -right-2 bg-yellow-400 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
           NEW
@@ -407,7 +407,7 @@ const AboutApp = () => {
             <FaCalendarCheck className="text-3xl mt-1" />
             <div>
               <h3 className="text-xl font-bold mb-1">
-                Day-Wise Room Booking Available
+                Day Wise Room Booking Available
               </h3>
               <p className="opacity-90 text-sm">
                 Perfect for short visits, exams, or guest stays. Book by the day with instant confirmation.
@@ -422,11 +422,11 @@ const AboutApp = () => {
               </div>
             </div>
           </div>
-
+            <Link to="/rooms"> 
           <button className="bg-white text-blue-600 hover:bg-blue-50 font-bold py-3 px-6 rounded-lg transition-all shadow-md hover:shadow-lg flex items-center gap-2 whitespace-nowrap">
             <FaBed className="text-lg" />
             Explore Rooms
-          </button>
+          </button></Link>
         </div>
       </section>
       {/* ================= PRODUCTS ================= */}
@@ -478,7 +478,7 @@ const AboutApp = () => {
           <p className="text-lg text-slate-600 mb-10 leading-relaxed">
             Join hostels that have replaced paperwork and manual tracking with a
             smart, centralized management system. Get better control, improved
-            communication, and a smoother experience for students and staff.
+            communication, and a smoother experience for tenants and staff.
           </p>
 
           {/* CTA Button */}

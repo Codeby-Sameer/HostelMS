@@ -37,44 +37,42 @@ export default function Contact() {
     
 
       {/* Hero Section */}
-      <section className="relative py-16 md:py-20 px-4 md:px-8 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 overflow-hidden">
-        {/* Background Animation */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-32 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-          <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        </div>
+      <section className="relative py-16 md:py-20 px-4 md:px-8 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 overflow-hidden">
+  {/* Background Animation */}
+  <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute -top-40 -right-32 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+    <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+  </div>
 
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <h1 className="text-4xl md:text-6xl font-black mb-6">
-              <span className="bg-gradient-to-br from-gray-200 to-gray-300 bg-clip-text text-transparent">
-                Contact Us
-              </span>
-            </h1>
+  <div className="max-w-6xl mx-auto relative z-10">
+    <div className="max-w-4xl mx-auto text-center text-white">
+      <h1 className="text-3xl md:text-5xl font-black mb-6">
+        <span className="bg-gradient-to-r from-blue-100 via-cyan-100 to-white bg-clip-text text-transparent">
+          Contact Us
+        </span>
+      </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              We're here to help you with any questions or concerns.
-            </p>
+      <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+        We're here to help you with any questions or concerns.
+      </p>
+    </div>
+  </div>
 
+  <style>{`
+    @keyframes blob {
+      0%, 100% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+  `}</style>
+</section>
 
-          </div>
-        </div>
-
-        <style>{`
-          @keyframes blob {
-            0%, 100% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
-          }
-          .animate-blob {
-            animation: blob 7s infinite;
-          }
-          .animation-delay-2000 {
-            animation-delay: 2s;
-          }
-        `}</style>
-      </section>
 
       {/* Info Cards Section */}
       <section className="py-16 px-4 md:px-8">
