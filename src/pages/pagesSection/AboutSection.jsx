@@ -130,7 +130,7 @@ function AboutSection() {
             </div>
 
             {/* Key Benefits */}
-            <div className="space-y-3 mb-6">
+            {/* <div className="space-y-3 mb-6">
               <h4 className="text-lg font-semibold text-slate-900">Key Benefits:</h4>
               {[
                 "End-to-end digital transformation",
@@ -143,7 +143,7 @@ function AboutSection() {
                   <span className="text-sm text-slate-700">{benefit}</span>
                 </div>
               ))}
-            </div>
+            </div> */}
 
             {/* CTA */}
             <Link
