@@ -88,7 +88,7 @@ export const featuresData = [
       "Background check automation",
       "Smart room allocation",
       "Digital agreement signing",
-      "Police verification submission",
+     
     ],
     screenshots: [
       "https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000",

@@ -109,7 +109,7 @@ function ProductEcosystem() {
   };
 
   return (
-    <section className="py-16 lg:py-24 bg-gradient-to-b from-white to-slate-50 overflow-hidden">
+    <section className="py-16 lg:py-16 bg-gradient-to-b from-white to-slate-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <motion.div
@@ -117,7 +117,7 @@ function ProductEcosystem() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center max-w-3xl mx-auto mb-16 lg:mb-20"
+          className="text-center max-w-3xl mx-auto mb-16 lg:mb-12"
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
