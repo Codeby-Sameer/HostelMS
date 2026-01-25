@@ -98,14 +98,14 @@ function App() {
               <Route
                 path="/super-admin/*"
                 element={
-                  <AuthGate>
+                  // <AuthGate>
 
-                    <ProtectedRoute>
-                      <RoleBasedRoute allowedRoles={['superadmin']}>
-                        <DashboardLayout />
-                      </RoleBasedRoute>
-                    </ProtectedRoute>
-                  </AuthGate>
+                  //   <ProtectedRoute>
+                  //     <RoleBasedRoute allowedRoles={['superadmin']}>
+                        <DashboardLayout role="superadmin" basePath='/super-admin' />
+                  //     </RoleBasedRoute>
+                  //   </ProtectedRoute>
+                  // </AuthGate>
                 }
               >
                 {/* Example nested children for super-admin */}
@@ -124,14 +124,14 @@ function App() {
               <Route
                 path="/hostel-admin/*"
                 element={
-                  <AuthGate>
+                  // <AuthGate>
 
-                    <ProtectedRoute>
-                      <RoleBasedRoute allowedRoles={['hostel-admin']}>
-                        <DashboardLayout userType="hostel-admin" />
-                      </RoleBasedRoute>
-                    </ProtectedRoute>
-                  </AuthGate>
+                  //   <ProtectedRoute>
+                  //     <RoleBasedRoute allowedRoles={['hostel-admin']}>
+                        <DashboardLayout role="hostel-admin" basePath="/hostel-admin" />
+                  //     </RoleBasedRoute>
+                  //   </ProtectedRoute>
+                  // </AuthGate>
                 }
               >
                 <Route index element={<Dashboard />} />
@@ -156,14 +156,14 @@ function App() {
               <Route
                 path="/student/*"
                 element={
-                  <AuthGate>
+                  // <AuthGate>
 
-                    <ProtectedRoute>
-                      <RoleBasedRoute allowedRoles={['student']}>
-                        <DashboardLayout userType="student" />
-                      </RoleBasedRoute>
-                    </ProtectedRoute>
-                  </AuthGate>
+                  //   <ProtectedRoute>
+                  //     <RoleBasedRoute allowedRoles={['student']}>
+                        <DashboardLayout role="student" basePath="/student" />
+                  //     </RoleBasedRoute>
+                  //   </ProtectedRoute>
+                  // </AuthGate>
                 }
               >
                 <Route index element={<StudentHome />} />
@@ -182,11 +182,11 @@ function App() {
               <Route
                 path="/visitor/*"
                 element={
-                  <ProtectedRoute>
-                    <RoleBasedRoute allowedRoles={['visitor']}>
-                      <DashboardLayout userType="visitor" />
-                    </RoleBasedRoute>
-                  </ProtectedRoute>
+                  // <ProtectedRoute>
+                  //   <RoleBasedRoute allowedRoles={['visitor']}>
+                      <DashboardLayout role="visitor" basePath="/visitor" />
+                  //   </RoleBasedRoute>
+                  // </ProtectedRoute>
                 }
               >
                 <Route index element={<VisitorHome />} />

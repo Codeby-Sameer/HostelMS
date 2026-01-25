@@ -149,7 +149,20 @@
 // src/components/dashboard/views/ProfileView.jsx
 
 
-const ProfileView = ({ selectedHostel }) => {
+const ProfileView = ({  }) => {
+
+  const selectedHostel = {
+  id: 1,
+  hostelName: "BlueSky Residency",
+  hostelType: "Boys Only",
+  description: "Premium boys hostel with AC rooms, WiFi, gym and study hall.",
+  address: "Plot 23, Madhapur, Hyderabad, Telangana, India",
+  visibility: "Public",
+  featured: true,
+  totalBeds: 100,
+  occupancy: 80,
+  revenue: 250000,
+};
 
   if (!selectedHostel) {
     return (

@@ -1,14 +1,72 @@
-// components/Dashboard.js
-import React from 'react';
+
 import { useModal } from '../../../context/ModalContext';
+import React, { useState } from "react";
+
 
 const Dashboard = () => {
  const{openModal}= useModal()
-  const hostels=[ ]
-  const totalHostels = 1;
-  const totalOccupancy = 1> 0 
-    ? Math.round(hostels.reduce((sum, h) => sum + ((h.occupancy || 0) / (h.totalBeds || 1)), 0) / hostels.length * 100)
-    : 0;
+  const hostels = [
+  {
+    id: 1,
+    hostelName: "BlueSky Residency",
+    hostelType: "Boys Hostel",
+    address: "Hyderabad, Telangana, India",
+    occupancy: 80,
+    totalBeds: 100,
+    revenue: 250000,
+    bookingRequests: 3,
+    complaints: 1,
+    maintenanceRequests: 2,
+    status: "Active",
+    visibility: "Public",
+    isFavorite: true,
+  },
+  {
+    id: 2,
+    hostelName: "Green Valley PG",
+    hostelType: "Girls Hostel",
+    address: "Bangalore, Karnataka, India",
+    occupancy: 45,
+    totalBeds: 60,
+    revenue: 180000,
+    bookingRequests: 1,
+    complaints: 0,
+    maintenanceRequests: 1,
+    status: "Active",
+    visibility: "Private",
+    isFavorite: false,
+  },
+  {
+    id: 3,
+    hostelName: "Sunrise Student Living",
+    hostelType: "Co-Living",
+    address: "Chennai, Tamil Nadu, India",
+    occupancy: 120,
+    totalBeds: 150,
+    revenue: 320000,
+    bookingRequests: 5,
+    complaints: 2,
+    maintenanceRequests: 0,
+    status: "Inactive",
+    visibility: "Public",
+    isFavorite: false,
+  }
+];
+
+const [selectedHostel, setSelectedHostel] = useState(null);
+
+const onHostelSelect = (hostel) => {
+  setSelectedHostel(hostel);
+};
+
+  const totalHostels = 2;
+  const totalOccupancy = hostels.length > 0
+  ? Math.round(
+      hostels.reduce((sum, h) => sum + ((h.occupancy || 0) / (h.totalBeds || 1)), 0) 
+      / hostels.length * 100
+    )
+  : 0;
+
   const totalRevenue = hostels.reduce((sum, h) => sum + (h.revenue || 0), 0);
   const pendingRequests = hostels.reduce((sum, h) => sum + (h.bookingRequests || 0) + (h.complaints || 0) + (h.maintenanceRequests || 0), 0);
 
@@ -57,7 +115,7 @@ const Dashboard = () => {
             <p className="text-sm opacity-80">Avg Occupancy</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold">${totalRevenue.toLocaleString()}</p>
+            <p className="text-3xl font-bold">{totalRevenue.toLocaleString()} rs</p>
             <p className="text-sm opacity-80">Total Revenue</p>
           </div>
           <div className="text-center">
@@ -110,7 +168,7 @@ const Dashboard = () => {
                 </div>
                 <div className="text-center p-3 bg-green-50 rounded-lg">
                   <p className="text-2xl font-bold text-green-600">
-                    ${(hostel.revenue || 0).toLocaleString()}
+                    ₹{(hostel.revenue || 0).toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-600">Revenue</p>
                 </div>

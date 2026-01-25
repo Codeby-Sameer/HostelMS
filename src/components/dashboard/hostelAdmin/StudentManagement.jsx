@@ -29,7 +29,7 @@ const StudentManagement = ({ openModal, allData }) => {
   return (
     <div className="">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-blue-900">Student & Tenant Profile Management</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-blue-900"> Tenant Profile Management</h2>
         <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
           <button 
             onClick={() => openModal('student')}

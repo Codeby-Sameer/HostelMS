@@ -36,7 +36,7 @@ const Sidebar = ({  role, basePath = '/dashboard' }) => {
   const location = useLocation();
 const dispatch=  useDispatch()
 
-
+console.log(role,'iam role in sidebar')
   // subscribe minimally to zustand slices
   const isSidebarOpen = useUiStore((s) => s.isSidebarOpen);
   const isMobile = useUiStore((s) => s.isMobile);
@@ -60,7 +60,7 @@ const dispatch=  useDispatch()
         { id: 'rooms', path: `${basePath}/rooms`, icon: <FaBed />, label: 'Room & Bed Management' },
         { id: 'bookings', path: `${basePath}/bookings`, icon: <FaClipboardList />, label: 'Booking Management' },
         { id: 'calendar', path: `${basePath}/calendar`, icon: <FaCalendarAlt />, label: 'Booking Calendar' },
-        { id: 'students', path: `${basePath}/students`, icon: <FaUserGraduate />, label: 'Student Profiles' },
+        { id: 'students', path: `${basePath}/students`, icon: <FaUserGraduate />, label: 'Tenant Profiles' },
         { id: 'payments', path: `${basePath}/payments`, icon: <FaMoneyCheckAlt />, label: 'Fee Collection' },
         { id: 'complaints', path: `${basePath}/complaints`, icon: <FaExclamationTriangle />, label: 'Complaint Management' },
         { id: 'mess', path: `${basePath}/mess`, icon: <FaUtensils />, label: 'Mess Menu Management' },
@@ -114,7 +114,7 @@ const dispatch=  useDispatch()
           ${isMobile ? 'fixed top-0 left-0 transform' : 'relative'}
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <div className="flex-shrink-0 p-6 border-b border-blue-600">
+        <div className="flex-shrink-0 p-3 border-b border-blue-600">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="text-2xl mr-3">
@@ -169,13 +169,14 @@ const dispatch=  useDispatch()
         </nav>
 
         <div className="flex-shrink-0 p-4 border-t border-blue-600">
-          <button
-            onClick={()=>dispatch(logout())}
+          <Link
+            // onClick={()=>dispatch(logout())}
+            to="/"
             className="w-full flex items-center justify-center py-3 rounded-xl transition-all duration-200 bg-red-500 text-white hover:bg-red-600 font-semibold shadow-lg hover:shadow-xl"
           >
             <FaSignOutAlt className="mr-2" />
             <span>Sign Out</span>
-          </button>
+          </Link>
         </div>
       </aside>
     </>

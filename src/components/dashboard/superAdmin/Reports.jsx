@@ -91,19 +91,19 @@ const Reports = () => {
         <h3 className="text-lg lg:text-xl font-bold mb-4 text-blue-800">Financial Summary</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           <div className="text-center p-4 bg-green-50 rounded-lg border border-green-200">
-            <p className="text-2xl lg:text-3xl font-bold text-green-600">${financialData.totalIncome.toLocaleString()}</p>
+            <p className="text-2xl lg:text-3xl font-bold text-green-600">₹{financialData.totalIncome.toLocaleString()}</p>
             <p className="text-gray-600 text-sm lg:text-base">Total Income</p>
           </div>
           <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <p className="text-2xl lg:text-3xl font-bold text-blue-600">${financialData.subscriptionRevenue.toLocaleString()}</p>
+            <p className="text-2xl lg:text-3xl font-bold text-blue-600">₹{financialData.subscriptionRevenue.toLocaleString()}</p>
             <p className="text-gray-600 text-sm lg:text-base">Subscription Revenue</p>
           </div>
           <div className="text-center p-4 bg-purple-50 rounded-lg border border-purple-200">
-            <p className="text-2xl lg:text-3xl font-bold text-purple-600">${financialData.commissionEarned.toLocaleString()}</p>
+            <p className="text-2xl lg:text-3xl font-bold text-purple-600">₹{financialData.commissionEarned.toLocaleString()}</p>
             <p className="text-gray-600 text-sm lg:text-base">Commission Earned</p>
           </div>
           <div className="text-center p-4 bg-orange-50 rounded-lg border border-orange-200">
-            <p className="text-2xl lg:text-3xl font-bold text-orange-600">${financialData.pendingPayments.toLocaleString()}</p>
+            <p className="text-2xl lg:text-3xl font-bold text-orange-600">₹{financialData.pendingPayments.toLocaleString()}</p>
             <p className="text-gray-600 text-sm lg:text-base">Pending Payments</p>
           </div>
         </div>
