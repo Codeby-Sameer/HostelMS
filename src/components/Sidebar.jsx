@@ -54,7 +54,7 @@ console.log(role,'iam role in sidebar')
         { id: 'system-config', path: `${basePath}/system-config`, icon: <FaCog />, label: 'System Config' },
         { id: 'reports', path: `${basePath}/reports`, icon: <FaFileAlt />, label: 'Reports' }
       ],
-      'hostel-admin': [
+      'admin': [
         { id: 'dashboard', path: `${basePath}`, icon: <FaTachometerAlt />, label: 'Multi-Hostel Dashboard' },
         { id: 'profile', path: `${basePath}/profile`, icon: <FaUser />, label: 'Hostel Profile' },
         { id: 'rooms', path: `${basePath}/rooms`, icon: <FaBed />, label: 'Room & Bed Management' },
@@ -126,7 +126,7 @@ console.log(role,'iam role in sidebar')
                 <h2 className=" font-bold text-xl whitespace-nowrap">HostelHub</h2>
                 <p className="text-slate-800 text-sm whitespace-nowrap">
                   {role === 'superadmin' && 'Super Administrator'}
-                  {role === 'hostel-admin' && 'Hostel Administrator'}
+                  {role === 'admin' && 'Hostel Administrator'}
                   {role === 'student' && 'Student/Tenant'}
                   {role === 'visitor' && 'Visitor'}
                 </p>

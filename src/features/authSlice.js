@@ -16,8 +16,8 @@ const authSlice = createSlice({
   reducers: {
     login: (state, action) => {
       console.log('Login action payload:', action.payload);
-      const { user } = action.payload;
-      state.user = user;
+      
+      state.user = action.payload;
       state.loading = false;
       state.error = null;
       state.lastRefreshed = Date.now();
@@ -214,10 +214,10 @@ export default authSlice.reducer;
 export const getDashboardPathByRole = (role) => {
   const rolePaths = {
     'superadmin': '/super-admin',
-    'hosteladmin': '/hostel-admin',
+    'admin': '/hostel-admin',
     'student': '/student',
     'visitor': '/visitor',
-    'admin': '/admin', // Fallback for generic admin
+    // 'admin': '/admin', // Fallback for generic admin
   };
   
   return rolePaths[role] || '/dashboard';

@@ -7,6 +7,7 @@ import { setUser,  setInitialized,logout } from '../features/authSlice';
 export function useAuthBootstrap() {
   const dispatch = useDispatch();
   const initialized = useSelector((state) => state.auth.initialized);
+  
 
   const { data, isLoading, isError, error } = useVerifyAuthQuery();
 

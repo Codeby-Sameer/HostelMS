@@ -9,6 +9,8 @@ const NavigateToRoleDashboard = () => {
     loading, 
     getDashboardPath 
   } = useAuth();
+  console.log(isAuthenticated,'iam auth from navigate to role dashboard')
+  console.log(role,'iam role from navigate to role dashboard')
 
   // Show loading state if auth is still being checked
   if (loading) {

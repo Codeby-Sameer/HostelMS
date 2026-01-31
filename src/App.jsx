@@ -1,4 +1,4 @@
-// src/App.jsx
+
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LandingLayout from './pages/Layout';
@@ -15,7 +15,7 @@ import Rooms from './pages/Rooms';
 import Signup from './pages/Signup';
 
 
-//super admin pages 
+// super admin pages 
 import SuperAdminDashboard from './components/dashboard/superAdmin/SuperAdminDashboard';
 import HostelManagement from './components/dashboard/superAdmin/HostelManagement';
 import Analytics from './components/dashboard/superAdmin/Analytics';
@@ -24,7 +24,7 @@ import AdminManagement from './components/dashboard/superAdmin/AdminManagement';
 import Reports from './components/dashboard/superAdmin/Reports';
 import Subscriptions from './components/dashboard/superAdmin/Subscription';
 
-// Hostel Admin pages (from your earlier files)
+//  Hostel Admin pages (from your earlier files)
 import Dashboard from './components/dashboard/hostelAdmin/AdminDashboard';
 import ProfileView from './components/dashboard/hostelAdmin/HostelProfile';
 import RoomManagement from './components/dashboard/hostelAdmin/RoomManagement';
@@ -41,7 +41,7 @@ import SupervisorsView from './components/dashboard/hostelAdmin/RoleBaseAccessMa
 import AnalyticsView from './components/dashboard/hostelAdmin/Analytics';
 import SettingsView from './components/dashboard/hostelAdmin/Settings';
 
-// Student pages (from your earlier files)
+//  Student pages (from your earlier files)
 import StudentHome from './components/dashboard/tenant/StudentHome';
 import StudentPayments from './components/dashboard/tenant/StudentPayment';
 import StudentComplaints from './components/dashboard/tenant/StudentComplaints';
@@ -52,7 +52,7 @@ import LeaveApplications from './components/dashboard/tenant/LeaveApplications';
 import StudentProfile from './components/dashboard/tenant/StudentProfile';
 import Reviews from './components/dashboard/tenant/Reviews';
 
-// Visitor pages
+//  Visitor pages
 import VisitorHome from './components/dashboard/visitor/VisitorHome';
 import VisitorProfile from './components/dashboard/visitor/VisitorProfile';
 import MyBookings from './components/dashboard/visitor/MyBookings';
@@ -68,8 +68,8 @@ import RoomDetailsPage from './pages/RoomDetails';
 import FeatureDetails from './pages/FeaturesDetails';
 import ScrollToTop from './utils/ScrollToTop';
 
-// You can lazy-load big pages like this (optional):
-// const BigAnalytics = React.lazy(() => import('./components/dashboard/hostelAdmin/Analytics'));
+//  You can lazy-load big pages like this (optional):
+//  const BigAnalytics = React.lazy(() => import('./components/dashboard/hostelAdmin/Analytics'));
 
 function App() {
   return (
@@ -98,14 +98,14 @@ function App() {
               <Route
                 path="/super-admin/*"
                 element={
-                  // <AuthGate>
+                   //////<AuthGate>
 
-                  //   <ProtectedRoute>
-                  //     <RoleBasedRoute allowedRoles={['superadmin']}>
+                     <ProtectedRoute>
+                       <RoleBasedRoute allowedRoles={['superadmin']}>
                         <DashboardLayout role="superadmin" basePath='/super-admin' />
-                  //     </RoleBasedRoute>
-                  //   </ProtectedRoute>
-                  // </AuthGate>
+                       </RoleBasedRoute>
+                     </ProtectedRoute>
+                   //</AuthGate>
                 }
               >
                 {/* Example nested children for super-admin */}
@@ -124,14 +124,14 @@ function App() {
               <Route
                 path="/hostel-admin/*"
                 element={
-                  // <AuthGate>
+                  //////<AuthGate>
 
-                  //   <ProtectedRoute>
-                  //     <RoleBasedRoute allowedRoles={['hostel-admin']}>
+                    <ProtectedRoute>
+                      <RoleBasedRoute allowedRoles={['admin']}>
                         <DashboardLayout role="hostel-admin" basePath="/hostel-admin" />
-                  //     </RoleBasedRoute>
-                  //   </ProtectedRoute>
-                  // </AuthGate>
+                       </RoleBasedRoute>
+                   </ProtectedRoute>
+                   //</AuthGate>
                 }
               >
                 <Route index element={<Dashboard />} />
@@ -156,14 +156,14 @@ function App() {
               <Route
                 path="/student/*"
                 element={
-                  // <AuthGate>
+                   //////<AuthGate>
 
-                  //   <ProtectedRoute>
-                  //     <RoleBasedRoute allowedRoles={['student']}>
+                     <ProtectedRoute>
+                       <RoleBasedRoute allowedRoles={['student']}>
                         <DashboardLayout role="student" basePath="/student" />
-                  //     </RoleBasedRoute>
-                  //   </ProtectedRoute>
-                  // </AuthGate>
+                       </RoleBasedRoute>
+                     </ProtectedRoute>
+                   //</AuthGate>
                 }
               >
                 <Route index element={<StudentHome />} />
@@ -182,11 +182,11 @@ function App() {
               <Route
                 path="/visitor/*"
                 element={
-                  // <ProtectedRoute>
-                  //   <RoleBasedRoute allowedRoles={['visitor']}>
+                   <ProtectedRoute>
+                     <RoleBasedRoute allowedRoles={['visitor']}>
                       <DashboardLayout role="visitor" basePath="/visitor" />
-                  //   </RoleBasedRoute>
-                  // </ProtectedRoute>
+                     </RoleBasedRoute>
+                   </ProtectedRoute>
                 }
               >
                 <Route index element={<VisitorHome />} />
