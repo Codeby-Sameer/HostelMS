@@ -2,10 +2,10 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { logout, tokenRefreshed } from '../features/authSlice';
 
-const BASE_URL =
-  import.meta.env.VITE_ENV === 'production'
-    ? import.meta.env.VITE_PROD_API_URL
-    : import.meta.env.VITE_LOCAL_API_URL;
+const BASE_URL = import.meta.env.DEV
+  ? import.meta.env.VITE_LOCAL_API_URL
+  : import.meta.env.VITE_PROD_API_URL;
+
 
 console.log('Base URL for API requests:', BASE_URL);
 
