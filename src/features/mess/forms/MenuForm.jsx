@@ -18,7 +18,7 @@ import {
 import {
   formTemplates,
   validationSchemas
-} from "../../../utils/FormTempletes"
+} from "@/utils/FormTempletes"
 
 
 const MenuForm = ({ editingItem, onClose }) => {

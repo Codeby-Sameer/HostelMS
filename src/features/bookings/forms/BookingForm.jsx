@@ -14,7 +14,7 @@ import {
   SelectValue
 } from "@/components/ui/select"
 
-import { formTemplates, validationSchemas } from "../../../utils/FormTempletes"
+import { formTemplates, validationSchemas } from "@utils/FormTempletes"
 
 const BookingForm = ({ editingItem, onClose }) => {
 
