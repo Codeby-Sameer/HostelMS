@@ -2,7 +2,7 @@ import { useLazyVerifyAuthQuery, useVerifyAuthQuery } from '../services/authServ
 // src/hooks/useAuthBootstrap.js
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser,  setInitialized,logout } from '../features/authSlice';
+import { setUser,  setInitialized,logout } from '../features/auth/slice/authSlice';
 
 export function useAuthBootstrap() {
   const dispatch = useDispatch();

@@ -1,37 +1,48 @@
-// src/pages/dashboards/StudentDashboard.jsx
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import DashboardLayout from '../components/DashboardLayout';
+import { Route } from "react-router-dom"
 
-import StudentHome from '../components/dashboard/tenant/StudentHome';
-import StudentComplaints from '../components/dashboard/tenant/StudentComplaints';
-import StudentPayments from '../components/dashboard/tenant/StudentPayment';
-import StudentProfile from '../components/dashboard/tenant/StudentProfile';
-import MessMenu from '../components/dashboard/tenant/MessMenu';
-import Attendance from '../components/dashboard/tenant/Attendence';
-import Notices from '../components/dashboard/tenant/Notices';
-import LeaveApplications from '../components/dashboard/tenant/LeaveApplications';
-import Reviews from '../components/dashboard/tenant/Reviews';
-import Modal from '../context/Modal';
+import ProtectedRoute from "@/components/ProtectedRoute"
+import RoleBasedRoute from "@/routes/RoleBasedRoutes"
+import DashboardLayout from "@/components/DashboardLayout"
 
-const StudentRoutes = () => {
-  return (
-    <DashboardLayout userType="student">
-      <Routes>
-        <Route index element={<StudentHome />} />
-        <Route path="payments" element={<StudentPayments />} />
-        <Route path="complaints" element={<StudentComplaints />} />
-        <Route path="attendance" element={<Attendance />} />
-        <Route path="mess-menu" element={<MessMenu />} />
-        <Route path="notices" element={<Notices />} />
-        <Route path="leave" element={<LeaveApplications />} />
-        <Route path="profile" element={<StudentProfile />} />
-        <Route path="reviews" element={<Reviews />} />
-        <Route path="*" element={<StudentHome />} />
-      </Routes>
-      <Modal/>
-    </DashboardLayout>
-  );
-};
+import StudentHome from "@/pages/tenant/StudentHome"
+import StudentPayments from "@/pages/tenant/StudentPayment"
+import StudentComplaints from "@/pages/tenant/StudentComplaints"
+import Attendance from "@/pages/tenant/Attendence"
 
-export default StudentRoutes;
+import MessMenu from "@/pages/tenant/MessMenu"
+import Notices from "@/pages/tenant/Notices"
+
+import LeaveApplications from "@/pages/tenant/LeaveApplications"
+import StudentProfile from "@/pages/tenant/StudentProfile"
+
+import Reviews from "@/pages/tenant/Reviews"
+
+export const StudentRoutes = (
+  <Route
+    path="/student/*"
+    element={
+      <ProtectedRoute>
+        <RoleBasedRoute allowedRoles={["student"]}>
+          <DashboardLayout role="student" basePath="/student" />
+        </RoleBasedRoute>
+      </ProtectedRoute>
+    }
+  >
+    <Route index element={<StudentHome />} />
+
+    <Route path="payments" element={<StudentPayments />} />
+    <Route path="complaints" element={<StudentComplaints />} />
+
+    <Route path="attendance" element={<Attendance />} />
+
+    <Route path="mess-menu" element={<MessMenu />} />
+    <Route path="notices" element={<Notices />} />
+
+    <Route path="leave" element={<LeaveApplications />} />
+    <Route path="profile" element={<StudentProfile />} />
+
+    <Route path="reviews" element={<Reviews />} />
+
+    <Route path="*" element={<StudentHome />} />
+  </Route>
+)

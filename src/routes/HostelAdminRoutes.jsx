@@ -1,52 +1,65 @@
-// src/pages/dashboards/HostelAdminDashboard.jsx
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import DashboardLayout from './../components/DashboardLayout';
-import ProfileView from '../components/dashboard/hostelAdmin/HostelProfile';
-import RoomManagement from '../components/dashboard/hostelAdmin/RoomManagement';
-import BookingManagement from '../components/dashboard/hostelAdmin/BookingManagement';
-import CalendarView from '../components/dashboard/hostelAdmin/CalenderView';
-import StudentManagement from '../components/dashboard/hostelAdmin/StudentManagement';
-import PaymentsManagement from '../components/dashboard/hostelAdmin/PaymentsManagement';
-import ComplaintManagement from '../components/dashboard/hostelAdmin/ComplaintManagement';
-import MessManagement from '../components/dashboard/hostelAdmin/MessManagement';
-import AnnouncementManagement from '../components/dashboard/hostelAdmin/AnnouncementManagement';
-import AttendanceManagement from '../components/dashboard/hostelAdmin/AttendenceManagement';
-import MaintenanceManagement from '../components/dashboard/hostelAdmin/MaintenanceManagement';
-import SupervisorsView from '../components/dashboard/hostelAdmin/RoleBaseAccessManagement';
-import AnalyticsView from '../components/dashboard/hostelAdmin/Analytics';
-import SettingsView from '../components/dashboard/hostelAdmin/Settings';
-import Dashboard from '../components/dashboard/hostelAdmin/AdminDashboard';
-import { ModalProvider, useModal } from '../context/ModalContext';
-import Modal from '../context/Modal'; // ← Import Modal component
+import { Route } from "react-router-dom"
 
-const HostelAdminRoutes = () => {
- const{openModal}= useModal()
-  return (
-    
-      <DashboardLayout userType="hostel-admin">
-        <Routes>
-          <Route index element={<Dashboard />} />
-          <Route path="profile" element={<ProfileView />} />
-          <Route path="rooms" element={<RoomManagement />} />
-          <Route path="bookings" element={<BookingManagement openModal={openModal} />} />
-          <Route path="calendar" element={<CalendarView openModal={openModal}/>} />
-          <Route path="students" element={<StudentManagement openModal={openModal} />} />
-          <Route path="payments" element={<PaymentsManagement openModal={openModal} />} />
-          <Route path="complaints" element={<ComplaintManagement openModal={openModal} />} />
-          <Route path="mess" element={<MessManagement  openModal={openModal}/>} />
-          <Route path="announcements" element={<AnnouncementManagement openModal={openModal} />} />
-          <Route path="attendance" element={<AttendanceManagement openModal={openModal} />} />
-          <Route path="maintenance" element={<MaintenanceManagement  openModal={openModal}/>} />
-          <Route path="supervisors" element={<SupervisorsView  openModal={openModal}/>} />
-          <Route path="analytics" element={<AnalyticsView openModal={openModal} />} />
-          <Route path="settings" element={<SettingsView  openModal={openModal}/>} />
-          <Route path="*" element={<Dashboard />} />
-        </Routes>
-        <Modal /> {/* ← Add Modal component here */}
-      </DashboardLayout>
-    
-  );
-};
+import ProtectedRoute from "@/components/ProtectedRoute"
+import RoleBasedRoute from "@/routes/RoleBasedRoutes"
+import DashboardLayout from "@/components/DashboardLayout"
 
-export default HostelAdminRoutes;
+import Dashboard from "@/pages/hostelAdmin/AdminDashboard"
+import ProfileView from "@/pages/hostelAdmin/HostelProfile"
+import RoomManagement from "@/pages/hostelAdmin/RoomManagement"
+import BookingManagement from "@/pages/hostelAdmin/BookingManagement"
+import CalendarView from "@/pages/hostelAdmin/CalenderView"
+
+import StudentManagement from "@/pages/hostelAdmin/StudentManagement"
+import PaymentsManagement from "@/pages/hostelAdmin/PaymentsManagement"
+import ComplaintManagement from "@/pages/hostelAdmin/ComplaintManagement"
+
+import MessManagement from "@/pages/hostelAdmin/MessManagement"
+import AnnouncementManagement from "@/pages/hostelAdmin/AnnouncementManagement"
+
+import AttendanceManagement from "@/pages/hostelAdmin/AttendenceManagement"
+import MaintenanceManagement from "@/pages/hostelAdmin/MaintenanceManagement"
+
+import SupervisorsView from "@/pages/hostelAdmin/RoleBaseAccessManagement"
+
+import AnalyticsView from "@/pages/hostelAdmin/Analytics"
+import SettingsView from "@/pages/hostelAdmin/Settings"
+
+export const HostelAdminRoutes = (
+  <Route
+    path="/hostel-admin/*"
+    element={
+      <ProtectedRoute>
+        <RoleBasedRoute allowedRoles={["admin"]}>
+          <DashboardLayout role="hostel-admin" basePath="/hostel-admin" />
+        </RoleBasedRoute>
+      </ProtectedRoute>
+    }
+  >
+    <Route index element={<Dashboard />} />
+
+    <Route path="profile" element={<ProfileView />} />
+    <Route path="rooms" element={<RoomManagement />} />
+
+    <Route path="bookings" element={<BookingManagement />} />
+    <Route path="calendar" element={<CalendarView />} />
+
+    <Route path="students" element={<StudentManagement />} />
+    <Route path="payments" element={<PaymentsManagement />} />
+
+    <Route path="complaints" element={<ComplaintManagement />} />
+
+    <Route path="mess" element={<MessManagement />} />
+    <Route path="announcements" element={<AnnouncementManagement />} />
+
+    <Route path="attendance" element={<AttendanceManagement />} />
+    <Route path="maintenance" element={<MaintenanceManagement />} />
+
+    <Route path="supervisors" element={<SupervisorsView />} />
+
+    <Route path="analytics" element={<AnalyticsView />} />
+    <Route path="settings" element={<SettingsView />} />
+
+    <Route path="*" element={<Dashboard />} />
+  </Route>
+)

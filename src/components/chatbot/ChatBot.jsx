@@ -1,108 +1,209 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"
 import {
   FaComments,
   FaPaperPlane,
   FaTimes,
   FaRobot,
   FaUser
-} from "react-icons/fa";
-import { botReplies } from "./chatBotData";
+} from "react-icons/fa"
+
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { ScrollArea } from "@/components/ui/scroll-area"
+
+import { botReplies } from "./chatBotData"
+
+const SUGGESTIONS = [
+  "Check room availability",
+  "View pricing",
+  "Contact admin"
+]
 
 const ChatBot = () => {
-  const [open, setOpen] = useState(false);
+
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   const [messages, setMessages] = useState([
     { from: "bot", text: "Hello 👋 I’m HostelBot. How can I help you?" }
-  ]);
-  const [input, setInput] = useState("");
-  const messagesEndRef = useRef(null);
+  ])
+
+  const [input, setInput] = useState("")
+  const messagesEndRef = useRef(null)
 
   const scrollToBottom = () =>
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, loading])
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
-
-    const userMessage = { from: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
+  const handleBotReply = (text) => {
+    setLoading(true)
 
     setTimeout(() => {
-      const botMessage = {
-        from: "bot",
-        text: botReplies(input)
-      };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 600);
-  };
+      setMessages((prev) => [
+        ...prev,
+        { from: "bot", text: botReplies(text) }
+      ])
+      setLoading(false)
+    }, 800)
+  }
+
+  const sendMessage = () => {
+    if (!input.trim()) return
+
+    const userText = input
+
+    setMessages((prev) => [...prev, { from: "user", text: userText }])
+    setInput("")
+
+    handleBotReply(userText)
+  }
+
+  const handleSuggestion = (text) => {
+    setMessages((prev) => [...prev, { from: "user", text }])
+    handleBotReply(text)
+  }
 
   return (
     <>
       {/* Floating Button */}
-      <button
+
+      <Button
+        size="icon"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-blue-600 text-white shadow-xl flex items-center justify-center hover:scale-110 transition z-50"
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-xl z-50"
       >
-        <FaComments size={22} />
-      </button>
+        <FaComments size={20} />
+      </Button>
 
       {/* Chat Window */}
+
       {open && (
-        <div className="fixed bottom-24 right-6  md:w-96 w-25 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden z-50">
-          
+        <Card className="fixed bottom-24 right-6 w-[80vw] max-w-sm h-[420px] flex flex-col shadow-2xl z-50 backdrop-blur-xl">
+
           {/* Header */}
-          <div className="bg-blue-600 text-white px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
+
+          <CardHeader className="flex flex-row items-center justify-between border-b p-4">
+
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
               <FaRobot />
-              <span className="font-semibold">HostelBot</span>
-            </div>
-            <button onClick={() => setOpen(false)}>
+              HostelBot
+            </CardTitle>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setOpen(false)}
+            >
               <FaTimes />
-            </button>
-          </div>
+            </Button>
+
+          </CardHeader>
 
           {/* Messages */}
-          <div className="flex-1 p-4 space-y-3 overflow-y-auto bg-slate-50">
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm shadow
-                    ${msg.from === "user"
-                      ? "bg-blue-600 text-white rounded-br-none"
-                      : "bg-white text-slate-700 rounded-bl-none"}
-                  `}
-                >
-                  {msg.text}
-                </div>
+          <CardContent className="flex-1 p-0 min-h-0"> {/* 👈 VERY IMPORTANT */}
+
+            <ScrollArea className="h-full w-full">
+
+              <div className="p-4 space-y-4">
+
+                {messages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex items-end gap-2 ${msg.from === "user" ? "justify-end" : "justify-start"
+                      }`}
+                  >
+
+                    {/* Bot Avatar */}
+                    {msg.from === "bot" && (
+                      <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-xs shrink-0">
+                        <FaRobot />
+                      </div>
+                    )}
+
+                    {/* Message */}
+                    <div
+                      className={`max-w-[75%] px-4 py-2 text-sm rounded-2xl shadow-sm
+              ${msg.from === "user"
+                          ? "bg-primary text-primary-foreground rounded-br-none"
+                          : "bg-muted text-foreground rounded-bl-none"
+                        }
+            `}
+                    >
+                      {msg.text}
+                    </div>
+
+                    {/* User Avatar */}
+                    {msg.from === "user" && (
+                      <div className="w-8 h-8 rounded-full bg-gray-400 text-white flex items-center justify-center text-xs shrink-0">
+                        <FaUser />
+                      </div>
+                    )}
+
+                  </div>
+                ))}
+
+                {/* Typing */}
+                {loading && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <FaRobot />
+                    <span className="animate-pulse">Typing...</span>
+                  </div>
+                )}
+
+                <div ref={messagesEndRef} />
+
               </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
+
+            </ScrollArea>
+
+          </CardContent>
+          {/* Suggestions */}
+
+          {messages.length <= 1 && (
+            <div className="px-3 pb-2 flex flex-wrap gap-2">
+              {SUGGESTIONS.map((s, i) => (
+                <Button
+                  key={i}
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => handleSuggestion(s)}
+                  className="rounded-full"
+                >
+                  {s}
+                </Button>
+              ))}
+            </div>
+          )}
 
           {/* Input */}
-          <div className="p-3 border-t flex gap-2">
-            <input
+
+          <CardFooter className="border-t p-3 flex gap-2">
+
+            <Input
               value={input}
+              placeholder="Type a message..."
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              placeholder="Type a message..."
-              className="flex-1 px-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <button
-              onClick={sendMessage}
-              className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition"
-            >
+
+            <Button size="icon" onClick={sendMessage}>
               <FaPaperPlane size={14} />
-            </button>
-          </div>
-        </div>
+            </Button>
+
+          </CardFooter>
+
+        </Card>
       )}
     </>
-  );
-};
+  )
+}
 
-export default ChatBot;
+export default ChatBot

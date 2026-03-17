@@ -7,7 +7,7 @@ import {
   selectAuthState,
   getDashboardPathByRole,
   hasRequiredRole,
-} from '../features/authSlice';
+} from '../features/auth/slice/authSlice';
 
 export const useAuth = () => {
   const user = useSelector(selectCurrentUser);
