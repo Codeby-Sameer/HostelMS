@@ -17,12 +17,18 @@ const authSlice = createSlice({
     login: (state, action) => {
       console.log('Login action payload:', action.payload);
       
-      state.user = action.payload.user;
-       state.token = action.payload.token;
+      // Handle both old format (just user) and new format (user, token, stats)
+      const { user, token, stats } = action.payload;
+      
+      state.user = user || action.payload;
+      state.token = token || null;
+      state.stats = user?.role === 'superadmin' || user?.role === 'admin' ? stats || null : null;
       state.loading = false;
       state.error = null;
       state.lastRefreshed = Date.now();
-      state.initialized = true;          
+      state.initialized = true;
+      
+      console.log('Auth state updated - Token:', !!token, 'User:', user?.email);
     },
 
     logout: (state) => {
@@ -32,7 +38,15 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.lastRefreshed = null;
-      state.initialized = true;         
+      state.initialized = true;
+      
+      // Clear localStorage on logout
+      try {
+        localStorage.removeItem('authState');
+        console.log('✓ Auth state cleared from localStorage');
+      } catch (error) {
+        console.error('Failed to clear auth state:', error);
+      }
     },
 
     tokenRefreshed: (state) => {
@@ -43,6 +57,7 @@ const authSlice = createSlice({
     updateToken: (state, action) => {
       state.token = action.payload;
       state.lastRefreshed = Date.now();
+      console.log('Token updated:', !!action.payload);
     },
 
     clearError: (state) => {
@@ -59,6 +74,7 @@ const authSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
       state.error = null;
+      console.log('User set:', action.payload?.email);
     },
 
    

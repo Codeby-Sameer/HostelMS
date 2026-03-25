@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import {
   FaTachometerAlt,
   FaBuilding,
+  FaMapMarkerAlt,
   FaUsers,
   FaCreditCard,
   FaChartLine,
@@ -60,8 +61,10 @@ const Sidebar = ({ role, basePath = "/dashboard" }) => {
       superadmin: [
         { id: "dashboard", path: `${basePath}`, icon: <FaTachometerAlt />, label: "Dashboard" },
         { id: "hostels", path: `${basePath}/hostels`, icon: <FaBuilding />, label: "All Hostels" },
+        { id: "locations", path: `${basePath}/locations`, icon: <FaMapMarkerAlt />, label: "Locations" },
         { id: "users", path: `${basePath}/users`, icon: <FaUsers />, label: "User Management" },
         { id: "subscriptions", path: `${basePath}/subscriptions`, icon: <FaCreditCard />, label: "Subscriptions" },
+        { id: "plans", path: `${basePath}/plans`, icon: <FaChartLine />, label: "Plans" },
         { id: "revenue", path: `${basePath}/revenue`, icon: <FaChartLine />, label: "Revenue Analytics" },
         { id: "reports", path: `${basePath}/reports`, icon: <FaFileAlt />, label: "Reports" }
       ],

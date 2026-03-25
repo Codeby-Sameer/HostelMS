@@ -6,15 +6,15 @@ export const hostelApi = appApi.injectEndpoints({
   endpoints: (builder) => ({
     // Hostel CRUD
     getHostels: builder.query({
-      query: (params) => ({
+      query: (params = {}) => ({
         url: '/api/v1/api/v1/hostels/',
         params: buildQueryParams({
-          skip: params?.skip,
-          limit: params?.limit,
+          skip: params?.skip || 0,
+          limit: params?.limit || 100,
           search: params?.search,
         }),
       }),
-      providesTags: (result) => providesList(result, 'Hostel'),
+      providesTags: (result) => providesList(result?.data || result || [], 'Hostel'),
     }),
 
     getHostelById: builder.query({
@@ -51,45 +51,8 @@ export const hostelApi = appApi.injectEndpoints({
       invalidatesTags: invalidatesList('Hostel'),
     }),
 
-    // Location Management
-    getLocations: builder.query({
-      query: () => '/api/v1/api/v1/locations/',
-      providesTags: (result) => providesList(result, 'Location'),
-    }),
-
-    getLocationById: builder.query({
-      query: (locationId) => `/api/v1/api/v1/locations/${locationId}`,
-      providesTags: (result, error, locationId) => [{ type: 'Location', id: locationId }],
-    }),
-
-    createLocation: builder.mutation({
-      query: (locationData) => ({
-        url: '/api/v1/api/v1/locations/',
-        method: 'POST',
-        body: locationData,
-      }),
-      invalidatesTags: invalidatesList('Location'),
-    }),
-
-    updateLocation: builder.mutation({
-      query: ({ locationId, ...data }) => ({
-        url: `/api/v1/api/v1/locations/${locationId}`,
-        method: 'PUT',
-        body: data,
-      }),
-      invalidatesTags: (result, error, { locationId }) => [
-        { type: 'Location', id: locationId },
-        { type: 'Location', id: 'LIST' },
-      ],
-    }),
-
-    deleteLocation: builder.mutation({
-      query: (locationId) => ({
-        url: `/api/v1/api/v1/locations/${locationId}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: invalidatesList('Location'),
-    }),
+    // Location Management - Use locationsApi instead
+    // These endpoints are now managed in locationsApi.js
 
     // Hostel Comparison
     compareHostels: builder.query({

@@ -6,10 +6,12 @@ import DashboardLayout from "@/components/DashboardLayout"
 
 import SuperAdminDashboard from "@/pages/superAdmin/SuperAdminDashboard"
 import HostelManagement from "@/pages/superAdmin/HostelManagement"
+import LocationManagement from "@/pages/superAdmin/LocationManagement"
 import AdminManagement from "@/pages/superAdmin/AdminManagement"
 import SystemHealth from "@/pages/superAdmin/SystemHealth"
 import Analytics from "@/pages/superAdmin/Analytics"
 import Subscriptions from "@/pages/superAdmin/Subscription"
+import PlanManagement from "@/pages/superAdmin/PlanManagement"
 import Reports from "@/pages/superAdmin/Reports"
 
 export const SuperAdminRoutes = (
@@ -26,12 +28,14 @@ export const SuperAdminRoutes = (
     <Route index element={<SuperAdminDashboard />} />
 
     <Route path="hostels" element={<HostelManagement />} />
+    <Route path="locations" element={<LocationManagement />} />
     <Route path="users" element={<AdminManagement />} />
 
     <Route path="system-config" element={<SystemHealth />} />
     <Route path="revenue" element={<Analytics />} />
 
     <Route path="subscriptions" element={<Subscriptions />} />
+    <Route path="plans" element={<PlanManagement />} />
     <Route path="reports" element={<Reports />} />
 
     <Route path="*" element={<SuperAdminDashboard />} />

@@ -73,8 +73,15 @@ const LoginPage = () => {
 
   function handleDemoLogin(role) {
     const user = demoUsers[role];
+    
+    // For demo login, create a fake token
+    const demoToken = `demo_token_${role}_${Date.now()}`;
 
-    dispatch(login(user));
+    dispatch(login({
+      user,
+      token: demoToken,
+      stats: null,
+    }));
 
     toast.success(`Logged in as ${user.name}`);
 
@@ -91,11 +98,21 @@ const LoginPage = () => {
       const res = await loginApi(values).unwrap();
       console.log(res, 'iam res after login');
 
-      // store user in redux
+      // Extract token - try multiple field names since backends vary
+      const token = res.token || res.access_token || res.accessToken || res.auth_token;
+      
+      if (!token) {
+        console.error('No token found in login response:', res);
+        toast.error('Login response missing authentication token. Contact support.');
+        return;
+      }
+
+      // Store user AND token in redux
       dispatch(login({
         user: res.user,
-        token: res.access_token,
-      }))
+        token: token,
+        stats: res.stats,
+      }));
 
       toast.success('Login successful');
       navigate('/dashboard');

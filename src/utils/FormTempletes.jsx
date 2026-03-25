@@ -3,19 +3,30 @@ import * as Yup from 'yup';
 
 export const formTemplates = {
   hostel: [
-    { name: 'hostelName', label: 'Hostel Name', type: 'text', required: true },
+    { name: 'hostel_name', label: 'Hostel Name', type: 'text', required: true },
     { name: 'description', label: 'Description', type: 'textarea', required: true },
     { name: 'address', label: 'Full Address', type: 'textarea', required: true },
-    { name: 'hostelType', label: 'Hostel Type', type: 'select', options: ['Boys Only', 'Girls Only', 'Co-Educational'], required: true },
-    { name: 'contactEmail', label: 'Contact Email', type: 'email', required: true },
-    { name: 'contactPhone', label: 'Contact Phone', type: 'tel', required: true },
+    { name: 'location_id', label: 'Location (City)', type: 'select', options: [], required: true },
+    { name: 'city', label: 'City', type: 'text', required: false },
+    { name: 'state', label: 'State', type: 'text', required: false },
+    { name: 'pincode', label: 'Pincode', type: 'text', required: false },
+    { name: 'hostel_type', label: 'Hostel Type', type: 'select', options: ['Boys Only', 'Girls Only', 'Co-Educational'], required: true },
+    { name: 'contact_email', label: 'Contact Email', type: 'email', required: true },
+    { name: 'contact_phone', label: 'Contact Phone', type: 'tel', required: true },
     { name: 'amenities', label: 'Amenities (comma-separated)', type: 'textarea', required: true },
     { name: 'rules', label: 'Rules & Regulations', type: 'textarea', required: true },
-    { name: 'checkInTime', label: 'Check-in Time', type: 'time', required: true },
-    { name: 'checkOutTime', label: 'Check-out Time', type: 'time', required: true },
-    { name: 'totalBeds', label: 'Total Beds', type: 'number', required: true },
-    { name: 'occupancy', label: 'Current Occupancy', type: 'number', required: true },
-    { name: 'revenue', label: 'Monthly Revenue', type: 'number' }
+    { name: 'check_in', label: 'Check-in Time', type: 'time', required: true },
+    { name: 'check_out', label: 'Check-out Time', type: 'time', required: true },
+    { name: 'total_rooms', label: 'Total Rooms', type: 'number', required: false },
+    { name: 'total_beds', label: 'Total Beds', type: 'number', required: true },
+    { name: 'available_rooms', label: 'Available Rooms', type: 'number', required: false },
+    { name: 'current_occupancy', label: 'Current Occupancy', type: 'number', required: true },
+    { name: 'price_per_month', label: 'Price Per Month', type: 'number', required: false },
+    { name: 'monthly_revenue', label: 'Monthly Revenue', type: 'number', required: false },
+    { name: 'total_revenue', label: 'Total Revenue', type: 'number', required: false },
+    { name: 'rating', label: 'Hostel Rating', type: 'number', required: false },
+    { name: 'total_reviews', label: 'Total Reviews', type: 'number', required: false },
+    { name: 'assigned_admin', label: 'Assigned Admin', type: 'text', required: false }
   ],
   room: [
     { name: 'roomNumber', label: 'Room Number', type: 'text', required: true },
@@ -122,19 +133,42 @@ export const formTemplates = {
     { name: 'department', label: 'Department', type: 'select', options: ['Administration', 'Maintenance', 'Accounts', 'Security', 'Housekeeping', 'Mess'], required: true },
     { name: 'accessLevel', label: 'Access Level', type: 'select', options: ['Full Access', 'Limited Access', 'Read Only'], required: true },
     { name: 'permissions', label: 'Specific Permissions', type: 'textarea' }
+  ],
+  admin: [
+    { name: 'adminName', label: 'Admin Name', type: 'text', required: true },
+    { name: 'adminEmail', label: 'Email Address', type: 'email', required: true },
+    { name: 'adminPhone', label: 'Phone Number', type: 'tel', required: true },
+    { name: 'employeeId', label: 'Employee ID', type: 'text', required: true },
+    { name: 'role', label: 'Role', type: 'select', options: ['Super Admin', 'Hostel Admin', 'Manager', 'Staff'], required: true },
+    { name: 'department', label: 'Department', type: 'select', options: ['Administration', 'Maintenance', 'Accounts', 'Security', 'Housekeeping', 'Mess'], required: true },
+    { name: 'accessLevel', label: 'Access Level', type: 'select', options: ['Full Access', 'Limited Access', 'Read Only'], required: true },
+    { name: 'status', label: 'Status', type: 'select', options: ['active', 'inactive', 'suspended'], required: true },
+    { name: 'permissions', label: 'Specific Permissions', type: 'textarea' }
   ]
 };
 
 export const validationSchemas = {
   hostel: Yup.object({
-    hostelName: Yup.string().required('Hostel name is required'),
+    hostel_name: Yup.string().min(1, 'Hostel name is required').required('Hostel name is required'),
     description: Yup.string().required('Description is required'),
-    address: Yup.string().required('Address is required'),
-    hostelType: Yup.string().required('Hostel type is required'),
-    contactEmail: Yup.string().email('Invalid email').required('Email is required'),
-    contactPhone: Yup.string().required('Phone number is required'),
-    totalBeds: Yup.number().required('Total beds is required').min(1, 'Must be at least 1'),
-    occupancy: Yup.number().required('Occupancy is required').min(0, 'Cannot be negative')
+    address: Yup.string().min(1, 'Address is required').required('Address is required'),
+    location_id: Yup.number().required('Location is required'),
+    city: Yup.string(),
+    state: Yup.string(),
+    pincode: Yup.string(),
+    hostel_type: Yup.string().required('Hostel type is required'),
+    contact_email: Yup.string().email('Invalid email').required('Email is required'),
+    contact_phone: Yup.string().required('Phone number is required'),
+    total_rooms: Yup.number().min(0, 'Cannot be negative'),
+    total_beds: Yup.number().required('Total beds is required').min(1, 'Must be at least 1'),
+    available_rooms: Yup.number().min(0, 'Cannot be negative'),
+    current_occupancy: Yup.number().required('Occupancy is required').min(0, 'Cannot be negative'),
+    price_per_month: Yup.number().min(0, 'Cannot be negative'),
+    monthly_revenue: Yup.number().min(0, 'Cannot be negative'),
+    total_revenue: Yup.number().min(0, 'Cannot be negative'),
+    rating: Yup.number().min(0, 'Cannot be negative').max(5, 'Max rating is 5'),
+    total_reviews: Yup.number().min(0, 'Cannot be negative'),
+    assigned_admin: Yup.string()
   }),
   room: Yup.object({
     roomNumber: Yup.string().required('Room number is required'),
@@ -215,5 +249,16 @@ export const validationSchemas = {
     role: Yup.string().required('Role is required'),
     department: Yup.string().required('Department is required'),
     accessLevel: Yup.string().required('Access level is required')
+  }),
+  admin: Yup.object({
+    adminName: Yup.string().required('Admin name is required'),
+    adminEmail: Yup.string().email('Invalid email').required('Email is required'),
+    adminPhone: Yup.string().required('Phone number is required'),
+    employeeId: Yup.string().required('Employee ID is required'),
+    role: Yup.string().required('Role is required'),
+    department: Yup.string().required('Department is required'),
+    accessLevel: Yup.string().required('Access level is required'),
+    status: Yup.string().required('Status is required'),
+    permissions: Yup.string()
   })
 };

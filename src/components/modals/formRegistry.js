@@ -2,6 +2,7 @@ import { lazy } from "react"
 
 export const formRegistry = {
   hostel: lazy(() => import("@/features/hostels/forms/HostelForm")),
+  location: lazy(() => import("@/features/locations/forms/LocationForm")),
   room: lazy(() => import("@/features/rooms/forms/RoomForm")),
   bed: lazy(() => import("@/features/rooms/forms/BedForm")),
 
@@ -26,5 +27,17 @@ export const formRegistry = {
 
   maintenance: lazy(() =>
     import("@/features/maintenance/forms/MaintenanceForm")
+  ),
+
+  admin: lazy(() =>
+    import("@/features/admin/forms/AdminForm")
+  ),
+
+  subscription: lazy(() =>
+    import("@/features/subscriptions/forms/SubscriptionForm")
+  ),
+
+  plan: lazy(() =>
+    import("@/features/subscriptions/forms/PlanForm")
   ),
 }

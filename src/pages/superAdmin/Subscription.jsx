@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
+import { useModal } from "@/context/ModalContext"
 
 import {
   Card,
@@ -11,104 +12,81 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 
+import { useSubscriptions } from "@/features/subscriptions/hooks/useSubscriptions"
+import { useDeleteSubscriptionMutation } from "@/features/subscriptions/api/subscriptionsApi"
+import toast from "react-hot-toast"
+
 const Subscriptions = () => {
+  const { openModal } = useModal()
 
-  const [subscriptions, setSubscriptions] = useState([])
-  const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState("all")
+  const [deleteConfirmation, setDeleteConfirmation] = useState(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
-  useEffect(() => {
-
-    setTimeout(() => {
-
-      setSubscriptions([
-        {
-          id: 1,
-          hostelName: "Luxury Suites",
-          subscriptionTier: "Premium",
-          subscriptionStatus: "Active",
-          amount: 299,
-          paymentDate: "2024-02-15",
-          email: "billing@luxurysuites.com",
-          startDate: "2024-01-15",
-          cycle: "Monthly"
-        },
-        {
-          id: 2,
-          hostelName: "City Center Hostel",
-          subscriptionTier: "Standard",
-          subscriptionStatus: "Active",
-          amount: 199,
-          paymentDate: "2024-02-10",
-          email: "admin@citycenter.com",
-          startDate: "2024-01-10",
-          cycle: "Monthly"
-        },
-        {
-          id: 3,
-          hostelName: "Campus Living",
-          subscriptionTier: "Premium",
-          subscriptionStatus: "Active",
-          amount: 299,
-          paymentDate: "2024-02-08",
-          email: "billing@campusliving.com",
-          startDate: "2024-01-08",
-          cycle: "Monthly"
-        },
-        {
-          id: 4,
-          hostelName: "Budget Stay",
-          subscriptionTier: "Free",
-          subscriptionStatus: "Active",
-          amount: 0,
-          paymentDate: "N/A",
-          email: "info@budgetstay.com",
-          startDate: "2024-01-05",
-          cycle: "Free"
-        },
-        {
-          id: 5,
-          hostelName: "Urban Hostel",
-          subscriptionTier: "Standard",
-          subscriptionStatus: "Expired",
-          amount: 199,
-          paymentDate: "2024-01-28",
-          email: "contact@urbanhostel.com",
-          startDate: "2023-12-28",
-          cycle: "Monthly"
-        }
-      ])
-
-      setLoading(false)
-
-    }, 1000)
-
-  }, [])
+  const { subscriptions, isLoading, error, refetch } = useSubscriptions()
+  const [deleteSubscription] = useDeleteSubscriptionMutation()
 
 
-  const filteredSubscriptions = subscriptions.filter(sub =>
-    filter === "all" ||
-    sub.subscriptionStatus.toLowerCase() === filter.toLowerCase()
-  )
-
+  const filteredSubscriptions = subscriptions.filter(sub => {
+    // Filter by status if filter is applied
+    if (filter === "all") return true;
+    
+    const status = (sub.status || "active").toLowerCase();
+    return status === filter.toLowerCase();
+  });
 
   const stats = {
     revenue: subscriptions
-      .filter(s => s.subscriptionStatus === "Active")
-      .reduce((sum, sub) => sum + sub.amount, 0)
-  }
+      .filter(s => (s.status || "active").toLowerCase() === "active")
+      .reduce((sum, sub) => sum + (sub.amount || 0), 0),
+    total: subscriptions.length,
+  };
+
+  // Get plan names/tiers - supporting different field names
+  const getPlanName = (sub) => sub.plan_name || sub.tier || sub.name || "Standard";
+
+  const handleAddClick = () => {
+    openModal("subscription", { isNew: true })
+  };
+
+  const handleEditClick = (subscription) => {
+    openModal("subscription", subscription)
+  };
+
+  const handleDeleteClick = (subscription) => {
+    setDeleteConfirmation(subscription)
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteConfirmation?.id) return
+
+    try {
+      setIsDeleting(true)
+      await deleteSubscription(deleteConfirmation.id).unwrap()
+      toast.success("Subscription deleted successfully!")
+      setDeleteConfirmation(null)
+      refetch()
+    } catch (error) {
+      console.error("Delete error:", error)
+      toast.error(error?.data?.detail || "Failed to delete subscription")
+    } finally {
+      setIsDeleting(false)
+    }
+  };
 
 
   const getStatusVariant = (status) => {
-    if (status === "Active") return "default"
-    if (status === "Expired") return "destructive"
-    return "secondary"
+    const lowerStatus = (status || "").toLowerCase();
+    if (lowerStatus === "active") return "default"
+    if (lowerStatus === "expired") return "destructive"
+    if (lowerStatus === "pending") return "secondary"
+    return "outline"
   }
 
-
   const getTierVariant = (tier) => {
-    if (tier === "Premium") return "default"
-    if (tier === "Standard") return "secondary"
+    const lowerTier = (tier || "").toLowerCase();
+    if (lowerTier.includes("premium")) return "default"
+    if (lowerTier.includes("standard")) return "secondary"
     return "outline"
   }
 
@@ -130,7 +108,7 @@ const Subscriptions = () => {
           </p>
         </div>
 
-        <Button>
+        <Button onClick={handleAddClick}>
           + Add Subscription
         </Button>
 
@@ -142,23 +120,23 @@ const Subscriptions = () => {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
         <StatCard
-          title="Free Tier"
-          value={subscriptions.filter(s => s.subscriptionTier === "Free").length}
+          title="Active Subscriptions"
+          value={subscriptions.filter(s => (s.status || "active").toLowerCase() === "active").length}
         />
 
         <StatCard
-          title="Standard Tier"
-          value={subscriptions.filter(s => s.subscriptionTier === "Standard").length}
+          title="Expired Subscriptions"
+          value={subscriptions.filter(s => (s.status || "active").toLowerCase() === "expired").length}
         />
 
         <StatCard
-          title="Premium Tier"
-          value={subscriptions.filter(s => s.subscriptionTier === "Premium").length}
+          title="Total Subscriptions"
+          value={subscriptions.length}
         />
 
         <StatCard
           title="Monthly Revenue"
-          value={`$${stats.revenue}`}
+          value={`$${stats.revenue.toLocaleString()}`}
         />
 
       </div>
@@ -196,10 +174,49 @@ const Subscriptions = () => {
 
       <div className="space-y-4">
 
-        {loading ? (
+        {deleteConfirmation && (
+          <Card className="border-red-200 bg-red-50">
+            <CardContent className="p-4">
+              <p className="font-semibold mb-3">
+                Are you sure you want to delete this subscription?
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleConfirmDelete}
+                  variant="destructive"
+                  size="sm"
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? "Deleting..." : "Confirm Delete"}
+                </Button>
+                <Button
+                  onClick={() => setDeleteConfirmation(null)}
+                  variant="outline"
+                  size="sm"
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-          <Skeleton className="h-24 w-full" />
-
+        {isLoading ? (
+          <>
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-24 w-full" />
+          </>
+        ) : error ? (
+          <Card className="border-red-200 bg-red-50">
+            <CardContent className="p-6 text-red-800">
+              <p className="font-semibold">Error loading subscriptions</p>
+              <p className="text-sm mt-2">{error?.data?.message || error?.message || "Please try again"}</p>
+              <Button onClick={() => refetch()} variant="outline" size="sm" className="mt-3">
+                Retry
+              </Button>
+            </CardContent>
+          </Card>
         ) : filteredSubscriptions.length === 0 ? (
 
           <Card>
@@ -220,25 +237,33 @@ const Subscriptions = () => {
 
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
 
-                  <div>
+                  <div className="flex-1">
 
                     <h3 className="font-semibold text-lg">
-                      {sub.hostelName}
+                      {sub.hostel_name || sub.organisation_name || "Hostel"}
                     </h3>
 
                     <p className="text-sm text-muted-foreground">
-                      {sub.email}
+                      {sub.email || "No email"}
                     </p>
 
                   </div>
 
                   <div className="flex gap-2">
 
-                    <Button size="sm" variant="secondary">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => handleEditClick(sub)}
+                    >
                       Edit
                     </Button>
 
-                    <Button size="sm" variant="destructive">
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDeleteClick(sub)}
+                    >
                       Delete
                     </Button>
 
@@ -251,21 +276,25 @@ const Subscriptions = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
 
-                  <p>💰 ${sub.amount}/month</p>
+                  <p>💰 ${sub.amount || 0}/month</p>
 
-                  <p>
-                    📅 Next Payment:
-                    {sub.paymentDate !== "N/A"
-                      ? new Date(sub.paymentDate).toLocaleDateString()
-                      : "N/A"}
-                  </p>
+                  {sub.next_billing_date && (
+                    <p>
+                      📅 Next Payment:
+                      {new Date(sub.next_billing_date).toLocaleDateString()}
+                    </p>
+                  )}
 
-                  <p>🔄 Cycle: {sub.cycle}</p>
+                  {sub.billing_cycle && (
+                    <p>🔄 Cycle: {sub.billing_cycle}</p>
+                  )}
 
-                  <p>
-                    Started:
-                    {new Date(sub.startDate).toLocaleDateString()}
-                  </p>
+                  {sub.start_date && (
+                    <p>
+                      Started:
+                      {new Date(sub.start_date).toLocaleDateString()}
+                    </p>
+                  )}
 
                 </div>
 
@@ -275,17 +304,17 @@ const Subscriptions = () => {
                 <div className="flex flex-wrap gap-2">
 
                   <Badge
-                    variant={getStatusVariant(sub.subscriptionStatus)}
+                    variant={getStatusVariant((sub.status || "active"))}
                     className="rounded-full"
                   >
-                    {sub.subscriptionStatus}
+                    {sub.status || "Active"}
                   </Badge>
 
                   <Badge
-                    variant={getTierVariant(sub.subscriptionTier)}
+                    variant={getTierVariant(getPlanName(sub))}
                     className="rounded-full"
                   >
-                    {sub.subscriptionTier}
+                    {getPlanName(sub)}
                   </Badge>
 
                 </div>
@@ -297,6 +326,7 @@ const Subscriptions = () => {
           ))
 
         )}
+
 
       </div>
 

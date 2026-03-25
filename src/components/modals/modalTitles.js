@@ -4,6 +4,11 @@ export const modalTitles = {
     edit: "Edit Hostel",
   },
 
+  location: {
+    create: "Add Location",
+    edit: "Edit Location",
+  },
+
   room: {
     create: "Add Room Type",
     edit: "Edit Room Type",
@@ -57,5 +62,20 @@ export const modalTitles = {
   maintenance: {
     create: "Log Maintenance",
     edit: "Edit Maintenance",
+  },
+
+  admin: {
+    create: "Add Administrator",
+    edit: "Edit Administrator",
+  },
+
+  subscription: {
+    create: "Add Subscription",
+    edit: "Edit Subscription",
+  },
+
+  plan: {
+    create: "Add Plan",
+    edit: "Edit Plan",
   },
 }

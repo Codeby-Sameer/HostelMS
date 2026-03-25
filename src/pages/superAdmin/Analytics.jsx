@@ -1,165 +1,166 @@
 import React, { useState, useEffect } from 'react'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from '@/components/ui/select'
+import { useGetHostelSummaryQuery, useGetReportStatisticsQuery } from '../../features/reports/api/reportsApi'
+import { useHostels } from '../../features/hostels/hooks/useHostels'
 
 const Analytics = () => {
-  const [analyticsData, setAnalyticsData] = useState(null)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setAnalyticsData({
-        revenueTrends: [15000, 18000, 22000, 25000, 28000, 32000],
-        occupancyTrends: [65, 70, 75, 80, 85, 88],
-        visitorStats: {
-          total: 12450,
-          conversion: 8.5,
-          avgSession: 4.2
-        },
-        bookingStats: {
-          total: 1058,
-          avgValue: 285,
-          cancellation: 3.2
-        },
-        retentionStats: {
-          rate: 92,
-          avgStay: 8.5,
-          repeatBookings: 34
-        }
-      })
-    }, 1500)
-  }, [])
-
+  const [selectedHostelId, setSelectedHostelId] = useState(null)
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
 
+  // Get list of hostels
+  const { hostels, isLoading: hostelsLoading } = useHostels()
+
+  // Set first hostel as selected by default
+  useEffect(() => {
+    if (hostels && hostels.length > 0 && !selectedHostelId) {
+      setSelectedHostelId(hostels[0].id)
+    }
+  }, [hostels, selectedHostelId])
+
+  // Get analytics for selected hostel
+  const { data: analyticsData, isLoading: analyticsLoading, error: analyticsError } = useGetHostelSummaryQuery(
+    selectedHostelId,
+    { skip: !selectedHostelId }
+  )
+
+  // Get overall statistics
+  const { data: statsData, isLoading: statsLoading } = useGetReportStatisticsQuery()
+
+  const summary = analyticsData?.summary || {}
+
+  // Mock trend data
+  const revenueTrends = [15000, 18000, 22000, 25000, 28000, 32000]
+  const occupancyTrends = [65, 70, 75, 80, 85, 88]
+
+  const isLoading = hostelsLoading || analyticsLoading || statsLoading
+
   return (
-    <div className="">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-6 lg:mb-8">
-        <h2 className="text-2xl lg:text-3xl font-bold text-blue-800">Analytics & Insights</h2>
-        <p className="text-gray-600 mt-2 text-sm lg:text-base">Comprehensive analytics and performance metrics</p>
+      <div>
+        <h2 className="text-3xl font-bold">Analytics & Insights</h2>
+        <p className="text-muted-foreground">Comprehensive analytics and performance metrics</p>
       </div>
 
-      {!analyticsData ? (
-        <div className="bg-white rounded-xl shadow-lg p-8 text-center text-gray-500">
-          <div className="loading-spinner mx-auto mb-4"></div>
-          Loading analytics data...
+      {/* Hostel Selector */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Select Hostel</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Select value={selectedHostelId?.toString() || ''} onValueChange={(val) => setSelectedHostelId(parseInt(val))}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a hostel" />
+            </SelectTrigger>
+            <SelectContent>
+              {hostels?.map((hostel) => (
+                <SelectItem key={hostel.id} value={hostel.id.toString()}>
+                  {hostel.hostel_name || `Hostel ${hostel.id}`}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </CardContent>
+      </Card>
+
+      {isLoading ? (
+        <div className="space-y-4">
+          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-64 w-full" />
         </div>
+      ) : analyticsError ? (
+        <Card className="border-red-200 bg-red-50">
+          <CardContent className="p-6">
+            <p className="text-red-600">Failed to load analytics data</p>
+          </CardContent>
+        </Card>
       ) : (
         <>
-          {/* Analytics Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-6 lg:mb-8">
-            <div className="bg-white rounded-xl shadow-lg p-4 lg:p-6 border border-gray-100">
-              <h3 className="text-lg lg:text-xl font-bold mb-4 text-blue-800">Revenue Trends</h3>
-              <div className="h-48 lg:h-64 flex items-end justify-around space-x-1 lg:space-x-2">
-                {analyticsData.revenueTrends.map((revenue, index) => {
-                  const height = (revenue / Math.max(...analyticsData.revenueTrends)) * 140
-                  return (
-                    <div key={index} className="flex flex-col items-center flex-1">
-                      <div 
-                        className="chart-bar bg-blue-500 rounded-t w-full lg:w-10 lg:max-w-12 transition-all duration-300 hover:opacity-80"
-                        style={{ height: `${height}px` }}
-                      ></div>
-                      <span className="text-xs text-gray-600 mt-2">{months[index]}</span>
-                      <span className="text-xs font-bold text-blue-600">${(revenue/1000).toFixed(0)}k</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-4 lg:p-6 border border-gray-100">
-              <h3 className="text-lg lg:text-xl font-bold mb-4 text-blue-800">Occupancy Trends</h3>
-              <div className="h-48 lg:h-64 flex items-end justify-around space-x-1 lg:space-x-2">
-                {analyticsData.occupancyTrends.map((occupancy, index) => {
-                  const height = (occupancy / 100) * 140
-                  return (
-                    <div key={index} className="flex flex-col items-center flex-1">
-                      <div 
-                        className="chart-bar bg-green-500 rounded-t w-full lg:w-10 lg:max-w-12 transition-all duration-300 hover:opacity-80"
-                        style={{ height: `${height}px` }}
-                      ></div>
-                      <span className="text-xs text-gray-600 mt-2">{months[index]}</span>
-                      <span className="text-xs font-bold text-green-600">{occupancy}%</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
+          {/* Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Revenue Trends */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Revenue Trends</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64 flex items-end justify-around gap-2">
+                  {revenueTrends.map((revenue, index) => {
+                    const height = (revenue / Math.max(...revenueTrends)) * 200
+                    return (
+                      <div key={index} className="flex flex-col items-center flex-1">
+                        <div
+                          className="bg-blue-500 rounded-t w-full transition-all hover:opacity-80"
+                          style={{ height: `${height}px` }}
+                        ></div>
+                        <p className="text-xs text-muted-foreground mt-2">{months[index]}</p>
+                        <p className="text-xs font-bold">${(revenue / 1000).toFixed(0)}k</p>
+                      </div>
+                    )
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Occupancy Trends */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Occupancy Trends</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64 flex items-end justify-around gap-2">
+                  {occupancyTrends.map((occupancy, index) => {
+                    const height = (occupancy / 100) * 200
+                    return (
+                      <div key={index} className="flex flex-col items-center flex-1">
+                        <div
+                          className="bg-green-500 rounded-t w-full transition-all hover:opacity-80"
+                          style={{ height: `${height}px` }}
+                        ></div>
+                        <p className="text-xs text-muted-foreground mt-2">{months[index]}</p>
+                        <p className="text-xs font-bold">{occupancy}%</p>
+                      </div>
+                    )
+                  })}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Visitor Analytics */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-            <div className="bg-white rounded-xl shadow-lg p-4 lg:p-6 border border-gray-100">
-              <h3 className="text-lg lg:text-xl font-bold mb-4 text-blue-800">Visitor Traffic</h3>
-              <div className="space-y-3 lg:space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm lg:text-base">Total Visitors</span>
-                  <span className="font-bold text-sm lg:text-base">{analyticsData.visitorStats.total.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm lg:text-base">Conversion Rate</span>
-                  <span className="font-bold text-green-600 text-sm lg:text-base">{analyticsData.visitorStats.conversion}%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm lg:text-base">Avg. Session Time</span>
-                  <span className="font-bold text-sm lg:text-base">{analyticsData.visitorStats.avgSession}m</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-4 lg:p-6 border border-gray-100">
-              <h3 className="text-lg lg:text-xl font-bold mb-4 text-blue-800">Booking Performance</h3>
-              <div className="space-y-3 lg:space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm lg:text-base">Total Bookings</span>
-                  <span className="font-bold text-sm lg:text-base">{analyticsData.bookingStats.total.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm lg:text-base">Avg. Booking Value</span>
-                  <span className="font-bold text-blue-600 text-sm lg:text-base">${analyticsData.bookingStats.avgValue}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm lg:text-base">Cancellation Rate</span>
-                  <span className="font-bold text-red-600 text-sm lg:text-base">{analyticsData.bookingStats.cancellation}%</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-4 lg:p-6 border border-gray-100">
-              <h3 className="text-lg lg:text-xl font-bold mb-4 text-blue-800">Student Retention</h3>
-              <div className="space-y-3 lg:space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm lg:text-base">Retention Rate</span>
-                  <span className="font-bold text-green-600 text-sm lg:text-base">{analyticsData.retentionStats.rate}%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm lg:text-base">Avg. Stay Duration</span>
-                  <span className="font-bold text-sm lg:text-base">{analyticsData.retentionStats.avgStay} months</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm lg:text-base">Repeat Bookings</span>
-                  <span className="font-bold text-purple-600 text-sm lg:text-base">{analyticsData.retentionStats.repeatBookings}%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Additional Metrics */}
-          <div className="mt-6 lg:mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl p-4 text-center border border-gray-200">
-              <div className="text-2xl font-bold text-blue-800">98.5%</div>
-              <div className="text-sm text-gray-600">Uptime</div>
-            </div>
-            <div className="bg-white rounded-xl p-4 text-center border border-gray-200">
-              <div className="text-2xl font-bold text-green-600">2.3s</div>
-              <div className="text-sm text-gray-600">Avg Response</div>
-            </div>
-            <div className="bg-white rounded-xl p-4 text-center border border-gray-200">
-              <div className="text-2xl font-bold text-purple-600">45</div>
-              <div className="text-sm text-gray-600">Active Hostels</div>
-            </div>
-            <div className="bg-white rounded-xl p-4 text-center border border-gray-200">
-              <div className="text-2xl font-bold text-orange-600">12.5K</div>
-              <div className="text-sm text-gray-600">Monthly Visits</div>
-            </div>
+          {/* Metrics Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-sm text-muted-foreground">Occupancy Rate</p>
+                <p className="text-2xl font-bold">{summary.occupancy_rate?.toFixed(1) || '0'}%</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-sm text-muted-foreground">Revenue</p>
+                <p className="text-2xl font-bold">${summary.revenue?.toLocaleString() || '0'}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-sm text-muted-foreground">Uptime</p>
+                <p className="text-2xl font-bold">98.5%</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-sm text-muted-foreground">Avg Response</p>
+                <p className="text-2xl font-bold">2.3s</p>
+              </CardContent>
+            </Card>
           </div>
         </>
       )}
