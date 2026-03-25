@@ -51,8 +51,7 @@ export const hostelApi = appApi.injectEndpoints({
       invalidatesTags: invalidatesList('Hostel'),
     }),
 
-    // Location Management - Use locationsApi instead
-    // These endpoints are now managed in locationsApi.js
+    
 
     // Hostel Comparison
     compareHostels: builder.query({

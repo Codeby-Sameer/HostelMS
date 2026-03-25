@@ -1,143 +1,87 @@
-// src/components/forms/HostelForm.jsx
-
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import { useModal } from "../../../context/ModalContext"
-import { useCreateHostelMutation, useUpdateHostelMutation, useGetLocationsQuery } from "../api/hostelApi"
+import {
+  useCreateHostelMutation,
+  useUpdateHostelMutation,
+} from "../api/hostelApi"
+import { useLocations } from "@/features/locations/hooks/useLocations"
 import toast from "react-hot-toast"
 
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue
-} from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 
 import { formTemplates, validationSchemas } from "@/utils/FormTempletes"
-import {
-  useCreateHostelMutation,
-  useUpdateHostelMutation
-} from "../api/hostelApi"
 
-const HostelForm = ({ editingItem, onClose }) => {
+const HostelForm = ({ editingItem }) => {
   const { closeModal } = useModal()
+  const { selectedLocation } = useLocations()
+
   const [serverError, setServerError] = useState(null)
-  const [dynamicFormFields, setDynamicFormFields] = useState(formTemplates.hostel)
 
-  // RTK Query mutations
-  const [createHostel, { isLoading: isCreating }] = useCreateHostelMutation()
-  const [updateHostel, { isLoading: isUpdating }] = useUpdateHostelMutation()
-  
-  // Fetch locations for the dropdown
-  const { data: locationsData, isLoading: isLoadingLocations, error: locationsError } = useGetLocationsQuery()
+  const [createHostel, { isLoading: isCreating }] =
+    useCreateHostelMutation()
 
-  // Update form fields with location options
-  useEffect(() => {
-    if (locationsData) {
-      const locations = locationsData?.data || locationsData || []
-      const updatedFields = formTemplates.hostel.map(field => {
-        if (field.name === 'location_id') {
-          return {
-            ...field,
-            options: locations.length > 0 ? locations.map(loc => ({
-              value: loc.id,
-              label: loc.city
-            })) : []
-          }
-        }
-        return field
-      })
-      setDynamicFormFields(updatedFields)
-    }
-    
-    // Silently handle locations API error - form still works without location dropdown
-    if (locationsError) {
-      // Don't log to console to reduce spam
-      // setServerError('Failed to load locations. You may need to enter location manually.')
-    }
-  }, [locationsData, locationsError])
+  const [updateHostel, { isLoading: isUpdating }] =
+    useUpdateHostelMutation()
 
-  const initialValues = editingItem ? {
-    hostel_name: editingItem.hostel_name || "",
-    description: editingItem.description || "",
-    address: editingItem.address || "",
-    location_id: editingItem.location_id || "",
-    city: editingItem.city || "",
-    state: editingItem.state || "",
-    pincode: editingItem.pincode || "",
-    hostel_type: editingItem.hostel_type || "",
-    contact_email: editingItem.contact_email || "",
-    contact_phone: editingItem.contact_phone || "",
-    amenities: editingItem.amenities || "",
-    rules: editingItem.rules || "",
-    check_in: editingItem.check_in || "",
-    check_out: editingItem.check_out || "",
-    total_rooms: editingItem.total_rooms || "",
-    total_beds: editingItem.total_beds || "",
-    available_rooms: editingItem.available_rooms || "",
-    current_occupancy: editingItem.current_occupancy || "",
-    price_per_month: editingItem.price_per_month || "",
-    monthly_revenue: editingItem.monthly_revenue || "",
-    total_revenue: editingItem.total_revenue || "",
-    rating: editingItem.rating || "",
-    total_reviews: editingItem.total_reviews || "",
-    assigned_admin: editingItem.assigned_admin || "",
-    is_active: editingItem.is_active !== undefined ? editingItem.is_active : true,
-    is_verified: editingItem.is_verified !== undefined ? editingItem.is_verified : false,
-  } : {
-    hostel_name: "",
-    description: "",
-    address: "",
-    location_id: "",
-    city: "",
-    state: "",
-    pincode: "",
-    hostel_type: "",
-    contact_email: "",
-    contact_phone: "",
-    amenities: "",
-    rules: "",
-    check_in: "",
-    check_out: "",
-    total_rooms: "",
-    total_beds: "",
-    available_rooms: "",
-    current_occupancy: "",
-    price_per_month: "",
-    monthly_revenue: "",
-    total_revenue: "",
-    rating: "",
-    total_reviews: "",
-    assigned_admin: "",
-    is_active: true,
-    is_verified: false,
-  }
+  const isLoading = isCreating || isUpdating
+
+  // ✅ REMOVE location field from template
+  const filteredFields = formTemplates.hostel.filter(
+    (f) => f.name !== "location_id"
+  )
+
+  const initialValues = editingItem
+    ? {
+        ...editingItem,
+      }
+    : {
+        hostel_name: "",
+        description: "",
+        address: "",
+        city: "",
+        state: "",
+        pincode: "",
+        hostel_type: "",
+        contact_email: "",
+        contact_phone: "",
+        amenities: "",
+        rules: "",
+        check_in: "",
+        check_out: "",
+        total_rooms: "",
+        total_beds: "",
+        available_rooms: "",
+        current_occupancy: "",
+        price_per_month: "",
+        monthly_revenue: "",
+        total_revenue: "",
+        rating: "",
+        total_reviews: "",
+        assigned_admin: "",
+        is_active: true,
+        is_verified: false,
+      }
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       setServerError(null)
-      
-      // Transform form values to API format
+
+      // ❌ Prevent submit without location
+      if (!selectedLocation?.id) {
+        toast.error("Please select a location first")
+        return
+      }
+
       const hostelData = {
-        hostel_name: values.hostel_name,
-        description: values.description,
-        address: values.address,
-        location_id: parseInt(values.location_id) || null,
-        city: values.city || null,
-        state: values.state || null,
-        pincode: values.pincode || null,
-        hostel_type: values.hostel_type,
-        contact_email: values.contact_email,
-        contact_phone: values.contact_phone,
-        amenities: values.amenities,
-        rules: values.rules,
-        check_in: values.check_in,
-        check_out: values.check_out,
+        ...values,
+
+        // ✅ Inject location automatically
+        location_id: selectedLocation.id,
+
         total_rooms: parseInt(values.total_rooms) || null,
         total_beds: parseInt(values.total_beds) || 0,
         available_rooms: parseInt(values.available_rooms) || null,
@@ -147,53 +91,42 @@ const HostelForm = ({ editingItem, onClose }) => {
         total_revenue: parseFloat(values.total_revenue) || null,
         rating: parseFloat(values.rating) || null,
         total_reviews: parseInt(values.total_reviews) || null,
-        assigned_admin: values.assigned_admin || null,
-        is_active: values.is_active,
-        is_verified: values.is_verified,
       }
 
       if (editingItem?.id) {
-        // Update existing hostel
         await updateHostel({
           hostelId: editingItem.id,
           ...hostelData,
         }).unwrap()
-        
-        toast.success(`✅ Hostel "${values.hostel_name}" updated successfully!`)
+
+        toast.success("Hostel updated successfully")
       } else {
-        // Create new hostel
         await createHostel(hostelData).unwrap()
-        
-        toast.success(`✅ Hostel "${values.hostel_name}" created successfully!`)
+
+        toast.success("Hostel created successfully")
       }
 
-      setSubmitting(false)
       closeModal()
     } catch (error) {
-      console.error('Form submission error:', error)
-      
-      // Extract error message from various possible formats
-      let errorMessage = 'An error occurred while saving'
-      
-      if (error?.data?.detail) {
-        // Handle string or object detail
-        errorMessage = typeof error.data.detail === 'string' 
-          ? error.data.detail 
-          : JSON.stringify(error.data.detail)
-      } else if (error?.message) {
-        errorMessage = error.message
-      } else if (typeof error === 'string') {
-        errorMessage = error
-      }
-      
-      setServerError(errorMessage)
-      toast.error(`❌ Error: ${errorMessage}`)
+      console.error(error)
+
+      const message =
+        error?.data?.detail ||
+        error?.message ||
+        "Something went wrong"
+
+      setServerError(message)
+      toast.error(message)
+    } finally {
       setSubmitting(false)
     }
   }
 
   const renderField = (field) => {
-    if (field.type !== "select" && field.type !== "textarea" && field.type !== "checkbox") {
+    if (
+      field.type !== "textarea" &&
+      field.type !== "checkbox"
+    ) {
       return (
         <Field name={field.name}>
           {({ field: formikField }) => (
@@ -208,41 +141,6 @@ const HostelForm = ({ editingItem, onClose }) => {
         <Field name={field.name}>
           {({ field: formikField }) => (
             <Textarea {...formikField} rows={3} />
-          )}
-        </Field>
-      )
-    }
-
-    if (field.type === "select") {
-      return (
-        <Field name={field.name}>
-          {({ field: formikField, form }) => (
-            <Select
-              value={String(formikField.value)}
-              onValueChange={(value) => {
-                // Convert to number if field is location_id
-                const finalValue = field.name === 'location_id' ? parseInt(value) : value
-                form.setFieldValue(field.name, finalValue)
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={`Select ${field.label}`} />
-              </SelectTrigger>
-              <SelectContent>
-                {field.options.map((option) => {
-                  // Handle both string options and object options with value/label
-                  const isStringOption = typeof option === 'string'
-                  const optionValue = isStringOption ? option : option.value
-                  const optionLabel = isStringOption ? option : option.label
-                  
-                  return (
-                    <SelectItem key={optionValue} value={String(optionValue)}>
-                      {optionLabel}
-                    </SelectItem>
-                  )
-                })}
-              </SelectContent>
-            </Select>
           )}
         </Field>
       )
@@ -267,6 +165,15 @@ const HostelForm = ({ editingItem, onClose }) => {
     }
   }
 
+  // ❌ BLOCK if no location selected
+  if (!selectedLocation) {
+    return (
+      <div className="p-6 text-center text-muted-foreground">
+        Please select a location first
+      </div>
+    )
+  }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -277,17 +184,26 @@ const HostelForm = ({ editingItem, onClose }) => {
       {({ isSubmitting }) => (
         <Form className="space-y-6">
 
-          {/* Server Error */}
+          {/* LOCATION INFO */}
+          <div className="text-sm text-muted-foreground">
+            📍 Location:{" "}
+            <span className="font-medium text-foreground">
+              {selectedLocation.city}
+            </span>
+          </div>
+
+          {/* ERROR */}
           {serverError && (
-            <div className="bg-red-50 border border-red-200 rounded-md p-3">
-              <p className="text-sm text-red-800">{serverError}</p>
+            <div className="bg-red-50 border border-red-200 p-3 rounded">
+              <p className="text-sm text-red-700">
+                {serverError}
+              </p>
             </div>
           )}
 
-          {/* Fields */}
+          {/* FORM FIELDS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            {dynamicFormFields.map((field) => (
+            {filteredFields.map((field) => (
               <div
                 key={field.name}
                 className={
@@ -314,27 +230,29 @@ const HostelForm = ({ editingItem, onClose }) => {
             ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 pt-4">
+          {/* ACTIONS */}
+          <div className="flex gap-3 pt-4">
             <Button
               type="submit"
-              disabled={isSubmitting || isCreating || isUpdating}
+              disabled={isSubmitting || isLoading}
               className="flex-1"
             >
-              {isSubmitting || isCreating || isUpdating ? "Saving..." : editingItem ? "Update" : "Save"}
+              {isLoading
+                ? "Saving..."
+                : editingItem
+                ? "Update Hostel"
+                : "Create Hostel"}
             </Button>
 
             <Button
               type="button"
               variant="secondary"
-              onClick={() => {
-                setServerError(null)
-                closeModal()
-              }}
-              className="flex-1 sm:flex-none"
+              onClick={closeModal}
             >
               Cancel
             </Button>
           </div>
+
         </Form>
       )}
     </Formik>
