@@ -17,7 +17,8 @@ const authSlice = createSlice({
     login: (state, action) => {
       console.log('Login action payload:', action.payload);
       
-      state.user = action.payload;
+      state.user = action.payload.user;
+       state.token = action.payload.token;
       state.loading = false;
       state.error = null;
       state.lastRefreshed = Date.now();
@@ -66,32 +67,6 @@ const authSlice = createSlice({
     },
   },
 
-  extraReducers: (builder) => {
-    builder
-      .addCase('auth/login/pending', (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase('auth/login/fulfilled', (state, action) => {
-        const { user, token, stats } = action.payload;
-        state.user = user;
-        state.token = token;
-        state.stats = user?.role === 'admin' ? stats || null : null;
-        state.loading = false;
-        state.error = null;
-        state.lastRefreshed = Date.now();
-        state.initialized = true;     
-      })
-      .addCase('auth/login/rejected', (state, action) => {
-        state.loading = false;
-        state.user = null;
-        state.token = null;
-        state.stats = null;
-        state.lastRefreshed = null;
-        state.initialized = true;      
-        state.error = action.error?.message || 'Login failed';
-      });
-  },
 });
 export const { 
   login, 

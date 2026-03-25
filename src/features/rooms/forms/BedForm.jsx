@@ -1,177 +1,221 @@
-// src/components/forms/BedForm.jsx
-
 import React from "react"
-import { Formik, Form, Field, ErrorMessage } from "formik"
+import { Formik, Form } from "formik"
+import { useSelector } from "react-redux"
+
+import {
+  useCreateBedMutation,
+  useUpdateBedMutation,
+} from "@/features/rooms/api/bedApi"
+
+import { useRoomsByHostel } from "../hooks/useRoomsByHostel"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select"
 
-import {
-  formTemplates,
-  validationSchemas
-} from "../../../utils/FormTempletes"
-
 const BedForm = ({ editingItem, onClose }) => {
+  const hostel_id = useSelector(
+    (state) => state.allocation.hostelId
+  )
+
+  const { rooms, isLoading: roomsLoading } = useRoomsByHostel({
+    onlyAvailable: true,
+  })
+
+  const [createBed, { isLoading: isCreating }] = useCreateBedMutation()
+  const [updateBed, { isLoading: isUpdating }] = useUpdateBedMutation()
+
+  const isEdit = Boolean(editingItem)
 
   const initialValues = editingItem || {
-    bedNumber: "",
-    roomNumber: "",
-    bedStatus: "",
-    monthlyPrice: "",
-    quarterlyPrice: "",
-    annualPrice: ""
+    hostel_id: hostel_id || "",
+    bed_number: "",
+    room_number: "",
+    bed_status: "available",
+    monthly_price: "",
+    quarterly_price: "",
+    annual_price: "",
   }
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = async (values) => {
+    try {
+      const payload = {
+        hostel_id: Number(hostel_id),
+        bed_number: values.bed_number,
+        room_number: values.room_number,
+        bed_status: values.bed_status,
+        monthly_price: Number(values.monthly_price),
+        quarterly_price: Number(values.quarterly_price),
+        annual_price: Number(values.annual_price),
+      }
 
-    console.log("Bed submitted:", values)
+      if (isEdit) {
+        await updateBed({
+          bedId: editingItem.id,
+          ...payload,
+        }).unwrap()
+      } else {
+        await createBed(payload).unwrap()
+      }
 
-    setTimeout(() => {
-      setSubmitting(false)
       onClose()
-    }, 1000)
-
-  }
-
-  const renderField = (field, setFieldValue, values) => {
-
-    if (field.type === "select") {
-
-      return (
-
-        <Select
-          value={values[field.name]}
-          onValueChange={(value) =>
-            setFieldValue(field.name, value)
-          }
-        >
-
-          <SelectTrigger>
-            <SelectValue placeholder={`Select ${field.label}`} />
-          </SelectTrigger>
-
-          <SelectContent>
-
-            {field.options.map(option => (
-
-              <SelectItem
-                key={option}
-                value={option}
-              >
-                {option}
-              </SelectItem>
-
-            ))}
-
-          </SelectContent>
-
-        </Select>
-
-      )
-
+    } catch (err) {
+      console.error("Bed Error:", err)
     }
-
-    return (
-
-      <Field name={field.name}>
-        {({ field: formikField }) => (
-          <Input
-            type={field.type}
-            {...formikField}
-          />
-        )}
-      </Field>
-
-    )
-
   }
-
 
   return (
+    <Card>
+      <CardContent className="p-4 md:p-6">
 
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchemas.bed}
-      onSubmit={handleSubmit}
-    >
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          enableReinitialize
+        >
+          {({ values, handleChange, setFieldValue }) => (
 
-      {({ isSubmitting, setFieldValue, values }) => (
+            <Form className="space-y-6">
 
-        <Form className="space-y-6">
+              {/* GRID */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* BED NUMBER */}
+                <Input
+                  name="bed_number"
+                  placeholder="Bed Number"
+                  value={values.bed_number}
+                  onChange={handleChange}
+                />
 
-            {formTemplates.bed.map(field => (
+                {/* ROOM DROPDOWN */}
+                <Select
+                  value={values.room_number}
+                  onValueChange={(value) => {
+                    setFieldValue("room_number", value)
 
-              <div key={field.name} className="space-y-2">
+                    // 🔥 auto-fill prices
+                    const selectedRoom = rooms.find(
+                      (r) => r.room_number === value
+                    )
 
-                <label className="text-sm font-medium">
+                    if (selectedRoom) {
+                      setFieldValue("monthly_price", selectedRoom.monthly_price)
+                      setFieldValue("quarterly_price", selectedRoom.quarterly_price)
+                      setFieldValue("annual_price", selectedRoom.annual_price)
+                    }
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Room" />
+                  </SelectTrigger>
 
-                  {field.label}
-                  {field.required && " *"}
+                  <SelectContent>
+                    {roomsLoading ? (
+                      <SelectItem value="loading" disabled>
+                        Loading...
+                      </SelectItem>
+                    ) : rooms.length === 0 ? (
+                      <SelectItem value="empty" disabled>
+                        No available rooms
+                      </SelectItem>
+                    ) : (
+                      rooms.map((room) => (
+                        <SelectItem
+                          key={room.id}
+                          value={room.room_number}
+                        >
+                          Room {room.room_number} ({room.availability})
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
 
-                </label>
+                {/* STATUS */}
+                <Select
+                  value={values.bed_status}
+                  onValueChange={(v) =>
+                    setFieldValue("bed_status", v)
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="available">Available</SelectItem>
+                    <SelectItem value="occupied">Occupied</SelectItem>
+                    <SelectItem value="maintenance">Maintenance</SelectItem>
+                  </SelectContent>
+                </Select>
 
-                {renderField(field, setFieldValue, values)}
+                {/* PRICES */}
+                <Input
+                  name="monthly_price"
+                  type="number"
+                  placeholder="Monthly Price"
+                  value={values.monthly_price}
+                  onChange={handleChange}
+                />
 
-                <ErrorMessage
-                  name={field.name}
-                  component="p"
-                  className="text-xs text-red-500"
+                <Input
+                  name="quarterly_price"
+                  type="number"
+                  placeholder="Quarterly Price"
+                  value={values.quarterly_price}
+                  onChange={handleChange}
+                />
+
+                <Input
+                  name="annual_price"
+                  type="number"
+                  placeholder="Annual Price"
+                  value={values.annual_price}
+                  onChange={handleChange}
                 />
 
               </div>
 
-            ))}
+              {/* ACTIONS */}
+              <div className="flex gap-3">
 
-          </div>
+                <Button
+                  type="submit"
+                  disabled={isCreating || isUpdating}
+                  className="flex-1"
+                >
+                  {(isCreating || isUpdating)
+                    ? "Saving..."
+                    : isEdit
+                      ? "Update Bed"
+                      : "Create Bed"}
+                </Button>
 
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={onClose}
+                >
+                  Cancel
+                </Button>
 
-          {/* Buttons */}
+              </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            </Form>
 
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1"
-            >
+          )}
+        </Formik>
 
-              {isSubmitting
-                ? "Saving..."
-                : editingItem
-                  ? "Update Bed"
-                  : "Add Bed"
-              }
-
-            </Button>
-
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={onClose}
-            >
-              Cancel
-            </Button>
-
-          </div>
-
-        </Form>
-
-      )}
-
-    </Formik>
-
+      </CardContent>
+    </Card>
   )
-
 }
 
 export default BedForm

@@ -1,5 +1,3 @@
-// src/components/forms/HostelForm.jsx
-
 import React from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 
@@ -16,8 +14,17 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 
 import { formTemplates, validationSchemas } from "@/utils/FormTempletes"
+import {
+  useCreateHostelMutation,
+  useUpdateHostelMutation
+} from "../api/hostelApi"
 
 const HostelForm = ({ editingItem, onClose }) => {
+  // ✅ Proper RTK Query hooks
+  const [createHostel, { isLoading: isCreating }] = useCreateHostelMutation()
+  const [updateHostel, { isLoading: isUpdating }] = useUpdateHostelMutation()
+
+  const isEdit = Boolean(editingItem)
 
   const initialValues = editingItem || {
     hostelName: "",
@@ -29,24 +36,33 @@ const HostelForm = ({ editingItem, onClose }) => {
     amenities: "",
     rules: "",
     checkInTime: "",
-    checkOutTime: "",
+    checkOutTime: "", 
     totalBeds: "",
     occupancy: "",
     revenue: ""
   }
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log("Form submitted:", values)
+  // ✅ Submit handler with API integration
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      if (isEdit) {
+        await updateHostel({
+          id: editingItem.id, // ⚠️ ensure your backend expects this
+          ...values
+        }).unwrap()
+      } else {
+        await createHostel(values).unwrap()
+      }
 
-    setTimeout(() => {
-      setSubmitting(false)
       onClose()
-    }, 1000)
+    } catch (error) {
+      console.error("API Error:", error)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const renderField = (field) => {
-
-    // INPUT
     if (field.type !== "select" && field.type !== "textarea" && field.type !== "checkbox") {
       return (
         <Field name={field.name}>
@@ -57,7 +73,6 @@ const HostelForm = ({ editingItem, onClose }) => {
       )
     }
 
-    // TEXTAREA
     if (field.type === "textarea") {
       return (
         <Field name={field.name}>
@@ -68,7 +83,6 @@ const HostelForm = ({ editingItem, onClose }) => {
       )
     }
 
-    // SELECT
     if (field.type === "select") {
       return (
         <Field name={field.name}>
@@ -95,7 +109,6 @@ const HostelForm = ({ editingItem, onClose }) => {
       )
     }
 
-    // CHECKBOX
     if (field.type === "checkbox") {
       return (
         <Field name={field.name}>
@@ -113,7 +126,6 @@ const HostelForm = ({ editingItem, onClose }) => {
         </Field>
       )
     }
-
   }
 
   return (
@@ -121,49 +133,50 @@ const HostelForm = ({ editingItem, onClose }) => {
       initialValues={initialValues}
       validationSchema={validationSchemas.hostel}
       onSubmit={handleSubmit}
+      enableReinitialize
     >
       {({ isSubmitting }) => (
         <Form className="space-y-6">
 
-          {/* Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
             {formTemplates.hostel.map((field) => (
               <div
                 key={field.name}
-                className={field.type === "textarea" ? "md:col-span-2 space-y-2" : "space-y-2"}
+                className={
+                  field.type === "textarea"
+                    ? "md:col-span-2 space-y-2"
+                    : "space-y-2"
+                }
               >
-
-                {/* Label */}
                 <label className="text-sm font-medium">
                   {field.label}
-                  {field.required && <span className="text-red-500"> *</span>}
+                  {field.required && (
+                    <span className="text-red-500"> *</span>
+                  )}
                 </label>
 
-                {/* Input */}
                 {renderField(field)}
 
-                {/* Error */}
                 <ErrorMessage
                   name={field.name}
                   component="p"
                   className="text-xs text-red-500"
                 />
-
               </div>
             ))}
-
           </div>
 
-          {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
-
             <Button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isCreating || isUpdating}
               className="flex-1"
             >
-              {isSubmitting ? "Saving..." : editingItem ? "Update" : "Save"}
+              {isCreating || isUpdating
+                ? "Saving..."
+                : isEdit
+                ? "Update"
+                : "Save"}
             </Button>
 
             <Button
@@ -174,9 +187,7 @@ const HostelForm = ({ editingItem, onClose }) => {
             >
               Cancel
             </Button>
-
           </div>
-
         </Form>
       )}
     </Formik>

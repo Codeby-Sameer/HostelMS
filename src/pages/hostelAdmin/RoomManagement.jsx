@@ -1,160 +1,58 @@
-// // components/RoomManagement.js
-// import React from 'react';
+import React, { useState } from "react"
+import RoomManagement from "@/features/rooms/components/RoomManagement"
+import BedManagement from "@/features/rooms/components/BedManagement"
 
-// const RoomManagement = ({ selectedHostel, rooms, onOpenModal }) => {
-//   if (!selectedHostel) {
-//     return (
-//       <div className="rooms-view p-8">
-//         <div className="bg-white rounded-xl shadow-lg p-6">
-//           <p className="text-gray-500 text-center py-8">Select a hostel to manage its room types and availability</p>
-//         </div>
-//       </div>
-//     );
-//   }
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Card, CardContent } from "@/components/ui/card"
 
-//   return (
-//     <div className="rooms-view p-8">
-//       <div className="flex justify-between items-center mb-6">
-//         <h2 className="text-3xl font-bold text-blue-900">Room & Bed Management</h2>
-//         <div className="flex gap-3">
-//           <button 
-//             onClick={() => onOpenModal('room')}
-//             className="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium hover:opacity-90 transition"
-//           >
-//             + Add Room Type
-//           </button>
-//           <button className="px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition">
-//             + Add Individual Bed
-//           </button>
-//           <button className="px-6 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition">
-//             Bulk Operations
-//           </button>
-//         </div>
-//       </div>
+import { useAdminHostels } from "@/features/hostels/hooks/useAdminHostels"
+import { HostelSelector } from "@/features/hostels/components/HostelSelector"
+import { Loader2 } from "lucide-react"
 
-//       <div className="bg-white rounded-xl shadow-lg p-6">
-//         <h3 className="text-xl font-bold mb-4 text-blue-900">Room Types for {selectedHostel.hostelName}</h3>
-//         {rooms.length === 0 ? (
-//           <p className="text-gray-500 text-center py-8">No room types defined yet. Click "Add Room Type" to get started.</p>
-//         ) : (
-//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-//             {rooms.map(room => (
-//               <div key={room.id} className="room-type-card border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-//                 <h4 className="font-bold text-lg mb-2">{room.roomType}</h4>
-//                 <p className="text-gray-600 mb-2">Capacity: {room.roomCapacity} beds</p>
-//                 <p className="text-gray-600 mb-2">Available: {room.availability} beds</p>
-//                 <div className="space-y-1 mb-3">
-//                   <p className="text-sm"><strong>Monthly:</strong> ${room.monthlyPrice}</p>
-//                   <p className="text-sm"><strong>Quarterly:</strong> ${room.quarterlyPrice}</p>
-//                   <p className="text-sm"><strong>Annual:</strong> ${room.annualPrice}</p>
-//                 </div>
-//                 <div className="flex gap-2">
-//                   <button 
-//                     onClick={() => onOpenModal('room', room)}
-//                     className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
-//                   >
-//                     Edit
-//                   </button>
-//                   <button className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600">
-//                     Delete
-//                   </button>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
+// ================= HOSTEL ADMIN =================
 
+export default function HostelAdminManagement() {
+  const [tab, setTab] = useState("rooms")
+  const { selectedHostel, isLoading } = useAdminHostels()
 
-// export default RoomManagement;
-
-
-
-
-
-// src/components/dashboard/views/.jsx
-import React from 'react';
-import { useModal } from '../../context/ModalContext';
-
-const RoomManagement = ({ selectedHostel, allData }) => {
-const{openModal}=  useModal()
-
-  allData=[]
-  const rooms = allData.filter(item => item.type === 'rooms' && selectedHostel && item.hostelId === selectedHostel.id);
-
-  const deleteItem = (item) => {
-    console.log('Delete item:', item);
-  };
+  if (isLoading) return <Loader2 className="animate-spin mx-auto mt-10" />
 
   return (
-    <div className="">
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-blue-900">Room & Bed Management</h2>
-        <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
-          <button 
-            onClick={() => openModal('room')}
-            className="px-4 py-2 md:px-6 md:py-3 text-white rounded-lg font-medium hover:opacity-90 transition bg-blue-500 text-sm md:text-base"
-          >
-            + Add Room Type
-          </button>
-          <button 
-            onClick={() => openModal('bed')}
-            className="px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition text-sm md:text-base"
-          >
-            + Add Individual Bed
-          </button>
+    <div className="p-4 space-y-6">
+      <div className="flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
+        <div>
+          <h1 className="text-2xl font-bold">{selectedHostel?.name || "Select Hostel"}</h1>
+          <p className="text-muted-foreground">{selectedHostel?.address}</p>
+        </div>
+        <div className="w-full md:w-64">
+          <HostelSelector />
         </div>
       </div>
-      
-      <div className="space-y-6">
-        {!selectedHostel ? (
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <p className="text-gray-500 text-center py-8">Select a hostel to manage its room types and bed availability</p>
-          </div>
-        ) : rooms.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-xl font-bold mb-4 text-blue-900">Room Types for {selectedHostel.hostelName}</h3>
-            <p className="text-gray-500 text-center py-8">No room types defined yet. Click "Add Room Type" to get started.</p>
-          </div>
-        ) : (
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-xl font-bold mb-4 text-blue-900">Room Types for {selectedHostel.hostelName}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {rooms.map(room => (
-                <div key={room.id} className="room-type-card border border-gray-200 rounded-lg p-4 md:p-6">
-                  <h4 className="font-bold text-lg md:text-xl">{room.roomType}</h4>
-                  <p className="text-gray-600 mb-2">Capacity: {room.roomCapacity} beds</p>
-                  <p className="text-gray-600 mb-2">Available: {room.availability} beds</p>
-                  <div className="space-y-1 mb-3">
-                    <p className="text-sm"><strong>Monthly:</strong> ${room.monthlyPrice}</p>
-                    <p className="text-sm"><strong>Quarterly:</strong> ${room.quarterlyPrice}</p>
-                    <p className="text-sm"><strong>Annual:</strong> ${room.annualPrice}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => openModal('room', room)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
-                    >
-                      Edit
-                    </button>
-                    <button 
-                      onClick={() => deleteItem(room)}
-                      className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
 
-export default RoomManagement;
+      {!selectedHostel ? (
+        <Card>
+          <CardContent className="p-6 text-center">Select hostel</CardContent>
+        </Card>
+      ) : (
+        <Tabs
+          value={tab}
+          onValueChange={setTab}
+          className="w-full border rounded-lg bg-background p-4 flex flex-col"
+        >
+          <TabsList className="inline-flex h-10 w-auto  p-1 rounded-lg">
+            <TabsTrigger value="rooms">Rooms</TabsTrigger>
+            <TabsTrigger value="beds">Beds</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="rooms" className="mt-4 p-4 bg-background rounded">
+            <RoomManagement hostelId={selectedHostel?.id}/>
+          </TabsContent>
+
+          <TabsContent value="beds" className="mt-4 p-4 bg-background rounded">
+           <BedManagement hostelId={selectedHostel.id}/>
+          </TabsContent>
+        </Tabs>
+      )}
+    </div>
+  )
+}

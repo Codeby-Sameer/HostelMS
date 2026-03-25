@@ -92,7 +92,10 @@ const LoginPage = () => {
       console.log(res, 'iam res after login');
 
       // store user in redux
-      dispatch(login(res.user));
+      dispatch(login({
+        user: res.user,
+        token: res.access_token,
+      }))
 
       toast.success('Login successful');
       navigate('/dashboard');

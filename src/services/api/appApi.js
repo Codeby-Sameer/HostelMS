@@ -9,7 +9,8 @@ export const appApi = createApi({
     baseUrl: apiConfig.baseUrl,
     timeout: apiConfig.timeout,
     prepareHeaders: (headers, { getState, endpoint }) => {
-      const token = getState().auth?.accessToken;
+      const token = getState().auth?.token;
+      console.log(token)
       
       // Set default headers
       Object.entries(apiConfig.headers).forEach(([key, value]) => {

@@ -1,102 +1,197 @@
-// src/components/forms/RoomForm.jsx
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { formTemplates, validationSchemas } from '../../../utils/FormTempletes';
+import React from "react"
+import { Formik, Form } from "formik"
+import {
+  useCreateRoomMutation,
+  useUpdateRoomMutation
+} from "@/features/rooms/api/roomApi"
+import { useAdminHostels } from "@/features/hostels/hooks/useAdminHostels"
+
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select"
 
 const RoomForm = ({ editingItem, onClose }) => {
+  const { selectedHostel } = useAdminHostels()
+
+  const [createRoom, { isLoading: isCreating }] = useCreateRoomMutation()
+  const [updateRoom, { isLoading: isUpdating }] = useUpdateRoomMutation()
+
+  const isEdit = Boolean(editingItem)
+
   const initialValues = editingItem || {
-    roomNumber: '',
-    roomType: '',
-    roomCapacity: '',
-    monthlyPrice: '',
-    quarterlyPrice: '',
-    annualPrice: '',
-    availability: '',
-    amenities: '',
-    maintenanceStatus: ''
-  };
+    room_number: "",
+    room_type: "",
+    room_capacity: "",
+    monthly_price: "",
+    quarterly_price: "",
+    annual_price: "",
+    availability: "",
+    amenities: "",
+    maintenance_status: "ok",
+  }
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log('Room form submitted:', values);
-    setTimeout(() => {
-      setSubmitting(false);
-      onClose();
-    }, 1000);
-  };
+  const handleSubmit = async (values) => {
+    try {
+      const payload = {
+        ...values,
+        hostel_id: selectedHostel.id,
+        room_capacity: Number(values.room_capacity),
+        monthly_price: Number(values.monthly_price),
+        quarterly_price: Number(values.quarterly_price),
+        annual_price: Number(values.annual_price),
+        availability: Number(values.availability),
+      }
 
-  const renderField = (field) => {
-    const commonProps = {
-      name: field.name,
-      className: "w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
-    };
+      if (isEdit) {
+        await updateRoom({
+          roomId: editingItem.id,
+          ...payload,
+        }).unwrap()
+      } else {
+        await createRoom(payload).unwrap()
+      }
 
-    if (field.type === 'select') {
-      return (
-        <Field as="select" {...commonProps}>
-          <option value="">Select {field.label}</option>
-          {field.options.map(option => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </Field>
-      );
-    } else if (field.type === 'textarea') {
-      return <Field as="textarea" rows="3" {...commonProps} />;
-    } else {
-      return <Field type={field.type} {...commonProps} />;
+      onClose()
+    } catch (err) {
+      console.error(err)
     }
-  };
+  }
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchemas.room}
-      onSubmit={handleSubmit}
-    >
-      {({ isSubmitting }) => (
-        <Form className="space-y-4 md:space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            {formTemplates.room.map(field => (
-              <div 
-                key={field.name} 
-                className={field.type === 'textarea' ? 'md:col-span-2' : ''}
-              >
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {field.label}{field.required ? ' *' : ''}
-                </label>
-                {renderField(field)}
-                <ErrorMessage
-                  name={field.name}
-                  component="div"
-                  className="text-red-500 text-xs mt-1"
+    <Card>
+      <CardContent className="p-4 md:p-6">
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          enableReinitialize
+        >
+          {({ values, handleChange, setFieldValue }) => (
+            <Form className="space-y-6">
+
+              {/* GRID */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <Input
+                  name="room_number"
+                  placeholder="Room Number"
+                  value={values.room_number}
+                  onChange={handleChange}
+                />
+
+                <Select
+                  value={values.room_type}
+                  onValueChange={(v) => setFieldValue("room_type", v)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Room Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="double">Double</SelectItem>
+                    <SelectItem value="triple">Triple</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Input
+                  name="room_capacity"
+                  type="number"
+                  placeholder="Capacity"
+                  value={values.room_capacity}
+                  onChange={handleChange}
+                />
+
+                <Input
+                  name="availability"
+                  type="number"
+                  placeholder="Available Beds"
+                  value={values.availability}
+                  onChange={handleChange}
+                />
+
+                <Input
+                  name="monthly_price"
+                  type="number"
+                  placeholder="Monthly Price"
+                  value={values.monthly_price}
+                  onChange={handleChange}
+                />
+
+                <Input
+                  name="quarterly_price"
+                  type="number"
+                  placeholder="Quarterly Price"
+                  value={values.quarterly_price}
+                  onChange={handleChange}
+                />
+
+                <Input
+                  name="annual_price"
+                  type="number"
+                  placeholder="Annual Price"
+                  value={values.annual_price}
+                  onChange={handleChange}
+                />
+
+                <Select
+                  value={values.maintenance_status}
+                  onValueChange={(v) =>
+                    setFieldValue("maintenance_status", v)
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Maintenance Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ok">OK</SelectItem>
+                    <SelectItem value="maintenance">Maintenance</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Input
+                  name="amenities"
+                  placeholder="Amenities"
+                  value={values.amenities}
+                  onChange={handleChange}
+                  className="md:col-span-2"
                 />
               </div>
-            ))}
-          </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 pt-4 md:pt-6">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1 px-4 py-3 md:px-6 md:py-3 text-white rounded-lg font-medium hover:opacity-90 transition bg-blue-500 disabled:opacity-50 flex items-center justify-center text-sm md:text-base"
-            >
-              {isSubmitting ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <span>{editingItem ? 'Update Room' : 'Add Room'}</span>
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-3 md:px-6 md:py-3 bg-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-400 transition text-sm md:text-base"
-            >
-              Cancel
-            </button>
-          </div>
-        </Form>
-      )}
-    </Formik>
-  );
-};
+              {/* ACTIONS */}
+              <div className="flex gap-3">
+                <Button
+                  type="submit"
+                  disabled={isCreating || isUpdating}
+                  className="flex-1"
+                >
+                  {(isCreating || isUpdating)
+                    ? "Saving..."
+                    : isEdit
+                      ? "Update Room"
+                      : "Create Room"}
+                </Button>
 
-export default RoomForm;
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={onClose}
+                >
+                  Cancel
+                </Button>
+              </div>
+
+            </Form>
+          )}
+        </Formik>
+      </CardContent>
+    </Card>
+  )
+}
+
+export default RoomForm

@@ -1,7 +1,13 @@
-// src/components/forms/MenuForm.jsx
+// MenuForm.jsx
 
 import React from "react"
-import { Formik, Form, Field, ErrorMessage } from "formik"
+import { Formik, Form, FieldArray } from "formik"
+import { useSelector } from "react-redux"
+
+import {
+  useCreateMenuMutation,
+  useUpdateMenuMutation,
+} from "@/features/mess/api/messMenuApi"
 
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -12,203 +18,253 @@ import {
   SelectTrigger,
   SelectContent,
   SelectItem,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select"
 
-import {
-  formTemplates,
-  validationSchemas
-} from "@/utils/FormTempletes"
-
+const dietOptions = [
+  "regular",
+  "vegetarian",
+  "vegan",
+  "gluten_free",
+  "diabetic",
+]
 
 const MenuForm = ({ editingItem, onClose }) => {
+  const hostel_id = useSelector((state) => state.allocation.hostelId)
+
+  const [createMenu, { isLoading: creating }] = useCreateMenuMutation()
+  const [updateMenu, { isLoading: updating }] = useUpdateMenuMutation()
+
+  const isEdit = Boolean(editingItem)
 
   const initialValues = editingItem || {
-    menuDate: "",
-    mealType: "",
-    menuItems: "",
-    dietType: "",
-    calories: "",
-    price: ""
+    menu_type: "daily",
+    menu_date: "",
+    meal_type: "",
+    items: [
+      { name: "", description: "", diet_types: [] }
+    ],
+    serving_time_start: "",
+    serving_time_end: "",
+    diet_types: [],
+    nutritional_info: {
+      calories: "",
+      protein: "",
+      carbs: "",
+      fat: "",
+    },
+    notes: "",
+    is_special_occasion: false,
+    occasion_name: "",
+    status: "draft",
   }
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = async (values) => {
+    try {
+      const payload = {
+        hostel_id,
+        ...values,
+        created_by: 1,
+        created_by_role: "admin",
+      }
 
-    console.log("Menu submitted:", values)
+      if (isEdit) {
+        await updateMenu({
+          menuId: editingItem.id,
+          ...payload,
+        }).unwrap()
+      } else {
+        await createMenu(payload).unwrap()
+      }
 
-    setTimeout(() => {
-      setSubmitting(false)
       onClose()
-    }, 1000)
-
-  }
-
-
-  const renderField = (field, setFieldValue, values) => {
-
-    if (field.type === "select") {
-
-      return (
-
-        <Select
-          value={values[field.name]}
-          onValueChange={(value) =>
-            setFieldValue(field.name, value)
-          }
-        >
-
-          <SelectTrigger>
-            <SelectValue placeholder={`Select ${field.label}`} />
-          </SelectTrigger>
-
-          <SelectContent>
-
-            {field.options.map(option => (
-
-              <SelectItem
-                key={option}
-                value={option}
-              >
-                {option}
-              </SelectItem>
-
-            ))}
-
-          </SelectContent>
-
-        </Select>
-
-      )
-
+    } catch (err) {
+      console.error("Menu Error:", err)
     }
-
-
-    if (field.type === "textarea") {
-
-      return (
-
-        <Field name={field.name}>
-
-          {({ field: formikField }) => (
-
-            <Textarea
-              {...formikField}
-              rows={3}
-            />
-
-          )}
-
-        </Field>
-
-      )
-
-    }
-
-
-    return (
-
-      <Field name={field.name}>
-
-        {({ field: formikField }) => (
-
-          <Input
-            type={field.type}
-            {...formikField}
-          />
-
-        )}
-
-      </Field>
-
-    )
-
   }
-
 
   return (
-
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchemas.menu}
-      onSubmit={handleSubmit}
-    >
-
-      {({ isSubmitting, setFieldValue, values }) => (
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize>
+      {({ values, handleChange, setFieldValue }) => (
 
         <Form className="space-y-6">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="text-sm text-muted-foreground">
+            Hostel ID: {hostel_id}
+          </div>
 
-            {formTemplates.menu.map(field => (
+          {/* BASIC */}
+          <div className="grid md:grid-cols-2 gap-4">
 
-              <div
-                key={field.name}
-                className={
-                  field.type === "textarea"
-                    ? "md:col-span-2 space-y-2"
-                    : "space-y-2"
-                }
-              >
+            <Select
+              value={values.menu_type}
+              onValueChange={(v) => setFieldValue("menu_type", v)}
+            >
+              <SelectTrigger><SelectValue placeholder="Menu Type" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="daily">Daily</SelectItem>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
+              </SelectContent>
+            </Select>
 
-                <label className="text-sm font-medium">
+            <Select
+              value={values.meal_type}
+              onValueChange={(v) => setFieldValue("meal_type", v)}
+            >
+              <SelectTrigger><SelectValue placeholder="Meal Type" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="breakfast">Breakfast</SelectItem>
+                <SelectItem value="lunch">Lunch</SelectItem>
+                <SelectItem value="snacks">Snacks</SelectItem>
+                <SelectItem value="dinner">Dinner</SelectItem>
+              </SelectContent>
+            </Select>
 
-                  {field.label}
-                  {field.required && " *"}
+            <Input type="date" name="menu_date" value={values.menu_date} onChange={handleChange} />
 
-                </label>
-
-                {renderField(field, setFieldValue, values)}
-
-                <ErrorMessage
-                  name={field.name}
-                  component="p"
-                  className="text-xs text-red-500"
-                />
-
-              </div>
-
-            ))}
+            <Input type="time" name="serving_time_start" value={values.serving_time_start} onChange={handleChange} />
+            <Input type="time" name="serving_time_end" value={values.serving_time_end} onChange={handleChange} />
 
           </div>
 
+          {/* ITEMS (🔥 FIXED) */}
+          <FieldArray name="items">
+            {({ push, remove }) => (
+              <div className="space-y-4">
+                <div className="flex justify-between">
+                  <h3 className="font-semibold">Menu Items</h3>
+                  <Button type="button" onClick={() => push({ name: "", description: "", diet_types: [] })}>
+                    + Add Item
+                  </Button>
+                </div>
 
-          {/* Buttons */}
+                {values.items.map((item, index) => (
+                  <div key={index} className="grid md:grid-cols-3 gap-3 border p-3 rounded-xl">
 
-          <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                    <Input
+                      placeholder="Item name"
+                      value={item.name}
+                      onChange={(e) =>
+                        setFieldValue(`items.${index}.name`, e.target.value)
+                      }
+                    />
 
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1"
-            >
+                    <Input
+                      placeholder="Description"
+                      value={item.description}
+                      onChange={(e) =>
+                        setFieldValue(`items.${index}.description`, e.target.value)
+                      }
+                    />
 
-              {isSubmitting
-                ? "Saving..."
-                : editingItem
-                  ? "Update Menu"
-                  : "Add Menu Item"
+                    <Input
+                      placeholder="Diet types (comma)"
+                      value={item.diet_types.join(",")}
+                      onChange={(e) =>
+                        setFieldValue(
+                          `items.${index}.diet_types`,
+                          e.target.value.split(",").map(s => s.trim())
+                        )
+                      }
+                    />
+
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => remove(index)}
+                    >
+                      Remove
+                    </Button>
+
+                  </div>
+                ))}
+              </div>
+            )}
+          </FieldArray>
+
+          {/* MENU LEVEL DIET */}
+          <Input
+            placeholder="Menu diet types (comma separated)"
+            value={(values.diet_types || []).join(",")}
+            onChange={(e) =>
+              setFieldValue(
+                "diet_types",
+                e.target.value.split(",").map((s) => s.trim())
+              )
+            }
+          />
+
+          {/* NUTRITION */}
+          <div className="grid md:grid-cols-4 gap-3">
+            <Input name="nutritional_info.calories" placeholder="Calories" value={values.nutritional_info.calories} onChange={handleChange} />
+            <Input name="nutritional_info.protein" placeholder="Protein" value={values.nutritional_info.protein} onChange={handleChange} />
+            <Input name="nutritional_info.carbs" placeholder="Carbs" value={values.nutritional_info.carbs} onChange={handleChange} />
+            <Input name="nutritional_info.fat" placeholder="Fat" value={values.nutritional_info.fat} onChange={handleChange} />
+          </div>
+
+          {/* STATUS */}
+          <Select
+            value={values.status}
+            onValueChange={(v) => setFieldValue("status", v)}
+          >
+            <SelectTrigger><SelectValue placeholder="Status" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="pending_approval">Pending Approval</SelectItem>
+              <SelectItem value="approved">Approved</SelectItem>
+              <SelectItem value="published">Published</SelectItem>
+              <SelectItem value="archived">Archived</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* SPECIAL */}
+          <label className="flex gap-2 items-center">
+            <input
+              type="checkbox"
+              checked={values.is_special_occasion}
+              onChange={(e) =>
+                setFieldValue("is_special_occasion", e.target.checked)
               }
+            />
+            Special Occasion
+          </label>
 
+          {values.is_special_occasion && (
+            <Input
+              name="occasion_name"
+              placeholder="Occasion Name"
+              value={values.occasion_name}
+              onChange={handleChange}
+            />
+          )}
+
+          <Textarea
+            name="notes"
+            placeholder="Notes"
+            value={values.notes}
+            onChange={handleChange}
+          />
+
+          {/* ACTIONS */}
+          <div className="flex gap-3">
+            <Button type="submit" disabled={creating || updating} className="flex-1">
+              {(creating || updating)
+                ? "Saving..."
+                : isEdit
+                  ? "Update Menu"
+                  : "Create Menu"}
             </Button>
 
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={onClose}
-            >
+            <Button type="button" variant="secondary" onClick={onClose}>
               Cancel
             </Button>
-
           </div>
 
         </Form>
-
       )}
-
     </Formik>
-
   )
-
 }
 
 export default MenuForm

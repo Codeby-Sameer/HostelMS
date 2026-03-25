@@ -51,11 +51,24 @@ export default {
           foreground: "hsl(var(--card-foreground))"
         }
       },
+      screens: {
+        'xs': '480px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
 
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)"
+      }
+      ,
+      animation: {
+        'slide-in': 'slideIn 0.3s ease-out',
+        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       }
     }
   },

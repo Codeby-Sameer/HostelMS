@@ -1,101 +1,172 @@
-// src/components/forms/StudentForm.jsx
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { formTemplates, validationSchemas } from '@/utils/FormTempletes';
+import React from "react"
+import { Formik, Form } from "formik"
+import { useSelector } from "react-redux"
+
+import {
+  useCreateStudentMutation,
+  useUpdateStudentMutation,
+} from "@/features/users/api/tenantApi"
+
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { useAdminHostels } from "@/features/hostels/hooks/useAdminHostels"
+import { useSelectedBed } from "@/features/rooms/hooks/useSelectedBed"
+import { useSelectedRoom } from "@/features/rooms/hooks/useSelectedRoom"
+
 
 const StudentForm = ({ editingItem, onClose }) => {
+
+  // ✅ GLOBAL ALLOCATION
+  // const { hostelId, roomId, bedId } = useSelector(
+  //   (state) => state.allocation
+  // )
+  const { selectedHostel } = useAdminHostels()
+  const { selectedRoom } = useSelectedRoom()
+  const { selectedBed } = useSelectedBed()
+
+  const [createStudent, { isLoading: creating }] =
+    useCreateStudentMutation()
+
+  const [updateStudent, { isLoading: updating }] =
+    useUpdateStudentMutation()
+
+  const isEdit = Boolean(editingItem)
+
+  // ✅ INITIAL VALUES (auto-prefilled)
   const initialValues = editingItem || {
-    studentName: '',
-    studentEmail: '',
-    studentPhone: '',
-    studentId: '',
-    dateOfBirth: '',
-    guardianName: '',
-    guardianPhone: '',
-    emergencyContact: '',
-    checkInDate: '',
-    roomAssignment: '',
-    bedAssignment: ''
-  };
+    student_id: "",
+    student_name: "",
+    student_email: "",
+    student_phone: "",
+    date_of_birth: "",
+    guardian_name: "",
+    guardian_phone: "",
+    emergency_contact: "",
+    check_in_date: "",
+    check_out_date: "",
+    status: "active",
+    password: "",
+    confirm_password: "",
+  }
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log('Student form submitted:', values);
-    setTimeout(() => {
-      setSubmitting(false);
-      onClose();
-    }, 1000);
-  };
+  const handleSubmit = async (values) => {
+    const hasAllocation =
+      selectedHostel?.id &&
+      selectedRoom?.id &&
+      selectedBed?.id
 
-  const renderField = (field) => {
-    const commonProps = {
-      name: field.name,
-      className: "w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
-    };
+    const payload = {
+      ...values,
+      hostel_id: selectedHostel.id,
+      room_id: selectedRoom.id,
+      bed_id: selectedBed.id,
 
-    if (field.type === 'select') {
-      return (
-        <Field as="select" {...commonProps}>
-          <option value="">Select {field.label}</option>
-          {field.options.map(option => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </Field>
-      );
-    } else if (field.type === 'textarea') {
-      return <Field as="textarea" rows="3" {...commonProps} />;
-    } else {
-      return <Field type={field.type} {...commonProps} />;
+      room_assignment: hasAllocation ? "assigned" : null,
+      bed_assignment: hasAllocation ? "assigned" : null,
     }
-  };
+
+    try {
+      if (isEdit) {
+        await updateStudent({
+          studentId: editingItem.student_id,
+          ...payload,
+        }).unwrap()
+      } else {
+        await createStudent(payload).unwrap()
+      }
+
+      onClose()
+    } catch (err) {
+      console.error("Student error:", err)
+    }
+  }
+
+  // ❌ SAFETY GUARD
+  if (!selectedBed || !selectedHostel || !selectedRoom) {
+    return (
+      <div className="p-6 text-center text-sm text-muted-foreground">
+        Please select Hostel → Room → Bed first
+      </div>
+    )
+  }
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchemas.student}
-      onSubmit={handleSubmit}
-    >
-      {({ isSubmitting }) => (
-        <Form className="space-y-4 md:space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            {formTemplates.student.map(field => (
-              <div key={field.name}>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {field.label}{field.required ? ' *' : ''}
-                </label>
-                {renderField(field)}
-                <ErrorMessage
-                  name={field.name}
-                  component="div"
-                  className="text-red-500 text-xs mt-1"
-                />
-              </div>
-            ))}
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      {({ values, handleChange }) => (
+
+        <Form className="space-y-6">
+
+          {/* INFO BANNER */}
+          <div className="text-sm text-muted-foreground">
+            <p>Hostel: {selectedHostel?.name}</p>
+            <p className="text-xs text-green-600">
+              Room: {selectedRoom?.room_number} → Assigned ✅
+            </p>
+
+            <p className="text-xs text-green-600">
+              Bed: {selectedBed?.bed_number} → Assigned ✅
+            </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 pt-4 md:pt-6">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1 px-4 py-3 md:px-6 md:py-3 text-white rounded-lg font-medium hover:opacity-90 transition bg-blue-500 disabled:opacity-50 flex items-center justify-center text-sm md:text-base"
-            >
-              {isSubmitting ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <span>{editingItem ? 'Update Student' : 'Add Student'}</span>
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-3 md:px-6 md:py-3 bg-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-400 transition text-sm md:text-base"
-            >
-              Cancel
-            </button>
+          {/* GRID */}
+          <div className="grid md:grid-cols-2 gap-4">
+
+            <Input name="student_id" placeholder="Student ID" value={values.student_id} onChange={handleChange} />
+
+            <Input name="student_name" placeholder="Name" value={values.student_name} onChange={handleChange} />
+
+            <Input name="student_email" placeholder="Email" value={values.student_email} onChange={handleChange} />
+
+            <Input name="student_phone" placeholder="Phone" value={values.student_phone} onChange={handleChange} />
+
+            <Input type="date" name="date_of_birth" value={values.date_of_birth} onChange={handleChange} />
+
+            <Input name="guardian_name" placeholder="Guardian Name" value={values.guardian_name} onChange={handleChange} />
+
+            <Input name="guardian_phone" placeholder="Guardian Phone" value={values.guardian_phone} onChange={handleChange} />
+
+            <Input name="emergency_contact" placeholder="Emergency Contact" value={values.emergency_contact} onChange={handleChange} />
+
+            <Input type="date" name="check_in_date" value={values.check_in_date} onChange={handleChange} />
+
+            <Input type="date" name="check_out_date" value={values.check_out_date} onChange={handleChange} />
+
+            {!isEdit && (
+              <>
+                <Input type="password" name="password" placeholder="Password" value={values.password} onChange={handleChange} />
+
+                <Input type="password" name="confirm_password" placeholder="Confirm Password" value={values.confirm_password} onChange={handleChange} />
+              </>
+            )}
+
           </div>
+
+          {/* ACTIONS */}
+          <div className="flex gap-3">
+
+            <Button
+              type="submit"
+              disabled={creating || updating}
+              className="flex-1"
+            >
+              {(creating || updating)
+                ? "Saving..."
+                : isEdit
+                  ? "Update Tenant"
+                  : "Create Tenant"}
+            </Button>
+
+            <Button type="button" variant="secondary" onClick={onClose}>
+              Cancel
+            </Button>
+
+          </div>
+
         </Form>
+
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default StudentForm;
+export default StudentForm

@@ -11,6 +11,7 @@ export const roomApi = appApi.injectEndpoints({
         params: buildQueryParams({
           skip: params?.skip,
           limit: params?.limit,
+          hostel_id:params?.hostelId,
           room_type: params?.roomType,
           maintenance_status: params?.maintenanceStatus,
           min_price: params?.minPrice,

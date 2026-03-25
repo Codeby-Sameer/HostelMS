@@ -1,139 +1,216 @@
-// src/features/mess/components/MessView.jsx
-
 import React, { useState } from "react"
+import { useSelector } from "react-redux"
 
+import {
+  useGetHostelMenusQuery,
+  useDeleteMenuMutation,
+} from "@/features/mess/api/messMenuApi"
+
+import { useModal } from "@/context/ModalContext"
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent
-} from "@/components/ui/card"
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger
-} from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem
-} from "@/components/ui/select"
 
-import MessMenuManagement from "@/features/mess/components/MessMenuManagement" // ✅ import your UI
+import { Loader2, Plus, Search } from "lucide-react"
+import { HostelSelector } from "@/features/hostels/components/HostelSelector"
+import { useAdminHostels } from "@/features/hostels/hooks/useAdminHostels"
 
-const MessManagement = () => {
+export default function MessMenuManagement() {
 
-  const [activeMenuTab, setActiveMenuTab] = useState("daily")
+ 
+
+  const hostelId = useSelector((s) => s.allocation.hostelId)
+
+
+  const [filters, setFilters] = useState({
+    menuType: "",
+    startDate: "",
+    endDate: "",
+  })
+
+  const [search, setSearch] = useState("")
+
+  const { data, isLoading: menuloading } = useGetHostelMenusQuery(
+    {
+      hostelId,
+      ...filters,
+    },
+    { skip: !hostelId }
+  )
+
+  const [deleteMenu] = useDeleteMenuMutation()
+  const { openModal } = useModal()
+
+  const menus = data || []
+
+
+
+  if (menuloading) {
+    return <Loader2 className="animate-spin mx-auto mt-10" />
+  }
 
   return (
     <div className="space-y-6">
 
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row justify-between gap-4">
-
-        <h2 className="text-2xl font-bold">
-          Mess Menu Management
-        </h2>
-
-        <div className="flex flex-wrap gap-2">
-
-          <Button onClick={() => openModal("menu")}>
-            + Add Menu
-          </Button>
-
-          <Button variant="secondary">
-            Duplicate
-          </Button>
-
-          <Button variant="outline">
-            Publish
-          </Button>
-
+  
+      {/* HEADER */}
+      <div className="flex flex-col md:flex-row justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-semibold">Mess Menu</h2>
+          <p className="text-muted-foreground text-sm">
+            Manage hostel meals & schedules
+          </p>
         </div>
+
+        <HostelSelector />
+
+        <Button onClick={() => openModal("menu")}>
+          <Plus className="w-4 h-4 mr-2" />
+          Add Menu
+        </Button>
+
       </div>
 
-      {/* Tabs */}
-      <Tabs value={activeMenuTab} onValueChange={setActiveMenuTab}>
+      {/* FILTERS */}
+      <div className="flex flex-col md:flex-row gap-3">
 
-        <TabsList className="w-full overflow-x-auto justify-start">
-          {["daily", "weekly", "monthly", "special"].map((tab) => (
-            <TabsTrigger key={tab} value={tab} className="capitalize">
-              {tab}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        <Input
+          placeholder="Search meal..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-      </Tabs>
+        <Input
+          type="date"
+          onChange={(e) =>
+            setFilters((p) => ({
+              ...p,
+              startDate: e.target.value,
+            }))
+          }
+        />
 
-      {/* Filters */}
-      <Card>
+        <Input
+          type="date"
+          onChange={(e) =>
+            setFilters((p) => ({
+              ...p,
+              endDate: e.target.value,
+            }))
+          }
+        />
 
-        <CardHeader>
-          <CardTitle className="text-base">
-            Filters
-          </CardTitle>
-        </CardHeader>
+      </div>
 
-        <CardContent className="flex flex-col lg:flex-row gap-3">
+      {/* GRID */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
-          <Select>
-            <SelectTrigger className="w-full lg:w-48">
-              <SelectValue placeholder="All Hostels" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Hostels</SelectItem>
-            </SelectContent>
-          </Select>
+        {menus
+          .filter((m) =>
+            m.meal_type?.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((menu) => {
 
-          <Input type="date" className="lg:w-48" />
+            const items = menu.items || []
 
-          <Select>
-            <SelectTrigger className="w-full lg:w-48">
-              <SelectValue placeholder="All Meals" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Meals</SelectItem>
-              <SelectItem value="breakfast">Breakfast</SelectItem>
-              <SelectItem value="lunch">Lunch</SelectItem>
-              <SelectItem value="dinner">Dinner</SelectItem>
-            </SelectContent>
-          </Select>
+            return (
+              <Card
+                key={menu.id}
+                className="hover:shadow-lg transition hover:-translate-y-1"
+              >
 
-          <div className="flex gap-2 ml-auto">
+                {/* TOP BAR */}
+                <div
+                  className={`h-1 ${menu.status === "published"
+                    ? "bg-green-500"
+                    : "bg-yellow-500"
+                    }`}
+                />
 
-            <Button variant="outline">
-              Notify Students
-            </Button>
+                <CardHeader className="pb-2">
 
-            <Button variant="secondary">
-              Export
-            </Button>
+                  <div className="flex justify-between items-center">
+                    <CardTitle className="text-base capitalize">
+                      {menu.meal_type}
+                    </CardTitle>
 
-          </div>
+                    <Badge variant="outline">
+                      {menu.status}
+                    </Badge>
+                  </div>
 
-        </CardContent>
+                  <p className="text-xs text-muted-foreground">
+                    {menu.menu_date}
+                  </p>
 
-      </Card>
+                </CardHeader>
 
-      {/* Menu UI (IMPORTANT PART) */}
-      <MessMenuManagement />
+                <CardContent className="space-y-3 text-sm">
 
-      {/* Empty fallback */}
-      <Card className="text-center py-10">
-        <CardContent className="space-y-2">
-          <div className="text-4xl">🍽️</div>
-          <p className="text-sm text-muted-foreground">
-            No menu items scheduled yet
-          </p>
-        </CardContent>
-      </Card>
+                  {/* ITEMS */}
+                  <div className="flex flex-wrap gap-1">
+                    {items.map((item, i) => (
+                      <Badge key={i} variant="secondary" className="text-xs">
+                        {item.name || "Item"}
+                      </Badge>
+                    ))}
+                  </div>
+
+                  {/* TIME */}
+                  <div className="text-muted-foreground text-xs">
+                    ⏰ {menu.serving_time_start} - {menu.serving_time_end}
+                  </div>
+
+                  {/* DIET */}
+                  {menu.diet_types?.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {menu.diet_types.map((d, i) => (
+                        <Badge key={i} variant="outline" className="text-xs">
+                          {d}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* ACTIONS */}
+                  <div className="flex gap-2 pt-2">
+
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => openModal("menu", menu)}
+                    >
+                      Edit
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => deleteMenu(menu.id)}
+                    >
+                      Delete
+                    </Button>
+
+                  </div>
+
+                </CardContent>
+
+              </Card>
+            )
+          })}
+
+      </div>
+
+      {/* EMPTY */}
+      {menus.length === 0 && (
+        <div className="text-center text-muted-foreground py-10">
+          No menu found
+        </div>
+      )}
 
     </div>
   )
 }
-
-export default MessManagement
