@@ -11,6 +11,7 @@ import AdminManagement from "@/pages/superAdmin/AdminManagement"
 import SystemHealth from "@/pages/superAdmin/SystemHealth"
 import Analytics from "@/pages/superAdmin/Analytics"
 import Subscriptions from "@/pages/superAdmin/Subscription"
+import PlanManagement from "@/pages/superAdmin/PlanManagement"
 import Reports from "@/pages/superAdmin/Reports"
 
 export const SuperAdminRoutes = (
@@ -34,6 +35,7 @@ export const SuperAdminRoutes = (
     <Route path="revenue" element={<Analytics />} />
 
     <Route path="subscriptions" element={<Subscriptions />} />
+    <Route path="plans" element={<PlanManagement />} />
     <Route path="reports" element={<Reports />} />
 
     <Route path="*" element={<SuperAdminDashboard />} />

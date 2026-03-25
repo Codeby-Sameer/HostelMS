@@ -7,7 +7,7 @@ export const locationsApi = appApi.injectEndpoints({
     // Get all locations
     getLocations: builder.query({
       query: (params = {}) => ({
-        url: '/api/v1/locations/',
+        url: '/api/v1/api/v1/locations/',
         params: buildQueryParams({
           skip: params?.skip || 0,
           limit: params?.limit || 100,
@@ -19,14 +19,14 @@ export const locationsApi = appApi.injectEndpoints({
 
     // Get location by ID
     getLocationById: builder.query({
-      query: (locationId) => `/api/v1/locations/${locationId}`,
+      query: (locationId) => `/api/v1/api/v1/locations/${locationId}`,
       providesTags: (result, error, locationId) => [{ type: 'Location', id: locationId }],
     }),
 
     // Create location
     createLocation: builder.mutation({
       query: (locationData) => ({
-        url: '/api/v1/locations/',
+        url: '/api/v1/api/v1/locations/',
         method: 'POST',
         body: locationData,
       }),
@@ -36,7 +36,7 @@ export const locationsApi = appApi.injectEndpoints({
     // Update location
     updateLocation: builder.mutation({
       query: ({ locationId, ...data }) => ({
-        url: `/api/v1/locations/${locationId}`,
+        url: `/api/v1/api/v1/locations/${locationId}`,
         method: 'PUT',
         body: data,
       }),
@@ -49,7 +49,7 @@ export const locationsApi = appApi.injectEndpoints({
     // Delete location
     deleteLocation: builder.mutation({
       query: (locationId) => ({
-        url: `/api/v1/locations/${locationId}`,
+        url: `/api/v1/api/v1/locations/${locationId}`,
         method: 'DELETE',
       }),
       invalidatesTags: invalidatesList('Location'),

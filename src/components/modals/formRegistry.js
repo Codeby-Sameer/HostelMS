@@ -28,4 +28,16 @@ export const formRegistry = {
   maintenance: lazy(() =>
     import("@/features/maintenance/forms/MaintenanceForm")
   ),
+
+  admin: lazy(() =>
+    import("@/features/admin/forms/AdminForm")
+  ),
+
+  subscription: lazy(() =>
+    import("@/features/subscriptions/forms/SubscriptionForm")
+  ),
+
+  plan: lazy(() =>
+    import("@/features/subscriptions/forms/PlanForm")
+  ),
 }

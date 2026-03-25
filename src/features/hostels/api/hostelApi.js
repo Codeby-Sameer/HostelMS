@@ -7,7 +7,7 @@ export const hostelApi = appApi.injectEndpoints({
     // Hostel CRUD
     getHostels: builder.query({
       query: (params = {}) => ({
-        url: '/api/v1/hostels/',
+        url: '/api/v1/api/v1/hostels/',
         params: buildQueryParams({
           skip: params?.skip || 0,
           limit: params?.limit || 100,
@@ -18,13 +18,13 @@ export const hostelApi = appApi.injectEndpoints({
     }),
 
     getHostelById: builder.query({
-      query: (hostelId) => `/api/v1/hostels/${hostelId}`,
+      query: (hostelId) => `/api/v1/api/v1/hostels/${hostelId}`,
       providesTags: (result, error, hostelId) => [{ type: 'Hostel', id: hostelId }],
     }),
 
     createHostel: builder.mutation({
       query: (hostelData) => ({
-        url: '/api/v1/hostels/',
+        url: '/api/v1/api/v1/hostels/',
         method: 'POST',
         body: hostelData,
       }),
@@ -33,7 +33,7 @@ export const hostelApi = appApi.injectEndpoints({
 
     updateHostel: builder.mutation({
       query: ({ hostelId, ...data }) => ({
-        url: `/api/v1/hostels/${hostelId}`,
+        url: `/api/v1/api/v1/hostels/${hostelId}`,
         method: 'PUT',
         body: data,
       }),
@@ -45,7 +45,7 @@ export const hostelApi = appApi.injectEndpoints({
 
     deleteHostel: builder.mutation({
       query: (hostelId) => ({
-        url: `/api/v1/hostels/${hostelId}`,
+        url: `/api/v1/api/v1/hostels/${hostelId}`,
         method: 'DELETE',
       }),
       invalidatesTags: invalidatesList('Hostel'),

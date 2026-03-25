@@ -64,6 +64,7 @@ const Sidebar = ({ role, basePath = "/dashboard" }) => {
         { id: "locations", path: `${basePath}/locations`, icon: <FaMapMarkerAlt />, label: "Locations" },
         { id: "users", path: `${basePath}/users`, icon: <FaUsers />, label: "User Management" },
         { id: "subscriptions", path: `${basePath}/subscriptions`, icon: <FaCreditCard />, label: "Subscriptions" },
+        { id: "plans", path: `${basePath}/plans`, icon: <FaChartLine />, label: "Plans" },
         { id: "revenue", path: `${basePath}/revenue`, icon: <FaChartLine />, label: "Revenue Analytics" },
         { id: "reports", path: `${basePath}/reports`, icon: <FaFileAlt />, label: "Reports" }
       ],
