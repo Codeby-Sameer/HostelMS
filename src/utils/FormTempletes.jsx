@@ -133,6 +133,17 @@ export const formTemplates = {
     { name: 'department', label: 'Department', type: 'select', options: ['Administration', 'Maintenance', 'Accounts', 'Security', 'Housekeeping', 'Mess'], required: true },
     { name: 'accessLevel', label: 'Access Level', type: 'select', options: ['Full Access', 'Limited Access', 'Read Only'], required: true },
     { name: 'permissions', label: 'Specific Permissions', type: 'textarea' }
+  ],
+  admin: [
+    { name: 'adminName', label: 'Admin Name', type: 'text', required: true },
+    { name: 'adminEmail', label: 'Email Address', type: 'email', required: true },
+    { name: 'adminPhone', label: 'Phone Number', type: 'tel', required: true },
+    { name: 'employeeId', label: 'Employee ID', type: 'text', required: true },
+    { name: 'role', label: 'Role', type: 'select', options: ['Super Admin', 'Hostel Admin', 'Manager', 'Staff'], required: true },
+    { name: 'department', label: 'Department', type: 'select', options: ['Administration', 'Maintenance', 'Accounts', 'Security', 'Housekeeping', 'Mess'], required: true },
+    { name: 'accessLevel', label: 'Access Level', type: 'select', options: ['Full Access', 'Limited Access', 'Read Only'], required: true },
+    { name: 'status', label: 'Status', type: 'select', options: ['active', 'inactive', 'suspended'], required: true },
+    { name: 'permissions', label: 'Specific Permissions', type: 'textarea' }
   ]
 };
 
@@ -238,5 +249,16 @@ export const validationSchemas = {
     role: Yup.string().required('Role is required'),
     department: Yup.string().required('Department is required'),
     accessLevel: Yup.string().required('Access level is required')
+  }),
+  admin: Yup.object({
+    adminName: Yup.string().required('Admin name is required'),
+    adminEmail: Yup.string().email('Invalid email').required('Email is required'),
+    adminPhone: Yup.string().required('Phone number is required'),
+    employeeId: Yup.string().required('Employee ID is required'),
+    role: Yup.string().required('Role is required'),
+    department: Yup.string().required('Department is required'),
+    accessLevel: Yup.string().required('Access level is required'),
+    status: Yup.string().required('Status is required'),
+    permissions: Yup.string()
   })
 };
