@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog"
 
 const Modal = () => {
@@ -29,6 +30,9 @@ const Modal = () => {
         {/* header */}
         <DialogHeader className="px-6 py-4 border-b">
           <DialogTitle>{title}</DialogTitle>
+          <DialogDescription className="hidden">
+            {title} form
+          </DialogDescription>
         </DialogHeader>
 
         {/* scrollable content */}

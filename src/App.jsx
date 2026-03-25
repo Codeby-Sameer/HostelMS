@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
 
 import { PublicRoutes } from "./routes/publicRoutes"
 import { SuperAdminRoutes } from "./routes/SuperAdminRoutes"
@@ -13,9 +15,32 @@ import ScrollToTop from "./utils/ScrollToTop"
 
 import { ModalProvider } from "./context/ModalContext"
 import Modal from "./components/modals/Modal"
+import { login } from "./features/auth/slice/authSlice"
 
 
 function App() {
+  const dispatch = useDispatch()
+
+  // Restore auth state from localStorage on app load
+  useEffect(() => {
+    try {
+      const savedAuthState = localStorage.getItem('authState')
+      if (savedAuthState) {
+        const authState = JSON.parse(savedAuthState)
+        if (authState.user && authState.token) {
+          dispatch(login({
+            user: authState.user,
+            token: authState.token,
+            stats: authState.stats,
+          }))
+          console.log('✓ Auth state restored from localStorage')
+        }
+      }
+    } catch (error) {
+      console.error('Failed to restore auth state:', error)
+    }
+  }, [dispatch])
+
   return (
     <Router>
       <ScrollToTop />

@@ -7,7 +7,7 @@ export const hostelSearchApi = appApi.injectEndpoints({
     // Visitor Search
     searchHostels: builder.mutation({
       query: (searchRequest) => ({
-        url: '/api/v1/api/v1/visitor/search/hostels',
+        url: '/api/v1/visitor/search/hostels',
         method: 'POST',
         body: searchRequest,
       }),
@@ -15,25 +15,25 @@ export const hostelSearchApi = appApi.injectEndpoints({
 
     autocompleteSearch: builder.query({
       query: ({ query, field = 'name', limit = 10 }) => ({
-        url: '/api/v1/api/v1/visitor/search/autocomplete',
+        url: '/api/v1/visitor/search/autocomplete',
         params: { query, field, limit },
       }),
     }),
 
     getHostelDetails: builder.query({
-      query: (hostelId) => `/api/v1/api/v1/visitor/search/hostels/${hostelId}`,
+      query: (hostelId) => `/api/v1/visitor/search/hostels/${hostelId}`,
     }),
 
     getAvailableCities: builder.query({
-      query: () => '/api/v1/api/v1/visitor/search/cities',
+      query: () => '/api/v1/visitor/search/cities',
     }),
 
     getAvailableAmenities: builder.query({
-      query: () => '/api/v1/api/v1/visitor/search/amenities',
+      query: () => '/api/v1/visitor/search/amenities',
     }),
 
     getSearchFacets: builder.query({
-      query: () => '/api/v1/api/v1/visitor/search/facets',
+      query: () => '/api/v1/visitor/search/facets',
     }),
   }),
 });

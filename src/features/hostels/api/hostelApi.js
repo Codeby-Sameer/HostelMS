@@ -6,15 +6,15 @@ export const hostelApi = appApi.injectEndpoints({
   endpoints: (builder) => ({
     // Hostel CRUD
     getHostels: builder.query({
-      query: (params) => ({
+      query: (params = {}) => ({
         url: '/api/v1/api/v1/hostels/',
         params: buildQueryParams({
-          skip: params?.skip,
-          limit: params?.limit,
+          skip: params?.skip || 0,
+          limit: params?.limit || 100,
           search: params?.search,
         }),
       }),
-      providesTags: (result) => providesList(result, 'Hostel'),
+      providesTags: (result) => providesList(result?.data || result || [], 'Hostel'),
     }),
 
     getHostelById: builder.query({
@@ -54,7 +54,7 @@ export const hostelApi = appApi.injectEndpoints({
     // Location Management
     getLocations: builder.query({
       query: () => '/api/v1/api/v1/locations/',
-      providesTags: (result) => providesList(result, 'Location'),
+      providesTags: (result) => providesList(result?.data || result || [], 'Location'),
     }),
 
     getLocationById: builder.query({
@@ -94,7 +94,7 @@ export const hostelApi = appApi.injectEndpoints({
     // Hostel Comparison
     compareHostels: builder.query({
       query: (hostelIds) => ({
-        url: '/api/v1/hostels/compare',
+        url: '/api/v1/api/v1/hostels/compare',
         params: { hostel_ids: hostelIds },
       }),
       providesTags: (result, error, hostelIds) => 
