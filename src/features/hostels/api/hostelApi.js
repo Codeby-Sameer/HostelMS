@@ -7,7 +7,7 @@ export const hostelApi = appApi.injectEndpoints({
     // Hostel CRUD
     getHostels: builder.query({
       query: (params = {}) => ({
-        url: '/api/v1/api/v1/hostels/',
+        url: '/api/v1/hostels/',
         params: buildQueryParams({
           skip: params?.skip || 0,
           limit: params?.limit || 100,
@@ -18,13 +18,13 @@ export const hostelApi = appApi.injectEndpoints({
     }),
 
     getHostelById: builder.query({
-      query: (hostelId) => `/api/v1/api/v1/hostels/${hostelId}`,
+      query: (hostelId) => `/api/v1/hostels/${hostelId}`,
       providesTags: (result, error, hostelId) => [{ type: 'Hostel', id: hostelId }],
     }),
 
     createHostel: builder.mutation({
       query: (hostelData) => ({
-        url: '/api/v1/api/v1/hostels/',
+        url: '/api/v1/hostels/',
         method: 'POST',
         body: hostelData,
       }),
@@ -33,7 +33,7 @@ export const hostelApi = appApi.injectEndpoints({
 
     updateHostel: builder.mutation({
       query: ({ hostelId, ...data }) => ({
-        url: `/api/v1/api/v1/hostels/${hostelId}`,
+        url: `/api/v1/hostels/${hostelId}`,
         method: 'PUT',
         body: data,
       }),
@@ -45,56 +45,19 @@ export const hostelApi = appApi.injectEndpoints({
 
     deleteHostel: builder.mutation({
       query: (hostelId) => ({
-        url: `/api/v1/api/v1/hostels/${hostelId}`,
+        url: `/api/v1/hostels/${hostelId}`,
         method: 'DELETE',
       }),
       invalidatesTags: invalidatesList('Hostel'),
     }),
 
-    // Location Management
-    getLocations: builder.query({
-      query: () => '/api/v1/api/v1/locations/',
-      providesTags: (result) => providesList(result?.data || result || [], 'Location'),
-    }),
-
-    getLocationById: builder.query({
-      query: (locationId) => `/api/v1/api/v1/locations/${locationId}`,
-      providesTags: (result, error, locationId) => [{ type: 'Location', id: locationId }],
-    }),
-
-    createLocation: builder.mutation({
-      query: (locationData) => ({
-        url: '/api/v1/api/v1/locations/',
-        method: 'POST',
-        body: locationData,
-      }),
-      invalidatesTags: invalidatesList('Location'),
-    }),
-
-    updateLocation: builder.mutation({
-      query: ({ locationId, ...data }) => ({
-        url: `/api/v1/api/v1/locations/${locationId}`,
-        method: 'PUT',
-        body: data,
-      }),
-      invalidatesTags: (result, error, { locationId }) => [
-        { type: 'Location', id: locationId },
-        { type: 'Location', id: 'LIST' },
-      ],
-    }),
-
-    deleteLocation: builder.mutation({
-      query: (locationId) => ({
-        url: `/api/v1/api/v1/locations/${locationId}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: invalidatesList('Location'),
-    }),
+    // Location Management - Use locationsApi instead
+    // These endpoints are now managed in locationsApi.js
 
     // Hostel Comparison
     compareHostels: builder.query({
       query: (hostelIds) => ({
-        url: '/api/v1/api/v1/hostels/compare',
+        url: '/api/v1/hostels/compare',
         params: { hostel_ids: hostelIds },
       }),
       providesTags: (result, error, hostelIds) => 
