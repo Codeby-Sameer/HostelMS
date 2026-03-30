@@ -4,6 +4,7 @@ import LandingLayout from "@/pages/layout/Layout"
 import HomePage from "@/pages/public/Homepage"
 import LoginPage from "@/pages/auth/LoginPage"
 import Signup from "@/pages/auth/Signup"
+import RegisterPage from "@/pages/auth/RegisterPage"
 
 import About from "@/pages/public/About"
 import Features from "@/pages/public/Features"
@@ -19,6 +20,7 @@ export const PublicRoutes = (
 
     <Route path="login" element={<LoginPage />} />
     <Route path="signup" element={<Signup />} />
+    <Route path="register" element={<RegisterPage />} />
 
     <Route path="features" element={<Features />} />
     <Route path="features/:id" element={<FeatureDetails />} />

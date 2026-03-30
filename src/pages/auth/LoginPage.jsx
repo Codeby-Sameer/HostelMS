@@ -1,6 +1,6 @@
 // src/pages/LoginPage.jsx
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
@@ -267,8 +267,18 @@ const LoginPage = () => {
 
         </form>
 
+        {/* Sign Up Link */}
+        <div className="text-center mt-6 mb-4">
+          <p className="text-gray-600 text-sm">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-blue-600 hover:underline font-semibold">
+              Sign Up
+            </Link>
+          </p>
+        </div>
+
         {/* Footer */}
-        <p className="text-center text-xs text-gray-400 mt-6">
+        <p className="text-center text-xs text-gray-400 mt-4">
           © {new Date().getFullYear()} HostelHub. All rights reserved.
         </p>
 
