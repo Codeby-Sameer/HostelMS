@@ -27,13 +27,13 @@
     --popover-foreground: 222 47% 11%;
 
     /* Primary - Navy Blue */
-    --primary: 221 83% 25%;
+    --primary: 221 83% 45%;
 
     /* Primary Text - White */
     --primary-foreground: 210 40% 98%;
 
     /* Secondary - Light Gray */
-    --secondary: 210 40% 96%;
+    --secondary: 210 14% 92%;
 
     /* Secondary Text - Dark Slate */
     --secondary-foreground: 222 47% 11%;
@@ -44,11 +44,18 @@
     /* Muted Text - Gray */
     --muted-foreground: 215 16% 47%;
 
-    /* Accent Background - Light Gray */
-    --accent: 210 40% 96%;
+    /* Accent Background - soft pink */
+    --accent: 330 80% 92%;
 
-    /* Accent Text - Dark Slate */
-    --accent-foreground: 222 47% 11%;
+
+    --accent-foreground: 330 80% 30%;
+
+    --warning: 45 100% 90%;
+    /* light yellow */
+    --warning-foreground: 45 100% 30%;
+    --success: 140 60% 90%;
+    /* light green */
+    --success-foreground: 140 60% 25%;
 
     /* Destructive - Red */
     --destructive: 0 84% 60%;
@@ -103,11 +110,17 @@
     /* Muted Text - Light Gray */
     --muted-foreground: 215 20% 65%;
 
-    /* Accent Background - Dark Gray */
-    --accent: 217 33% 17%;
+    /* Pink */
+    --accent: 330 60% 20%;
+    --accent-foreground: 330 90% 90%;
 
-    /* Accent Text - White */
-    --accent-foreground: 210 40% 98%;
+    /* Yellow */
+    --warning: 45 80% 20%;
+    --warning-foreground: 45 100% 85%;
+
+    /* Green */
+    --success: 140 50% 20%;
+    --success-foreground: 140 80% 85%;
 
     /* Destructive - Dark Red */
     --destructive: 0 62% 30%;
@@ -140,16 +153,31 @@
 
 
 @keyframes verticalScroll {
-  0% { transform: translateY(0); }
-  25% { transform: translateY(-100%); }
-  50% { transform: translateY(-200%); }
-  75% { transform: translateY(-300%); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+
+  25% {
+    transform: translateY(-100%);
+  }
+
+  50% {
+    transform: translateY(-200%);
+  }
+
+  75% {
+    transform: translateY(-300%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .animate-vertical-scroll {
   animation: verticalScroll 12s infinite;
 }
+
 /* Add to your existing CSS file */
 
 @keyframes slideIn {
@@ -157,6 +185,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -164,9 +193,12 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }

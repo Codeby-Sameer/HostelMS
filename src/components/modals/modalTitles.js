@@ -48,6 +48,10 @@ export const modalTitles = {
     create: "Add Menu Item",
     edit: "Edit Menu Item",
   },
+   transfer: {
+  
+   edit: "Transfer Tenant to New Room",
+  },
 
   announcement: {
     create: "Create Announcement",

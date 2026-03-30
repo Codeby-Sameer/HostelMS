@@ -11,6 +11,7 @@ export const bedApi = appApi.injectEndpoints({
         params: buildQueryParams({
           skip: params?.skip,
           limit: params?.limit,
+          hostel_id:params?.hostelId
         }),
       }),
       providesTags: (result) => providesList(result, 'Bed'),
@@ -21,8 +22,10 @@ export const bedApi = appApi.injectEndpoints({
         url: '/api/v1/admin/beds/available',
         params: buildQueryParams({
           room_number: params?.roomNumber,
+          room_id:params?.roomId,
           skip: params?.skip,
           limit: params?.limit,
+          hostel_id:params?.hostelId
         }),
       }),
       providesTags: (result) => providesList(result, 'Bed'),

@@ -81,14 +81,7 @@ const StudentForm = ({ editingItem, onClose }) => {
     }
   }
 
-  // ❌ SAFETY GUARD
-  if (!selectedBed || !selectedHostel || !selectedRoom) {
-    return (
-      <div className="p-6 text-center text-sm text-muted-foreground">
-        Please select Hostel → Room → Bed first
-      </div>
-    )
-  }
+  
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>

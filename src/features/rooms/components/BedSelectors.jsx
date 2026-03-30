@@ -7,11 +7,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export function BedSelector() {
   const dispatch = useDispatch()
 
-  const roomId = useSelector((s) => s.allocation.roomId)
-  const selectedBed = useSelector((s) => s.allocation.bedId)
+ const { hostelId, roomId, bedId } = useSelector(
+    (state) => state.allocation
+  )
+  
 
   const { data: beds } = useGetAvailableBedsQuery(
-    { roomId },
+    { roomId,hostelId },
     { skip: !roomId }
   )
 
@@ -19,7 +21,7 @@ export function BedSelector() {
 
   return (
     <Select
-      value={selectedBed ? String(selectedBed) : ""}
+      value={bedId ? String(bedId) : ""}
       onValueChange={(value) =>
         dispatch(setBed(Number(value)))
       }

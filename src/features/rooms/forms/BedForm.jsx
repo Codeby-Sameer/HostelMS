@@ -1,6 +1,6 @@
 import React from "react"
 import { Formik, Form } from "formik"
-import { useSelector } from "react-redux"
+
 
 import {
   useCreateBedMutation,
@@ -12,6 +12,7 @@ import { useRoomsByHostel } from "../hooks/useRoomsByHostel"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+
 import {
   Select,
   SelectTrigger,
@@ -20,22 +21,26 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+
+import { useAdminHostels } from "@/features/hostels/hooks/useAdminHostels"
+import { HostelSelector } from "@/features/hostels/components/HostelSelector"
+
 const BedForm = ({ editingItem, onClose }) => {
-  const hostel_id = useSelector(
-    (state) => state.allocation.hostelId
-  )
+  const{selectedHostel, selectedHostelId}=useAdminHostels()
 
   const { rooms, isLoading: roomsLoading } = useRoomsByHostel({
     onlyAvailable: true,
   })
 
-  const [createBed, { isLoading: isCreating }] = useCreateBedMutation()
-  const [updateBed, { isLoading: isUpdating }] = useUpdateBedMutation()
+  const [createBed, { isLoading: isCreating }] =
+    useCreateBedMutation()
+
+  const [updateBed, { isLoading: isUpdating }] =
+    useUpdateBedMutation()
 
   const isEdit = Boolean(editingItem)
 
   const initialValues = editingItem || {
-    hostel_id: hostel_id || "",
     bed_number: "",
     room_number: "",
     bed_status: "available",
@@ -45,9 +50,11 @@ const BedForm = ({ editingItem, onClose }) => {
   }
 
   const handleSubmit = async (values) => {
+    if (!selectedHostelId) return
+
     try {
       const payload = {
-        hostel_id: Number(hostel_id),
+        hostel_id: Number(selectedHostelId),
         bed_number: values.bed_number,
         room_number: values.room_number,
         bed_status: values.bed_status,
@@ -71,10 +78,32 @@ const BedForm = ({ editingItem, onClose }) => {
     }
   }
 
+
   return (
     <Card>
-      <CardContent className="p-4 md:p-6">
+      <CardContent className="p-4 md:p-6 space-y-6">
 
+        {/* 🔥 SELECTORS */}
+        <div className="space-y-3">
+
+          <div>
+            <p className="text-sm text-muted-foreground mb-1">
+              Hostel
+            </p>
+            <HostelSelector/>
+          </div>
+
+          {/* Selected info */}
+          <div className="text-xs text-muted-foreground">
+            Selected Hostel:{" "}
+            <span className="font-medium text-foreground">
+              {selectedHostel.name}
+            </span>
+          </div>
+
+        </div>
+
+        {/* FORM */}
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
@@ -95,21 +124,29 @@ const BedForm = ({ editingItem, onClose }) => {
                   onChange={handleChange}
                 />
 
-                {/* ROOM DROPDOWN */}
+                {/* ROOM */}
                 <Select
                   value={values.room_number}
                   onValueChange={(value) => {
                     setFieldValue("room_number", value)
 
-                    // 🔥 auto-fill prices
                     const selectedRoom = rooms.find(
                       (r) => r.room_number === value
                     )
 
                     if (selectedRoom) {
-                      setFieldValue("monthly_price", selectedRoom.monthly_price)
-                      setFieldValue("quarterly_price", selectedRoom.quarterly_price)
-                      setFieldValue("annual_price", selectedRoom.annual_price)
+                      setFieldValue(
+                        "monthly_price",
+                        selectedRoom.monthly_price
+                      )
+                      setFieldValue(
+                        "quarterly_price",
+                        selectedRoom.quarterly_price
+                      )
+                      setFieldValue(
+                        "annual_price",
+                        selectedRoom.annual_price
+                      )
                     }
                   }}
                 >

@@ -13,6 +13,7 @@ export const studentApi = appApi.injectEndpoints({
           limit: params?.limit,
           name: params?.name,
           room: params?.room,
+          hostel_id:params?.hostel_id,
           payment_status: params?.paymentStatus,
           attendance_status: params?.attendanceStatus,
         }),
