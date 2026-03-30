@@ -10,6 +10,7 @@ import {
   FaDownload,
   FaStar,
   FaBroom,
+  FaUserPlus,
 } from "react-icons/fa";
 
 const navLinks = [
@@ -101,8 +102,15 @@ const Navbar = () => {
             </Link>
 
             <Link
+              to="/register"
+              className="px-4 py-2 border-2 rounded-lg font-bold text-sm hover:border-blue-600 hover:text-blue-600 transition"
+            >
+              Sign Up
+            </Link>
+
+            <Link
               to="/contact"
-              className="px-4 py-2 rounded-lg font-bold text-sm bg-blue-600 text-white hover:bg-blue-700 transition"
+              className="px-4 py-2 rounded-lg font-bold text-sm bg-green-600 text-white hover:bg-green-700 transition"
             >
               Download App
             </Link>
@@ -178,9 +186,17 @@ const Navbar = () => {
           </Link>
 
           <Link
+            to="/register"
+            onClick={close}
+            className="flex items-center justify-center gap-2 px-4 py-3 border-2 rounded-xl font-bold hover:border-blue-600 hover:text-blue-600 transition"
+          >
+            <FaUserPlus /> Sign Up
+          </Link>
+
+          <Link
             to="/contact"
             onClick={close}
-            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blue-600 text-white font-bold"
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-green-600 text-white font-bold hover:bg-green-700 transition"
           >
             <FaDownload /> Download App
           </Link>
