@@ -8,6 +8,7 @@ export const formRegistry = {
   transfer:lazy(()=>import('@/features/users/forms/TransferStudentModal')),
 
   booking: lazy(() => import("@/features/bookings/forms/BookingForm")),
+  visitorBooking: lazy(() => import("@/features/visitor/forms/VisitorBookingForm")),
 
   student: lazy(() => import("@/features/users/forms/StudentForm")),
   supervisor: lazy(() => import("@/features/users/forms/SuperVisiorForm")),

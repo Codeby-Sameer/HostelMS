@@ -60,6 +60,7 @@ export const apiConfig = {
     '/api/v1/auth/verify-reset-code',
     '/api/v1/auth/reset-password',
     '/api/v1/auth/password-strength',
+    '/api/v1/api/v1/visitor/search',
     '/health',
     '/',
   ],
