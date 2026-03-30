@@ -9,6 +9,7 @@ import RegisterPage from "@/pages/auth/RegisterPage"
 import About from "@/pages/public/About"
 import Features from "@/pages/public/Features"
 import Contact from "@/pages/public/Contact"
+import RequestDemo from "@/pages/public/RequestDemo"
 
 import RoomBookingPage from "@/pages/public/Rooms"
 import RoomDetailsPage from "@/pages/public/RoomDetails"
@@ -27,6 +28,7 @@ export const PublicRoutes = (
 
     <Route path="about" element={<About />} />
     <Route path="contact" element={<Contact />} />
+    <Route path="request-demo" element={<RequestDemo />} />
 
     <Route path="rooms" element={<RoomBookingPage />} />
     <Route path="rooms/:roomId" element={<RoomDetailsPage />} />

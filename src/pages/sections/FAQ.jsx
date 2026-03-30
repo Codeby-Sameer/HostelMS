@@ -170,7 +170,7 @@ function FAQ() {
                   Contact Support Team
                 </Link>
                 <Link 
-                  to="/demo" 
+                  to="/request-demo" 
                   className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:bg-white/10 transition-all duration-300"
                 >
                   <Calendar className="w-5 h-5" />

@@ -1,322 +1,167 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FaCalendarAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  CalendarDays,
+  Clock3,
+  WalletCards,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+
+const featureCards = [
+  {
+    icon: WalletCards,
+    title: "Pay Per Day",
+    description:
+      "Stay for only the days you need and pay with precise day-wise billing instead of rigid monthly commitments.",
+    step: "Step 01",
+    accent: "bg-[#e6f4f3] text-[#0d5c63]",
+  },
+  {
+    icon: CalendarDays,
+    title: "Real-time Booking",
+    description:
+      "Check availability instantly, confirm rooms faster, and keep booking decisions simple for both staff and residents.",
+    step: "Step 02",
+    accent: "bg-[#eef8ff] text-[#1b7f8e]",
+  },
+  {
+    icon: Clock3,
+    title: "Zero Lock-in",
+    description:
+      "Extend or shorten stays anytime with flexible duration controls and no unnecessary lock-in pressure.",
+    step: "Step 03",
+    accent: "bg-[#fff6df] text-[#8a6720]",
+  },
+];
 
 function FlexibleStay() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      }
-    }
-  };
-
-  const imageVariants = {
-    hidden: {
-      opacity: 0,
-      x: -50,
-      rotateY: -15
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      rotateY: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      }
-    }
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const tagVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: (i) => ({
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.4,
-        type: "spring",
-        stiffness: 100
-      }
-    })
-  };
-
-  const listItemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: (i) => ({
-      opacity: 1,
-      x: 0,
-      transition: {
-        delay: 0.5 + (i * 0.1),
-        duration: 0.5
-      }
-    })
-  };
-
-  const buttonVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.8,
-        duration: 0.5,
-        type: "spring",
-        stiffness: 100
-      }
-    },
-    hover: {
-      scale: 1.05,
-      boxShadow: "0 20px 40px rgba(37, 99, 235, 0.3)",
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 10
-      }
-    },
-    tap: {
-      scale: 0.98
-    }
-  };
-
-  const floatingAnimation = {
-    y: [0, -10, 0],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  };
-
   return (
-    <section ref={ref} className="py-16 lg:py-20 bg-white overflow-hidden">
-      <div className="max-w-6xl mx-auto w-[92vw] grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-        {/* Image Column */}
+    <section className="bg-gradient-to-br from-[#edf2ec] via-[#e1eeec] to-[#e6f1ef] px-5 py-16 sm:px-6 lg:px-8 xl:px-10">
+      <div className="mx-auto max-w-7xl">
         <motion.div
-          className="aos order-2 lg:order-1 relative"
-          variants={imageVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0.2 }}
+          className="text-center"
         >
-          {/* Floating Element 1 */}
-          <motion.div
-            className="absolute -top-4 -right-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-4 py-2 rounded-lg shadow-lg z-10"
-            animate={floatingAnimation}
-          >
-            <span className="text-sm font-bold">Flexible Stays</span>
-          </motion.div>
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#e6f4f3] px-5 py-2 text-sm font-semibold text-[#0d5c63]">
+            <BadgeCheck className="h-4 w-4" />
+            The Flexible Revolution
+          </div>
 
-          {/* Floating Element 2 */}
-          <motion.div
-            className="absolute -bottom-4 -left-4 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-lg z-10"
-            animate={{
-              y: [0, -8, 0],
-              transition: {
-                duration: 2.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.5
-              }
-            }}
-          >
-            <span className="text-xs font-semibold text-blue-600">No Lock-in</span>
-          </motion.div>
+          <h2 className="mt-6 text-4xl font-black text-slate-900 sm:text-5xl">
+            Pay Only For The{" "}
+            <span className="bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] bg-clip-text text-transparent">
+              Days You Stay
+            </span>
+          </h2>
 
-          <motion.img
-            src="https://5.imimg.com/data5/SELLER/Default/2023/3/293250320/MO/IK/UG/9676319/hostel-managemen-info-500x500.jpg"
-            alt="Flexible Stay Options"
-            className="w-full rounded-2xl shadow-2xl shadow-slate-900/10 border border-slate-200 relative z-0"
-            loading="lazy"
-            whileHover={{ scale: 1.01 }}
-            transition={{ duration: 0.3 }}
-          />
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-600">
+            Designed for modern hostel living where flexibility matters most. Let
+            residents book by the day, pay only for actual stay duration, and move
+            without unnecessary commitment.
+          </p>
         </motion.div>
 
-        {/* Content Column */}
-        <motion.div
-          className="aos order-1 lg:order-2"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          <motion.h2
-            variants={textVariants}
-            className="text-3xl lg:text-4xl font-black text-slate-900 mb-6"
-          >
-            Flexible Stay Options
-          </motion.h2>
-
-          <motion.p
-            variants={textVariants}
-            className="text-base lg:text-lg text-slate-600 mb-6 leading-relaxed"
-          >
-            Our day-wise booking system allows tenants to pay only for the days they actually stay.
-            Perfect for exam periods, interviews, or short-term accommodations.
-          </motion.p>
-
-          {/* Tags */}
+        <div className="mt-14 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start 2xl:gap-16">
           <motion.div
-            className="flex flex-wrap gap-3 mb-8"
-            variants={containerVariants}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0.2 }}
           >
-            {[
-              "Pay per day stayed",
-              "1-30 day flexibility",
-              "Instant confirmation"
-            ].map((tag, index) => (
-              <motion.span
-                key={index}
-                custom={index}
-                variants={tagVariants}
-                whileHover={{
-                  scale: 1.05,
-                  rotate: [0, -2, 2, 0],
-                  transition: { duration: 0.3 }
-                }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg shadow-blue-500/25 cursor-default"
-              >
-                {tag}
-              </motion.span>
-            ))}
-          </motion.div>
+            <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+              <img
+                src="/img/Booking.jpeg"
+                alt="Flexible day-wise booking"
+                className="h-[340px] w-full object-cover transition-transform duration-700 hover:scale-105 2xl:h-[430px]"
+              />
+            </div>
 
-          {/* List */}
-          <motion.ul
-            className="space-y-3 text-slate-600 mb-8"
-            variants={containerVariants}
-          >
-            {[
-              "Real-time availability and instant booking confirmation",
-              "No monthly lock-in — extend or shorten stay anytime",
-              "Digital receipts and 24/7 customer support"
-            ].map((item, index) => (
-              <motion.li
-                key={index}
-                custom={index}
-                variants={listItemVariants}
-                className="flex items-start gap-3 group"
-                whileHover={{ x: 5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <motion.span
-                  className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    transition: {
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: index * 0.3
-                    }
-                  }}
-                />
-                <span className="group-hover:text-blue-700 transition-colors duration-200">
+            <div className="mt-6 flex flex-wrap gap-3">
+              {["Day-wise stays", "Instant confirmation", "Flexible duration"].map((item) => (
+                <div
+                  key={item}
+                  className="rounded-full border border-[#d9ece9] bg-white px-4 py-2 text-sm font-semibold text-[#0d5c63] shadow-sm"
+                >
                   {item}
-                </span>
-              </motion.li>
-            ))}
-          </motion.ul>
+                </div>
+              ))}
+            </div>
 
-          {/* Button */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 300, damping: 15 }}
-          >
-            <Link
-              to="/rooms"
-              className="inline-flex items-center gap-3
-               bg-gradient-to-r from-blue-600 to-indigo-600
-               text-white px-8 py-4 rounded-xl
-               font-bold text-lg
-               shadow-lg shadow-blue-500/25
-               hover:shadow-xl hover:shadow-blue-500/30
-               transition-all duration-300"
-            >
-              {/* React Icon */}
-              <FaCalendarAlt className="text-xl" />
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+              <Link
+                to="/rooms"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0d5c63] px-8 py-4 text-base font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-[#09454a]"
+              >
+                Explore Flexible Stays
+                <ArrowRight className="h-4 w-4" />
+              </Link>
 
-              {/* Text */}
-              <span>Explore Flexible Stays</span>
-            </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center rounded-xl border border-[#0d5c63] px-8 py-4 text-base font-semibold text-[#0d5c63] transition-all duration-300 hover:bg-[#0d5c63] hover:text-white"
+              >
+                Talk To Our Team
+              </Link>
+            </div>
+
+            
           </motion.div>
 
-
-          {/* Decorative Element */}
           <motion.div
-            className="mt-8 flex items-center gap-2 text-sm text-slate-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isInView ? 1 : 0 }}
-            transition={{ delay: 1, duration: 0.6 }}
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.75, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0.2 }}
+            className="relative"
           >
-            <motion.div
-              className="w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: isInView ? 1 : 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-            />
-            {/* <span className="whitespace-nowrap">Trusted by 500+ tenants</span> */}
-            <motion.div
-              className="w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: isInView ? 1 : 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-            />
+            <div className="absolute left-0 top-10 h-40 w-40 rounded-full bg-[#7fcac3]/20 blur-3xl" />
+            <div className="absolute right-0 top-1/2 h-40 w-40 rounded-full bg-[#f4d58d]/20 blur-3xl" />
+
+            <div className="relative z-10 grid gap-5">
+              {featureCards.map((card, index) => {
+                const Icon = card.icon;
+
+                return (
+                  <motion.div
+                    key={card.title}
+                    initial={{ opacity: 0, x: 60 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.55, delay: index * 0.1 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    whileHover={{ x: -6, y: -2 }}
+                    className={`rounded-[28px] border border-white/70 bg-white/95 p-6 shadow-[0_18px_40px_rgba(15,23,42,0.08)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(13,92,99,0.16)] ${
+                      index === 1 ? "lg:ml-8" : index === 2 ? "lg:ml-16" : ""
+                    }`}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${card.accent}`}>
+                        <Icon className="h-6 w-6" />
+                      </div>
+
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between gap-3">
+                          <h3 className="text-xl font-bold text-slate-900">{card.title}</h3>
+                          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                            {card.step}
+                          </span>
+                        </div>
+
+                        <p className="mt-3 text-sm leading-7 text-slate-600">
+                          {card.description}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
-
-      {/* Background Decorative Elements */}
-      <motion.div
-        className="absolute top-1/4 left-0 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-30"
-        animate={{
-          x: [0, 50, 0],
-          y: [0, -30, 0],
-          transition: {
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }
-        }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-0 w-96 h-96 bg-indigo-100 rounded-full blur-3xl opacity-20"
-        animate={{
-          x: [0, -30, 0],
-          y: [0, 40, 0],
-          transition: {
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }
-        }}
-      />
     </section>
   );
 }

@@ -12,11 +12,10 @@ function Homepage() {
     <>
       <HeroSection />
       <AboutSection />
-      <ProductEcosystem />
-      <WhyChooseUs />
       <FlexibleStay />
+      <ProductEcosystem />
       <HowItWorks />
-      
+      <WhyChooseUs />
       <PricingAndFAQ />
     </>
   );

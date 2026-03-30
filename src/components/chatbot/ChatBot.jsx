@@ -73,109 +73,96 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Floating Button */}
-
       <Button
         size="icon"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-xl z-50"
+        className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full border border-[#b9ddda] bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] text-white shadow-[0_18px_35px_rgba(13,92,99,0.26)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_42px_rgba(13,92,99,0.34)]"
       >
         <FaComments size={20} />
       </Button>
 
-      {/* Chat Window */}
-
       {open && (
-        <Card className="fixed bottom-24 right-6 w-[80vw] max-w-sm h-[420px] flex flex-col shadow-2xl z-50 backdrop-blur-xl">
-
-          {/* Header */}
-
-          <CardHeader className="flex flex-row items-center justify-between border-b p-4">
-
-            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-              <FaRobot />
-              HostelBot
+        <Card className="fixed bottom-24 right-6 z-50 flex h-[460px] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-[1.75rem] border border-[#cfe8e6] bg-white/95 shadow-[0_28px_70px_rgba(13,92,99,0.22)] backdrop-blur-xl">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-[#d7e7e4] bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] p-4.5 text-white">
+            <CardTitle className="flex items-center gap-3 text-sm font-semibold">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/15">
+                <FaRobot />
+              </span>
+              <span>
+                <span className="block text-base font-bold">HostelBot</span>
+                <span className="block text-xs font-medium text-white/80">
+                  Instant support assistant
+                </span>
+              </span>
             </CardTitle>
 
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setOpen(false)}
+              className="rounded-full text-white hover:bg-white/15 hover:text-white"
             >
               <FaTimes />
             </Button>
-
           </CardHeader>
 
-          {/* Messages */}
-          <CardContent className="flex-1 p-0 min-h-0"> {/* 👈 VERY IMPORTANT */}
-
+          <CardContent className="min-h-0 flex-1 bg-[linear-gradient(180deg,#f8fcfb_0%,#f3f8f7_100%)] p-0">
             <ScrollArea className="h-full w-full">
-
-              <div className="p-4 space-y-4">
-
+              <div className="space-y-4 p-4.5">
                 {messages.map((msg, idx) => (
                   <div
                     key={idx}
-                    className={`flex items-end gap-2 ${msg.from === "user" ? "justify-end" : "justify-start"
-                      }`}
+                    className={`flex items-end gap-2 ${
+                      msg.from === "user" ? "justify-end" : "justify-start"
+                    }`}
                   >
-
-                    {/* Bot Avatar */}
                     {msg.from === "bot" && (
-                      <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-xs shrink-0">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] text-sm text-white shadow-sm">
                         <FaRobot />
                       </div>
                     )}
 
-                    {/* Message */}
                     <div
-                      className={`max-w-[75%] px-4 py-2 text-sm rounded-2xl shadow-sm
-              ${msg.from === "user"
-                          ? "bg-primary text-primary-foreground rounded-br-none"
-                          : "bg-muted text-foreground rounded-bl-none"
-                        }
-            `}
+                      className={`max-w-[80%] rounded-2xl px-4 py-3.5 text-[15px] shadow-sm ${
+                        msg.from === "user"
+                          ? "rounded-br-none bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] text-white"
+                          : "rounded-bl-none border border-[#d7e7e4] bg-white text-slate-700"
+                      }`}
                     >
                       {msg.text}
                     </div>
 
-                    {/* User Avatar */}
                     {msg.from === "user" && (
-                      <div className="w-8 h-8 rounded-full bg-gray-400 text-white flex items-center justify-center text-xs shrink-0">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#9dd9d2] text-sm text-[#0d5c63] shadow-sm">
                         <FaUser />
                       </div>
                     )}
-
                   </div>
                 ))}
 
-                {/* Typing */}
                 {loading && (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <FaRobot />
+                  <div className="flex items-center gap-2 text-sm text-slate-500">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#e6f4f3] text-[#0d5c63]">
+                      <FaRobot />
+                    </span>
                     <span className="animate-pulse">Typing...</span>
                   </div>
                 )}
 
                 <div ref={messagesEndRef} />
-
               </div>
-
             </ScrollArea>
-
           </CardContent>
-          {/* Suggestions */}
 
           {messages.length <= 1 && (
-            <div className="px-3 pb-2 flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 border-t border-[#e2efed] bg-white px-3 pb-2 pt-3">
               {SUGGESTIONS.map((s, i) => (
                 <Button
                   key={i}
                   variant="secondary"
                   size="sm"
                   onClick={() => handleSuggestion(s)}
-                  className="rounded-full"
+                  className="rounded-full border border-[#d7e7e4] bg-[#f4fbfa] text-[#0d5c63] hover:bg-[#e6f4f3]"
                 >
                   {s}
                 </Button>
@@ -183,23 +170,23 @@ const ChatBot = () => {
             </div>
           )}
 
-          {/* Input */}
-
-          <CardFooter className="border-t p-3 flex gap-2">
-
+          <CardFooter className="flex gap-2 border-t border-[#d7e7e4] bg-white p-4">
             <Input
               value={input}
               placeholder="Type a message..."
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              className="h-12 rounded-xl border-[#d7e7e4] bg-[#f8fbfb] text-[15px] text-slate-700 placeholder:text-slate-400 focus-visible:ring-[#0d5c63]/20"
             />
 
-            <Button size="icon" onClick={sendMessage}>
-              <FaPaperPlane size={14} />
+            <Button
+              size="icon"
+              onClick={sendMessage}
+              className="h-12 w-12 rounded-xl bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] text-white hover:from-[#09454a] hover:to-[#166774]"
+            >
+              <FaPaperPlane size={15} />
             </Button>
-
           </CardFooter>
-
         </Card>
       )}
     </>
