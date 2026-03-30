@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 
 const WhiteLabel = () => {
@@ -282,12 +283,12 @@ const WhiteLabel = () => {
                 Join the growing network of successful PG management businesses powered by our white-label solution
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button 
-                 
+                <Link
+                  to="/request-demo"
                   className="px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg hover:bg-blue-50 transition"
                 >
                   Schedule Demo Call
-                </button>
+                </Link>
                 <button 
         
                   className="px-8 py-4 bg-blue-500 text-white rounded-xl font-bold text-lg hover:bg-blue-400 transition border-2 border-white"

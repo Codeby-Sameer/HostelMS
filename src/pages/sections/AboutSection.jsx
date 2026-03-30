@@ -1,223 +1,213 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { 
-  BarChart3, 
-  Shield, 
-  Zap, 
-  Users, 
-  Building, 
-  Smartphone,
-  CheckCircle,
-  ArrowRight,
-  Clock,
-  CreditCard,
-  MessageSquare,
-  FileText
-} from "lucide-react";
-import { Link } from "react-router-dom";
+import { CalendarDays, Fingerprint, BarChart3, Sparkles, Settings, CreditCard, Smartphone, Wrench, Utensils } from "lucide-react";
 
-function AboutSection() {
-  const features = [
-    {
-      icon: BarChart3,
-      title: "Real-time Analytics",
-      description: "Live dashboards for occupancy, payments, and operations",
-      color: "from-blue-500 to-cyan-500"
-    },
-    {
-      icon: Shield,
-      title: "Secure Platform",
-      description: "Bank-level encryption and daily backups",
-      color: "from-emerald-500 to-teal-500"
-    },
-    {
-      icon: Zap,
-      title: "Automated Workflows",
-      description: "Room allocation and fee collection automation",
-      color: "from-amber-500 to-orange-500"
-    },
-    {
-      icon: Users,
-      title: "Tenant Experience",
-      description: "Mobile app for tenant management",
-      color: "from-purple-500 to-violet-500"
-    }
-  ];
-
-  const stats = [
-    { value: "60%", label: "Reduced Admin Time", icon: Clock },
-    { value: "95%", label: "Payment Collection", icon: CreditCard },
-    { value: "50+", label: "Automated Processes", icon: Zap },
-    { value: "24/7", label: "Support Available", icon: MessageSquare }
-  ];
-
+const AboutSection = () => {
   return (
-    <section className="py-12 lg:py-20 bg-gradient-to-b from-white to-slate-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Header */}
-        <div className="text-center mb-10 lg:mb-12">
-          <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-xs font-medium mb-4">
-            <Building className="w-3 h-3" />
-            PLATFORM OVERVIEW
-          </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-            Complete <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Hostel Management</span>
-          </h2>
-          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-            Transform how you manage tenant accommodations with our comprehensive digital platform.
-          </p>
-        </div>
+    <section className="bg-gradient-to-b from-[#e8f0ee] via-[#e1efec] to-[#edf5f3] px-5 py-16 sm:px-6 lg:px-8 xl:px-10">
+      <div className="mx-auto max-w-7xl">
 
-        {/* Stats Grid */}
-        {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 lg:mb-12">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                    <Icon className="text-white w-4 h-4" />
-                  </div>
-                  <div className="text-xl font-bold text-slate-900">{stat.value}</div>
-                </div>
-                <div className="text-xs text-slate-600 font-medium">{stat.label}</div>
-              </motion.div>
-            );
-          })}
-        </div> */}
-
-        {/* Main Content */}
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          {/* Left Content */}
-          <div>
-            <div className="mb-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
-                More Than Just Management Software
-              </h3>
-              <p className="text-base text-slate-600 mb-4">
-                Our platform bridges the gap between hostel administrators and tenants, creating a seamless digital ecosystem.
-              </p>
-            </div>
-
-            {/* Feature Grid */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-6">
-              {features.map((feature, index) => {
-                const Icon = feature.icon;
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm"
-                  >
-                    <div className={`w-10 h-10 bg-gradient-to-br ${feature.color} rounded-lg flex items-center justify-center mb-3`}>
-                      <Icon className="text-white w-5 h-5" />
-                    </div>
-                    <h4 className="text-sm font-semibold text-slate-900 mb-1">{feature.title}</h4>
-                    <p className="text-xs text-slate-600">{feature.description}</p>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Key Benefits */}
-            {/* <div className="space-y-3 mb-6">
-              <h4 className="text-lg font-semibold text-slate-900">Key Benefits:</h4>
-              {[
-                "End-to-end digital transformation",
-                "Real-time monitoring tools",
-                "Enhanced tenant experience",
-                "Scalable for all institution sizes"
-              ].map((benefit, index) => (
-                <div key={index} className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">{benefit}</span>
-                </div>
-              ))}
-            </div> */}
-
-            {/* CTA */}
-            <Link
-              to="/features"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 text-sm"
-            >
-              Explore Platform Features
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {/* Right Content - Image with Cards */}
-          <div className="relative">
-            {/* Main Image Container */}
-            <div className="relative rounded-xl overflow-hidden shadow-lg">
-              <img
-                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80"
-                alt="Modern Hostel Management Platform"
-                className="w-full h-64 sm:h-72 md:h-80 lg:h-96 object-cover"
-                loading="lazy"
-              />
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 to-transparent"></div>
-            </div>
-
-            {/* Floating Card 1 - Bottom Left for Mobile, Adjusted for Desktop */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="absolute -bottom-3 left-3 right-3 sm:left-4 sm:right-auto sm:w-48 bg-white rounded-lg p-3 shadow-md border border-slate-200"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded flex items-center justify-center">
-                  <Smartphone className="text-white w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-slate-900">Mobile First</div>
-                  <div className="text-xs text-slate-600">Any device access</div>
-                </div>
-              </div>
-              <p className="text-xs text-slate-600">
-                Manage everything from smartphones
-              </p>
-            </motion.div>
-
-            {/* Floating Card 2 - Top Right for Desktop, Adjusted for Mobile */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="hidden sm:block absolute -top-3 -right-3 w-40 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-3 shadow-md"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-7 h-7 bg-white/20 rounded flex items-center justify-center">
-                  <FileText className="text-white w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold">Quick Setup</div>
-                  <div className="text-xs text-blue-200">30 minutes</div>
-                </div>
-              </div>
-              <p className="text-xs text-blue-100">
-                Get started in under an hour
-              </p>
-            </motion.div>
-          </div>
-        </div>
         
+        
+<div className="mb-16 text-center flex flex-col items-center">
+  <h2 className="text-[2.8rem] font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-[3.5rem] lg:text-[4.2rem]">
+    Architected for{" "}
+    <span className="bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] bg-clip-text text-transparent">
+      Efficiency
+    </span>
+  </h2>
+
+  <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+    Every module is precision-engineered to eliminate friction in the modern
+    hostel management lifecycle.
+  </p>
+</div>
+
+        
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+          
+          <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 md:col-span-2 hover:-translate-y-2 hover:shadow-xl">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+              
+              <div className="min-w-0 flex-1">
+                <CalendarDays className="mb-3 h-6 w-6 text-slate-500 transition-colors duration-300 group-hover:text-[#0d5c63]" />
+                <h3 className="text-xl font-bold text-slate-900">
+                  Day-wise Room Booking
+                </h3>
+                <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600">
+                  Granular control over availability. Manage check-ins and check-outs with a visual timeline that mirrors your hostel's physical layout.
+                </p>
+
+                <button className="mt-5 text-sm font-semibold text-[#0d5c63]">
+                  Explore Visual Timeline →
+                </button>
+              </div>
+
+              
+              <img
+                src="/img/Booking.jpeg"
+                alt=""
+                className="h-48 w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105 sm:h-56 lg:h-40 lg:w-60 xl:w-72"
+              />
+            </div>
+          </div>
+
+          
+          <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl md:min-h-[280px]">
+            <Fingerprint className="mb-3 h-6 w-6 text-slate-500 transition-colors duration-300 group-hover:text-[#0d5c63]" />
+            <h3 className="text-lg font-bold text-slate-900">Digital KYC On boarding</h3>
+            <p className="mt-3 text-sm text-slate-600">
+              Paperless resident verification. Securely collect documents and verify identities in seconds and make seamless the onboarding process.
+            </p>
+          </div>
+
+          
+<div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 md:col-span-2 hover:-translate-y-2 hover:shadow-xl">
+  <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+    
+    
+    <div className="min-w-0 flex-1">
+      <BarChart3 className="mb-3 h-6 w-6 text-slate-500 transition-colors duration-300 group-hover:text-[#0d5c63]" />
+
+      <h3 className="text-xl font-bold text-slate-900">
+        Advanced Analytics & Reports
+      </h3>
+
+      <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600">
+        Real-time dashboards for occupancy, revenue, and performance. Unlock
+        data-driven insights with predictive modeling for occupancy trends and
+        revenue forecasting.
+      </p>
+
+      
+      <div className="mt-6 flex flex-wrap gap-4">
+        <div className="rounded-xl bg-slate-100 px-4 py-3 transition-colors duration-300 group-hover:bg-[#dcebea]">
+          <p className="text-xs text-slate-500">OCCUPANCY GROWTH</p>
+          <p className="text-lg font-bold text-slate-900">+24%</p>
+        </div>
+
+        <div className="rounded-xl bg-slate-100 px-4 py-3 transition-colors duration-300 group-hover:bg-[#dcebea]">
+          <p className="text-xs text-slate-500">REVENUE FORECAST</p>
+          <p className="text-lg font-bold text-slate-900">$12.4k</p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div className="flex-shrink-0">
+      <img
+        src="/img/Analytical.jpeg"
+        alt="Analytics"
+        className="h-48 w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105 sm:h-56 lg:h-40 lg:w-64 xl:w-72"
+      />
+    </div>
+  </div>
+</div>
+
+          
+          <div className="group rounded-2xl bg-[#0d5c63] p-6 text-white shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:bg-[#09454a] md:min-h-[280px]">
+            <Sparkles className="mb-3 h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
+            <h3 className="text-lg font-bold">Intelligent Room Allocation</h3>
+            <p className="mt-3 text-sm opacity-80">
+              Smart allocation based on availability, gender, and preferences.
+              The platform automatically assigns rooms based on multiple parameters: gender compatibility, tenant preferences, special requirements, duration of stay, and payment status. Real-time vacancy tracking prevents overbooking while optimization algorithms maximize space utilization.
+              
+            </p>
+          </div>
+
+          
+          <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl md:min-h-[280px]">
+            <Settings className="mb-3 h-6 w-6 text-slate-500 transition-colors duration-300 group-hover:text-[#0d5c63]" />
+            <h3 className="font-bold text-slate-900">Mobile Apps for Admins</h3>
+            <p className="mt-2 text-sm text-slate-600">
+              Manage everything on the go with powerful mobile apps.Take your hostel management mobile with our feature-rich Android and iOS apps
+            </p>
+          </div>
+
+          <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl md:min-h-[280px]">
+            <CreditCard className="mb-3 h-6 w-6 text-slate-500 transition-colors duration-300 group-hover:text-[#0d5c63]" />
+            <h3 className="font-bold text-slate-900">Automated Payments</h3>
+            <p className="mt-2 text-sm text-slate-600">
+              Streamline your financial operations with our comprehensive payment and billing system. Automate rent collection through UPI, credit/debit cards, net banking, and wallets.
+             
+            </p>
+          </div>
+
+          <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl md:min-h-[280px]">
+            <Smartphone className="mb-3 h-6 w-6 text-slate-500 transition-colors duration-300 group-hover:text-[#0d5c63]" />
+            <h3 className="font-bold text-slate-900">Tenant Mobile App</h3>
+            <p className="mt-2 text-sm text-slate-600">
+              Tenants enjoy seamless experience: book rooms, pay rent, raise complaints, check announcements, and access digital agreements. Both apps work offline with sync capabilities, support multiple languages, and offer biometric login for enhanced security.",
+            </p>
+          </div>
+
+          <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl md:min-h-[280px]">
+            <Wrench className="mb-3 h-6 w-6 text-slate-500 transition-colors duration-300 group-hover:text-[#0d5c63]" />
+            <h3 className="font-bold text-slate-900">Maintenance</h3>
+            <p className="mt-2 text-sm text-slate-600">
+            Transform your maintenance operations with our comprehensive ticketing system. Residents can raise complaints with photos/videos, categorize by priority (emergency, high, medium, low), and track resolution in real-time. The system automatically assigns tickets to appropriate staff, sets SLAs based on priority, and sends updates to residents.
+            </p>
+           
+          </div>
+
+          
+<div className="group overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 md:col-span-2 hover:-translate-y-2 hover:shadow-xl">
+  <div className="grid lg:grid-cols-2">
+
+    
+    <div className="p-8 flex flex-col justify-center">
+      
+      <div className="mb-4 flex items-center gap-3">
+        <div className="h-10 w-10 rounded-xl bg-slate-200/70 flex items-center justify-center">
+          <Utensils className="h-5 w-5 text-slate-600 transition-colors duration-300 group-hover:text-[#0d5c63]" />
+        </div>
+        <span className="text-lg font-semibold text-[#0d5c63]">
+          Mess Management
+        </span>
+      </div>
+
+      
+      <h3 className="text-2xl font-extrabold text-slate-900 leading-tight sm:text-3xl">
+        Seamless Mess <br /> Management
+      </h3>
+
+      
+      <p className="mt-5 max-w-md text-base leading-8 text-slate-600">
+        Manage daily menus, meal counts, and food planning efficiently.
+      </p>
+
+      
+      <div className="mt-6 flex flex-col gap-3">
+        <div className="w-full rounded-xl bg-slate-100 px-4 py-3 sm:w-fit">
+          <span className="text-[#0d5c63] font-medium">
+            Create weekly/monthly menus with nutritional information
+          </span>
+         
+        </div>
+
+        <div className="w-full rounded-xl bg-slate-100 px-4 py-3 sm:w-fit">
+          <span className="text-[#0d5c63] font-medium">
+            Automatically manage inventory and handle special dietary requirements.
+          </span>
+          
+        </div>
+      </div>
+    </div>
+
+    
+    <div className="h-full w-full">
+      <img
+        src="/img/Mess.jpeg"
+        alt="Mess Management"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+    </div>
+  </div>
+</div>
+
+        </div>
       </div>
     </section>
   );
-}
+};
 
 export default AboutSection;

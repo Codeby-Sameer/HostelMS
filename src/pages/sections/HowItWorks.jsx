@@ -1,136 +1,131 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { UserPlus, CalendarCheck, TrendingUp, ArrowRight } from "lucide-react";
 
 function HowItWorks() {
+  const [activeStep, setActiveStep] = useState(0);
+
   const steps = [
-    { 
-      title: "Complete Registration", 
+    {
+      title: "Complete Registration",
       desc: "Create your account and set up your hostel profile in minutes",
       icon: UserPlus,
-      color: "from-blue-500 to-cyan-500"
     },
-    { 
-      title: "Manage Bookings", 
+    {
+      title: "Manage Bookings",
       desc: "Accept bookings, manage check-ins, and track occupancy in real-time",
       icon: CalendarCheck,
-      color: "from-indigo-500 to-purple-500"
     },
-    { 
-      title: "Grow Your Business", 
+    {
+      title: "Grow Your Business",
       desc: "Use analytics to optimize operations and enhance resident experience",
       icon: TrendingUp,
-      color: "from-violet-500 to-fuchsia-500"
     },
   ];
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % steps.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section className="bg-white pb-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-gradient-to-br from-[#dfebe9] via-[#e9efea] to-[#e3efec] px-5 py-16 sm:px-6 lg:px-8 xl:px-10">
+  <div className="mx-auto max-w-7xl">
 
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex items-center justify-center mb-6">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <div className="w-8 h-1 bg-gradient-to-r from-blue-500 to-cyan-500"></div>
-              <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-              <div className="w-8 h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-              <div className="w-3 h-3 bg-violet-500 rounded-full"></div>
-            </div>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Simple Implementation Process
+        
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+            Simple Implementation <span className="bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] bg-clip-text text-transparent"> Process </span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Get your hostel management system operational in three straightforward steps
           </p>
-        </motion.div>
+        </div>
 
-        {/* Steps */}
+        
         <div className="relative">
-          {/* Horizontal Line - Desktop */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            viewport={{ once: true }}
-            className="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-100 via-indigo-100 to-violet-100 origin-left"
-          />
+          
+          
+          <div className="hidden lg:block absolute top-24 left-0 right-0 h-1 bg-[#e6f4f3] rounded-full">
+            <motion.div
+              className="h-full bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] rounded-full"
+              initial={{ width: "0%" }}
+              animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
+              transition={{ duration: 0.6 }}
+            />
+          </div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.15 } }
-            }}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8"
-          >
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-8">
             {steps.map((step, index) => {
               const Icon = step.icon;
+              const isActive = index === activeStep;
 
               return (
-                <motion.div
+                <div
                   key={index}
-                  variants={{
-                    hidden: { opacity: 0, y: 28 },
-                    visible: { opacity: 1, y: 0 }
-                  }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="relative"
+                  className="relative flex flex-col items-center cursor-pointer"
+                  onClick={() => setActiveStep(index)}
                 >
-                  <div className="relative z-10 flex flex-col items-center">
-                    
-                    {/* Icon */}
-                    <div className={`w-24 h-24 bg-gradient-to-br ${step.color} rounded-full flex items-center justify-center shadow-lg mb-8`}>
-                      <Icon className="text-white w-10 h-10" strokeWidth={1.8} />
-                    </div>
 
-                    {/* Content */}
-                    <div className="text-center">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                        {step.title}
-                      </h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        {step.desc}
-                      </p>
-                    </div>
+                  
+                  <motion.div
+                    animate={{
+                      scale: isActive ? 1.15 : 1,
+                      boxShadow: isActive
+                        ? "0 20px 40px rgba(13,92,99,0.25)"
+                        : "0 8px 20px rgba(0,0,0,0.08)",
+                    }}
+                    className={`w-24 h-24 rounded-full flex items-center justify-center mb-8 transition-all duration-300 ${
+                      isActive
+                        ? "bg-gradient-to-br from-[#0d5c63] to-[#1b7f8e]"
+                        : "bg-[#e6f4f3]"
+                    }`}
+                  >
+                    <Icon
+                      className={`w-10 h-10 ${
+                        isActive ? "text-white" : "text-[#0d5c63]"
+                      }`}
+                    />
+                  </motion.div>
 
-                    {/* Connection Dot */}
-                    <div className="hidden lg:block absolute -bottom-8 left-1/2 -translate-x-1/2">
-                      <div className="w-4 h-4 bg-white border-2 border-blue-300 rounded-full"></div>
-                    </div>
+                  
+                  <div className="text-center">
+                    <h3
+                      className={`text-xl font-semibold mb-3 transition ${
+                        isActive ? "text-[#0d5c63]" : "text-slate-900"
+                      }`}
+                    >
+                      {step.title}
+                    </h3>
+
+                    <p className="text-slate-600 leading-relaxed">
+                      {step.desc}
+                    </p>
                   </div>
-                </motion.div>
+
+                  
+                  <div className="mt-6 text-sm font-semibold text-[#0d5c63]">
+                    STEP 0{index + 1}
+                  </div>
+
+                </div>
               );
             })}
-          </motion.div>
+          </div>
 
-          {/* Mobile Arrows */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            viewport={{ once: true }}
-            className="lg:hidden flex justify-center items-center space-x-4 mt-8"
-          >
-            {steps.slice(0, -1).map((_, index) => (
-              <div key={index} className="flex items-center">
-                <div className="w-8 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400"></div>
-                <ArrowRight className="w-6 h-6 text-blue-400" />
-                <div className="w-8 h-0.5 bg-gradient-to-r from-indigo-400 to-violet-400"></div>
-              </div>
+          
+          <div className="lg:hidden flex justify-center items-center gap-4 mt-10">
+            {steps.map((_, index) => (
+              <div
+                key={index}
+                className={`w-3 h-3 rounded-full transition ${
+                  index <= activeStep ? "bg-[#0d5c63]" : "bg-[#cfe8e6]"
+                }`}
+              />
             ))}
-          </motion.div>
+          </div>
+
         </div>
 
       </div>

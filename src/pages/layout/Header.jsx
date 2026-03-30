@@ -29,50 +29,34 @@ const Navbar = () => {
   const toggle = () => setOpen((v) => !v);
   const close = () => setOpen(false);
 
-  /* Sticky shadow */
   useEffect(() => {
     const onScroll = () => setSticky(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Lock body scroll */
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => (document.body.style.overflow = "");
   }, [open]);
 
-  /* ESC close */
-  useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && close();
-    if (open) {
-      window.addEventListener("keydown", onKey);
-      setTimeout(() => closeBtnRef.current?.focus(), 0);
-    }
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
   return (
     <>
-      {/* NAVBAR */}
+      
       <header
-        className={`fixed top-0 left-0 md:py-2 py-1 right-0 z-50
-          bg-white backdrop-blur
-          transition-all duration-300
-          ${sticky ? "shadow-xl" : "shadow-sm"}
-        `}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300
+        bg-white/90 backdrop-blur-md border-b border-slate-200
+        ${sticky ? "shadow-lg shadow-slate-200/60" : ""}
+      `}
       >
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo */}
+
+          
           <Link to="/" className="flex items-center gap-2">
-            <img
-              src="/img/image.png"
-              alt="DCM Logo"
-              className="h-10 w-auto object-contain"
-            />
+            <img src="/img/Levitica.png" alt="Levitica logo" className="h-9 w-auto sm:h-10" />
           </Link>
 
-          {/* Desktop Nav */}
+          
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map(({ to, label }) => (
               <Link
@@ -80,68 +64,81 @@ const Navbar = () => {
                 to={to}
                 className={`font-semibold text-sm relative transition ${
                   location.pathname === to
-                    ? "text-blue-600"
-                    : "text-gray-700 hover:text-blue-600"
+                    ? "text-[#0d5c63]"
+                    : "text-slate-700 hover:text-[#0d5c63]"
                 }`}
               >
                 {label}
                 <span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-blue-600 transition-all ${
+                  className={`absolute -bottom-1 left-0 h-0.5 bg-[#0d5c63] transition-all ${
                     location.pathname === to ? "w-full" : "w-0"
                   }`}
                 />
               </Link>
             ))}
 
+            
             <Link
               to="/login"
-              className="px-4 py-2 border-2 rounded-lg font-bold text-sm hover:border-blue-600 hover:text-blue-600 transition"
+              className="px-4 py-2 border border-[#cfe8e6] rounded-xl font-semibold text-sm text-[#0d5c63]
+              hover:bg-[#e6f4f3] transition"
             >
               Login
             </Link>
 
+            
             <Link
               to="/contact"
-              className="px-4 py-2 rounded-lg font-bold text-sm bg-blue-600 text-white hover:bg-blue-700 transition"
+              className="px-4 py-2 rounded-xl font-semibold text-sm bg-[#e6f4f3] text-[#0d5c63]
+              hover:bg-[#d1eeec] transition"
             >
-              Download App
+              Download
+            </Link>
+
+            
+            <Link
+              to="/request-demo"
+              className="px-5 py-2.5 rounded-xl font-semibold text-sm text-white
+              bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e]
+              hover:shadow-lg hover:shadow-[#0d5c63]/30 hover:-translate-y-0.5
+              transition-all duration-300"
+            >
+              Request Demo
             </Link>
           </nav>
 
-          {/* Mobile Toggle */}
+          
           <button
             onClick={toggle}
-            aria-label="Open menu"
-            aria-expanded={open}
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg border bg-white text-gray-900 z-[60]"
+            aria-label={open ? "Close menu" : "Open menu"}
+            className={`flex h-11 w-11 items-center justify-center rounded-xl border shadow-sm transition-all duration-300 lg:hidden ${
+              open
+                ? "border-[#0d5c63] bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] text-white shadow-[#0d5c63]/20"
+                : "border-[#cfe8e6] bg-white text-[#0d5c63] hover:border-[#0d5c63] hover:bg-[#eef8f7]"
+            }`}
           >
-            <FaBars size={20} />
+            {open ? <FaTimes size={20} /> : <FaBars size={20} />}
           </button>
         </div>
       </header>
 
-      {/* Spacer */}
+      
       <div className="h-16" />
 
-      {/* Overlay */}
+      
       {open && (
-        <div
-          className="fixed inset-0 bg-black/40 z-[1000]"
-          onClick={close}
-        />
+        <div className="fixed inset-0 bg-black/40 z-[1000]" onClick={close} />
       )}
 
-      {/* Mobile Menu */}
+      
       <aside
         className={`fixed top-0 right-0 h-full w-[85%] max-w-sm bg-white z-[1100]
-          transform transition-transform duration-300
-          ${open ? "translate-x-0" : "translate-x-full"}
-        `}
-        role="dialog"
-        aria-modal="true"
+        transform transition-transform duration-300
+        ${open ? "translate-x-0" : "translate-x-full"}
+      `}
       >
         <div className="h-16 px-4 flex items-center justify-between border-b">
-          <span className="font-bold text-lg">Menu</span>
+          <span className="font-bold text-lg text-[#0d5c63]">Menu</span>
           <button
             ref={closeBtnRef}
             onClick={close}
@@ -159,8 +156,8 @@ const Navbar = () => {
               onClick={close}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-semibold ${
                 location.pathname === to
-                  ? "bg-blue-50 text-blue-700"
-                  : "hover:bg-gray-100"
+                  ? "bg-[#e6f4f3] text-[#0d5c63]"
+                  : "text-slate-700 hover:bg-slate-100 hover:text-[#0d5c63]"
               }`}
             >
               <Icon /> {label}
@@ -168,11 +165,13 @@ const Navbar = () => {
           ))}
         </div>
 
+        
         <div className="mt-auto p-4 border-t flex flex-col gap-3">
+
           <Link
             to="/login"
             onClick={close}
-            className="flex items-center justify-center gap-2 px-4 py-3 border-2 rounded-xl font-bold"
+            className="flex items-center justify-center gap-2 px-4 py-3 border border-[#cfe8e6] rounded-xl font-semibold text-[#0d5c63]"
           >
             <FaSignInAlt /> Login
           </Link>
@@ -180,10 +179,20 @@ const Navbar = () => {
           <Link
             to="/contact"
             onClick={close}
-            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blue-600 text-white font-bold"
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#e6f4f3] text-[#0d5c63] font-semibold"
           >
-            <FaDownload /> Download App
+            <FaDownload /> Download
           </Link>
+
+          <Link
+            to="/request-demo"
+            onClick={close}
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl
+            bg-gradient-to-r from-[#0d5c63] to-[#1b7f8e] text-white font-semibold"
+          >
+            Request Demo
+          </Link>
+
         </div>
       </aside>
     </>
