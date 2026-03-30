@@ -24,6 +24,11 @@ export const modalTitles = {
     edit: "Edit Booking",
   },
 
+  visitorBooking: {
+    create: "Book Hostel",
+    edit: "Update Booking",
+  },
+
   student: {
     create: "Add Student",
     edit: "Edit Student",

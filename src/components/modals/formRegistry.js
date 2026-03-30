@@ -7,6 +7,7 @@ export const formRegistry = {
   bed: lazy(() => import("@/features/rooms/forms/BedForm")),
 
   booking: lazy(() => import("@/features/bookings/forms/BookingForm")),
+  visitorBooking: lazy(() => import("@/features/visitor/forms/VisitorBookingForm")),
 
   student: lazy(() => import("@/features/users/forms/StudentForm")),
   supervisor: lazy(() => import("@/features/users/forms/SuperVisiorForm")),

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useModal } from '@/context/ModalContext';
 import { 
   useSearchHostelsMutation,
   useGetAvailableCitiesQuery,
@@ -9,7 +10,8 @@ import {
   useGetSearchFacetsQuery
 } from '@/features/visitor/api/visitorSearchApi';
 
-const SearchHostels = ({openModal}) => {
+const SearchHostels = () => {
+  const { openModal } = useModal();
   const [searchFilters, setSearchFilters] = useState({
     location: '',
     checkIn: '',
@@ -288,7 +290,7 @@ const SearchHostels = ({openModal}) => {
                       <div className="flex gap-3 flex-wrap">
                         <button 
                           className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-semibold"
-                          onClick={() => openModal && typeof openModal === 'function' && openModal('booking')}
+                          onClick={() => openModal('visitorBooking', { hostel })}
                         >
                           Book Now
                         </button>
