@@ -89,7 +89,8 @@ const Navbar = () => {
 
             <Link
               to="/register"
-              className="px-4 py-2 border-2 rounded-lg font-bold text-sm hover:border-blue-600 hover:text-blue-600 transition"
+              className="px-4 py-2 rounded-xl border border-[#b9ddda] bg-[#f4fbfa] font-semibold text-sm text-[#0d5c63]
+              hover:bg-[#e6f4f3] hover:border-[#0d5c63] transition"
             >
               Sign Up
             </Link>
@@ -187,7 +188,7 @@ const Navbar = () => {
           <Link
             to="/register"
             onClick={close}
-            className="flex items-center justify-center gap-2 px-4 py-3 border-2 rounded-xl font-bold hover:border-blue-600 hover:text-blue-600 transition"
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-[#b9ddda] bg-[#f4fbfa] font-semibold text-[#0d5c63] hover:bg-[#e6f4f3] hover:border-[#0d5c63] transition"
           >
             <FaUserPlus /> Sign Up
           </Link>
