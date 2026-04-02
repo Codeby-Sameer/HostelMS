@@ -5,6 +5,7 @@ import locationReducer from '@/features/locations/store/locationSlice.js'
 
 import authSliceReducer from '@/features/auth/slice/authSlice.js'
 import { appApi } from "@/services/api/appApi.js";
+import { studentComplaintsApi } from "@/features/tenant/api/studentComplaintsApi.js";
 
 const Store = configureStore({
   reducer: {
@@ -12,9 +13,11 @@ const Store = configureStore({
     allocation: allocationReducer,
     location:locationReducer,
     [appApi.reducerPath]: appApi.reducer,
+    [studentComplaintsApi.reducerPath]: studentComplaintsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(appApi.middleware)
+    .concat(studentComplaintsApi.middleware)
     .concat(rtkLogger),
   devTools: import.meta.env.REACT_APP_ENV !== 'production', // ✅ enables Redux DevTools
 })
